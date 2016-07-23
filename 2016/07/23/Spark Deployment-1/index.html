@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="网站介绍," />
+  <meta name="keywords" content="spark 环境搭建," />
 
 
 
@@ -84,16 +84,30 @@
 
 
 
-<meta name="description" content="缘起&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;该网站实则是一个blog系统，搭建私有的blog系统是笔者多年的夙愿，经过两日的努力终得以见面，从此互联网的海洋中，将存留《悯生》这一叶扁舟，也许孤单，但会永存。">
+<meta name="description" content="一、 虚拟机安装及相关配置静态IP并上外网">
 <meta property="og:type" content="article">
-<meta property="og:title" content="纪元">
-<meta property="og:url" content="http://syw2014.github.io/2016/06/05/hello-world/index.html">
+<meta property="og:title" content="Spark 开发环境搭建（一）- 虚拟机安装">
+<meta property="og:url" content="http://syw2014.github.io/2016/07/23/Spark Deployment-1/index.html">
 <meta property="og:site_name" content="悯生">
-<meta property="og:description" content="缘起&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;该网站实则是一个blog系统，搭建私有的blog系统是笔者多年的夙愿，经过两日的努力终得以见面，从此互联网的海洋中，将存留《悯生》这一叶扁舟，也许孤单，但会永存。">
-<meta property="og:updated_time" content="2016-06-05T04:48:33.343Z">
+<meta property="og:description" content="一、 虚拟机安装及相关配置静态IP并上外网">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-a1af1435ef18cf45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-ce9e1909061fb550.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-247865c2d57ef8b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-33b245ba6851eebd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-016f6dc591fe891f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-e2b5351067947452.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-f1b99333f4e7d99d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-bf4725ae183d8a8a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-8ab8d94a3b18bf7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-33c8cba317a38291.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-220314f0e7bb353f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-da72999de43262e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-9f9c4e6718672862.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-07-23T04:07:49.481Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="纪元">
-<meta name="twitter:description" content="缘起&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;该网站实则是一个blog系统，搭建私有的blog系统是笔者多年的夙愿，经过两日的努力终得以见面，从此互联网的海洋中，将存留《悯生》这一叶扁舟，也许孤单，但会永存。">
+<meta name="twitter:title" content="Spark 开发环境搭建（一）- 虚拟机安装">
+<meta name="twitter:description" content="一、 虚拟机安装及相关配置静态IP并上外网">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2423131-a1af1435ef18cf45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -111,7 +125,7 @@
   };
 </script>
 
-  <title> 纪元 | 悯生 </title>
+  <title> Spark 开发环境搭建（一）- 虚拟机安装 | 悯生 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -251,7 +265,7 @@
             
             
               
-                纪元
+                Spark 开发环境搭建（一）- 虚拟机安装
               
             
           </h1>
@@ -263,19 +277,38 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-05T12:19:18+08:00" content="2016-06-05">
-              2016-06-05
+            <time itemprop="dateCreated" datetime="2016-07-23T12:05:09+08:00" content="2016-07-23">
+              2016-07-23
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/big-data-spark/" itemprop="url" rel="index">
+                    <span itemprop="name">big data, spark</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/06/05/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/05/hello-world/" itemprop="commentsCount"></span>
+                <a href="/2016/07/23/Spark Deployment-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/23/Spark Deployment-1/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -285,7 +318,7 @@
 
           
           
-             <span id="/2016/06/05/hello-world/" class="leancloud_visitors" data-flag-title="纪元">
+             <span id="/2016/07/23/Spark Deployment-1/" class="leancloud_visitors" data-flag-title="Spark 开发环境搭建（一）- 虚拟机安装">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -307,8 +340,99 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;该网站实则是一个blog系统，搭建私有的blog系统是笔者多年的夙愿，经过两日的努力终得以见面，从此互联网的海洋中，将存留《悯生》这一叶扁舟，也许孤单，但会永存。<br><a id="more"></a></p>
-<h2 id="未来"><a href="#未来" class="headerlink" title="未来"></a>未来</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;曾几何时，本人也是混迹于各大空间挥毫泼墨，诉写儿女情仇，也因此结下了几份因缘但终究未成正果，后因年龄渐长退出笔坛和朋友圈，你侬我侬的场景已不再是追求的目标。而今，行走于江湖，虽不增创造传说，但点滴生活亦是修行之写照，因此，未来这里会是内功修炼之处、技能思考之地、天马行空之所、恬伤之居！</p>
+        <h2 id="一、-虚拟机安装及相关配置静态IP并上外网"><a href="#一、-虚拟机安装及相关配置静态IP并上外网" class="headerlink" title="一、 虚拟机安装及相关配置静态IP并上外网"></a>一、 虚拟机安装及相关配置静态IP并上外网</h2><a id="more"></a>
+<h3 id="1-环境说明"><a href="#1-环境说明" class="headerlink" title="1. 环境说明"></a>1. 环境说明</h3><pre><code>- 主机：Windows7
+- 工具： virtualBox4.3.24
+- 虚拟机： Centos7
+</code></pre><h3 id="2-安装虚拟机CentOS7"><a href="#2-安装虚拟机CentOS7" class="headerlink" title="2. 安装虚拟机CentOS7"></a>2. 安装虚拟机CentOS7</h3><h4 id="2-1-新建虚拟机"><a href="#2-1-新建虚拟机" class="headerlink" title="2.1 新建虚拟机"></a>2.1 新建虚拟机</h4><p><img src="http://upload-images.jianshu.io/upload_images/2423131-a1af1435ef18cf45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.虚拟机创建.png"><br>打开virtual box，点击主界面中的新建，出现上述界面，由于本人选择是的centos7的ISO，所以这里选择Red Hat64，可根据自己的情况替换为其他操作系统，在接下来的过程中一路下一步，知道遇到设置磁盘大小停止，设置系统大小为30G，对于我们测试用的集群系统30G大小已经足够了，而且如果后来不够的话还可以动态添加。</p>
+<h4 id="2-2-虚拟机设置"><a href="#2-2-虚拟机设置" class="headerlink" title="2.2 虚拟机设置"></a>2.2 虚拟机设置</h4><p>点击刚才新建的虚拟机，之后点击virtual box上面的设置，弹出设置主界面，在这一步操作中我们主要设置存储和网络两个部分，</p>
+<ul>
+<li>1 . 加载系统ISO文件</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-ce9e1909061fb550.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="加载iso文件.png"></p>
+<ul>
+<li>2 . 连接外网</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-247865c2d57ef8b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2.连接外网设置.png"><br>virtualBox新建完虚拟机之后，默认的网络连接方式为<strong>NAT</strong>，所以不需要做其他更改即可上网。</p>
+<ul>
+<li>3 . 设置静态IP</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-33b245ba6851eebd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="3.添加第二网卡.png"><br>集群内机器之间需要相互访问，因此需要为每台机器分配固定的IP，对于virtual box工具，目前发现只能通过两块网卡完成即能上网又具有独立静态IP（其他方式本人也曾尝试但未成功），因此添加第二个网卡来配置虚拟机的固定IP，具体设置如上图。</p>
+<h4 id="2-3-Centos7安装过程中的设置"><a href="#2-3-Centos7安装过程中的设置" class="headerlink" title="2.3 Centos7安装过程中的设置"></a>2.3 Centos7安装过程中的设置</h4><p>经过以上步骤已基本完成了虚拟机的初步设置，但在Centos7安装过程中还需要对系统进行必要的设置，</p>
+<ul>
+<li>1 . 系统安装</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-016f6dc591fe891f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="4.系统安装.png"><br>选择第一个进行安装</p>
+<ul>
+<li>2 . 语言选择</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-e2b5351067947452.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="5.语言选择.png"><br>根据个人习惯选择语言种类，本人选择简体中文</p>
+<ul>
+<li>3 . 系统配置</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-f1b99333f4e7d99d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="6.系统配置.png"><br>这个步骤中，主要设置下面四个，前面也可以设置，软件选择是选择系统安装哪些东西，安装位置是对磁盘分区进行设置，网络设置是否启用。</p>
+<ul>
+<li>4 . 软件选择</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-bf4725ae183d8a8a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="7.软件选择.png"><br>软件选择，我们不需要界面等，所以这里选择最小安装，然后下一步。</p>
+<ul>
+<li>5 . 分区设置</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-8ab8d94a3b18bf7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="8.分区设置.png"><br>采用如下的分区策略，</p>
+<table>
+<thead>
+<tr>
+<th>分区</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:right">30G硬盘</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/</td>
+<td style="text-align:center">Linux 系统根目录，大小5G以上</td>
+<td style="text-align:right">8G</td>
+</tr>
+<tr>
+<td>/swap</td>
+<td style="text-align:center">交换分区，物理内存的1~2倍</td>
+<td style="text-align:right">2G</td>
+</tr>
+<tr>
+<td>/boot</td>
+<td style="text-align:center">用于存放系统启动相关程序，大小100M以上即可</td>
+<td style="text-align:right">500M</td>
+</tr>
+<tr>
+<td>/usr</td>
+<td style="text-align:center">存放系统应用程序，大小3G以上</td>
+<td style="text-align:right">5G</td>
+</tr>
+<tr>
+<td>/var</td>
+<td style="text-align:center">存放经常变化数据和日志</td>
+<td style="text-align:right">2G</td>
+</tr>
+<tr>
+<td>/home</td>
+<td style="text-align:center">存放普通用户数据，宿主目录，剩余空间</td>
+<td style="text-align:right">剩余空间</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-33c8cba317a38291.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="9.磁盘分区.png"><br>一般情况下，根据上述分区方式满足即可满足开发需要，但需要根据个人需要进行修改。</p>
+<ul>
+<li>6 . 网络设置</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-220314f0e7bb353f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="10.网络设置.png"><br>默认情况下，第二块网卡是未开启的，这里将右侧的开启按钮打开，则在进入到系统后，通过ifconfig命令可以查看到该网卡</p>
+<ul>
+<li>7 . 用户设置</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-da72999de43262e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="11.设置密码和用户.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-9f9c4e6718672862.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="12.创建用户hadoop.png"><br>设置root密码和用户，我这里设置的用户为，Hadoop，且为管理员权限，便于后续的使用(在公司内安装最好不要分配管理员权限).<br>经过以上步骤就centos系统的各个方面设置完毕，点击安装系统即可，接下来我们会对网络进行设置配置静态IP。</p>
+<blockquote>
+<p>转载请注明出处：<a href="http://www.jianshu.com/p/e84d0973099f" target="_blank" rel="external">http://www.jianshu.com/p/e84d0973099f</a></p>
+</blockquote>
 
       
     </div>
@@ -351,7 +475,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/网站介绍/" rel="tag">#网站介绍</a>
+            <a href="/tags/spark-环境搭建/" rel="tag">#spark 环境搭建</a>
           
         </div>
       
@@ -360,13 +484,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/06/05/hello-world/" rel="next" title="纪元">
+                <i class="fa fa-chevron-left"></i> 纪元
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/07/23/Spark Deployment-1/" rel="prev" title="Spark 开发环境搭建（一）- 虚拟机安装">
-                Spark 开发环境搭建（一）- 虚拟机安装 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -392,8 +516,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/06/05/hello-world/"
-           data-title="纪元" data-url="http://syw2014.github.io/2016/06/05/hello-world/">
+      <div class="ds-thread" data-thread-key="2016/07/23/Spark Deployment-1/"
+           data-title="Spark 开发环境搭建（一）- 虚拟机安装" data-url="http://syw2014.github.io/2016/07/23/Spark Deployment-1/">
       </div>
     
   </div>
@@ -484,7 +608,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缘起"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#未来"><span class="nav-number">2.</span> <span class="nav-text">未来</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、-虚拟机安装及相关配置静态IP并上外网"><span class="nav-number">1.</span> <span class="nav-text">一、 虚拟机安装及相关配置静态IP并上外网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-环境说明"><span class="nav-number">1.1.</span> <span class="nav-text">1. 环境说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-安装虚拟机CentOS7"><span class="nav-number">1.2.</span> <span class="nav-text">2. 安装虚拟机CentOS7</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-新建虚拟机"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 新建虚拟机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-虚拟机设置"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 虚拟机设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-Centos7安装过程中的设置"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 Centos7安装过程中的设置</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
         </section>
