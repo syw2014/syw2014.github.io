@@ -92,24 +92,24 @@
 <meta property="og:url" content="http://syw2014.github.io/2016/07/23/Spark Deployment-1/index.html">
 <meta property="og:site_name" content="悯生">
 <meta property="og:description" content="一、 虚拟机安装及相关配置静态IP并上外网">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-a1af1435ef18cf45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-ce9e1909061fb550.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-247865c2d57ef8b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-33b245ba6851eebd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-016f6dc591fe891f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-e2b5351067947452.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-f1b99333f4e7d99d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-bf4725ae183d8a8a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-8ab8d94a3b18bf7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-33c8cba317a38291.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-220314f0e7bb353f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-da72999de43262e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-9f9c4e6718672862.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2016-07-23T04:07:49.481Z">
+<meta property="og:image" content="http://i.imgur.com/F5vvinN.png">
+<meta property="og:image" content="http://i.imgur.com/s6hCo6C.png">
+<meta property="og:image" content="http://i.imgur.com/HrbcTfl.png">
+<meta property="og:image" content="http://i.imgur.com/X4Qr4dn.png">
+<meta property="og:image" content="http://i.imgur.com/aVsrInm.png">
+<meta property="og:image" content="http://i.imgur.com/7nbgPZS.png">
+<meta property="og:image" content="http://i.imgur.com/jzuK2tC.png">
+<meta property="og:image" content="http://i.imgur.com/ouy1Gos.png">
+<meta property="og:image" content="http://i.imgur.com/79dXeLK.png">
+<meta property="og:image" content="http://i.imgur.com/aobchiM.png">
+<meta property="og:image" content="http://i.imgur.com/NO1unZJ.png">
+<meta property="og:image" content="http://i.imgur.com/g3mna4E.png">
+<meta property="og:image" content="http://i.imgur.com/L8NgQd8.png">
+<meta property="og:updated_time" content="2016-07-24T05:17:48.248Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark 开发环境搭建（一）- 虚拟机安装">
 <meta name="twitter:description" content="一、 虚拟机安装及相关配置静态IP并上外网">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2423131-a1af1435ef18cf45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:image" content="http://i.imgur.com/F5vvinN.png">
 
 
 
@@ -346,41 +346,41 @@
 <h3 id="1-环境说明"><a href="#1-环境说明" class="headerlink" title="1. 环境说明"></a>1. 环境说明</h3><pre><code>- 主机：Windows7
 - 工具： virtualBox4.3.24
 - 虚拟机： Centos7
-</code></pre><h3 id="2-安装虚拟机CentOS7"><a href="#2-安装虚拟机CentOS7" class="headerlink" title="2. 安装虚拟机CentOS7"></a>2. 安装虚拟机CentOS7</h3><h4 id="2-1-新建虚拟机"><a href="#2-1-新建虚拟机" class="headerlink" title="2.1 新建虚拟机"></a>2.1 新建虚拟机</h4><p><img src="http://upload-images.jianshu.io/upload_images/2423131-a1af1435ef18cf45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.虚拟机创建.png"><br>打开virtual box，点击主界面中的新建，出现上述界面，由于本人选择是的centos7的ISO，所以这里选择Red Hat64，可根据自己的情况替换为其他操作系统，在接下来的过程中一路下一步，知道遇到设置磁盘大小停止，设置系统大小为30G，对于我们测试用的集群系统30G大小已经足够了，而且如果后来不够的话还可以动态添加。</p>
+</code></pre><h3 id="2-安装虚拟机CentOS7"><a href="#2-安装虚拟机CentOS7" class="headerlink" title="2. 安装虚拟机CentOS7"></a>2. 安装虚拟机CentOS7</h3><h4 id="2-1-新建虚拟机"><a href="#2-1-新建虚拟机" class="headerlink" title="2.1 新建虚拟机"></a>2.1 新建虚拟机</h4><p><img src="http://i.imgur.com/F5vvinN.png" alt="1.虚拟机创建.png"></p>
+<p>打开virtual box，点击主界面中的新建，出现上述界面，由于本人选择是的centos7的ISO，所以这里选择Red Hat64，可根据自己的情况替换为其他操作系统，在接下来的过程中一路下一步，知道遇到设置磁盘大小停止，设置系统大小为30G，对于我们测试用的集群系统30G大小已经足够了，而且如果后来不够的话还可以动态添加。</p>
 <h4 id="2-2-虚拟机设置"><a href="#2-2-虚拟机设置" class="headerlink" title="2.2 虚拟机设置"></a>2.2 虚拟机设置</h4><p>点击刚才新建的虚拟机，之后点击virtual box上面的设置，弹出设置主界面，在这一步操作中我们主要设置存储和网络两个部分，</p>
 <ul>
-<li>1 . 加载系统ISO文件</li>
+<li>1 . 加载系统ISO文件<br><img src="http://i.imgur.com/s6hCo6C.png" alt="2.加载ISO"></li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/2423131-ce9e1909061fb550.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="加载iso文件.png"></p>
 <ul>
-<li>2 . 连接外网</li>
+<li>2 . 连接外网<br><img src="http://i.imgur.com/HrbcTfl.png" alt="3.外网设置"></li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/2423131-247865c2d57ef8b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2.连接外网设置.png"><br>virtualBox新建完虚拟机之后，默认的网络连接方式为<strong>NAT</strong>，所以不需要做其他更改即可上网。</p>
+<p>virtualBox新建完虚拟机之后，默认的网络连接方式为<strong>NAT</strong>，所以不需要做其他更改即可上网。</p>
 <ul>
-<li>3 . 设置静态IP</li>
+<li>3 . 设置静态IP<br><img src="http://i.imgur.com/X4Qr4dn.png" alt="4.添加第二网卡"></li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/2423131-33b245ba6851eebd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="3.添加第二网卡.png"><br>集群内机器之间需要相互访问，因此需要为每台机器分配固定的IP，对于virtual box工具，目前发现只能通过两块网卡完成即能上网又具有独立静态IP（其他方式本人也曾尝试但未成功），因此添加第二个网卡来配置虚拟机的固定IP，具体设置如上图。</p>
+<p>集群内机器之间需要相互访问，因此需要为每台机器分配固定的IP，对于virtual box工具，目前发现只能通过两块网卡完成即能上网又具有独立静态IP（其他方式本人也曾尝试但未成功），因此添加第二个网卡来配置虚拟机的固定IP，具体设置如上图。</p>
 <h4 id="2-3-Centos7安装过程中的设置"><a href="#2-3-Centos7安装过程中的设置" class="headerlink" title="2.3 Centos7安装过程中的设置"></a>2.3 Centos7安装过程中的设置</h4><p>经过以上步骤已基本完成了虚拟机的初步设置，但在Centos7安装过程中还需要对系统进行必要的设置，</p>
 <ul>
-<li>1 . 系统安装</li>
+<li>1 . 系统安装<br><img src="http://i.imgur.com/aVsrInm.png" alt="5 系统安装"></li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/2423131-016f6dc591fe891f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="4.系统安装.png"><br>选择第一个进行安装</p>
+<p>选择第一个进行安装</p>
 <ul>
-<li>2 . 语言选择</li>
+<li>2 . 语言选择<br><img src="http://i.imgur.com/7nbgPZS.png" alt="6. 语言选择"></li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/2423131-e2b5351067947452.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="5.语言选择.png"><br>根据个人习惯选择语言种类，本人选择简体中文</p>
+<p>根据个人习惯选择语言种类，本人选择简体中文</p>
 <ul>
-<li>3 . 系统配置</li>
+<li>3 . 系统配置<br><img src="http://i.imgur.com/jzuK2tC.png" alt="7.系统配置"></li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/2423131-f1b99333f4e7d99d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="6.系统配置.png"><br>这个步骤中，主要设置下面四个，前面也可以设置，软件选择是选择系统安装哪些东西，安装位置是对磁盘分区进行设置，网络设置是否启用。</p>
+<p>这个步骤中，主要设置下面四个，前面也可以设置，软件选择是选择系统安装哪些东西，安装位置是对磁盘分区进行设置，网络设置是否启用。</p>
 <ul>
-<li>4 . 软件选择</li>
+<li>4 . 软件选择<br><img src="http://i.imgur.com/ouy1Gos.png" alt="8.软件选择"></li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/2423131-bf4725ae183d8a8a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="7.软件选择.png"><br>软件选择，我们不需要界面等，所以这里选择最小安装，然后下一步。</p>
+<p>软件选择，我们不需要界面等，所以这里选择最小安装，然后下一步。</p>
 <ul>
-<li>5 . 分区设置</li>
+<li>5 . 分区设置<br><img src="http://i.imgur.com/79dXeLK.png" alt="9.分区设置"></li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/2423131-8ab8d94a3b18bf7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="8.分区设置.png"><br>采用如下的分区策略，</p>
+<p>采用如下的分区策略，</p>
 <table>
 <thead>
 <tr>
@@ -422,16 +422,18 @@
 </tr>
 </tbody>
 </table>
-<p><img src="http://upload-images.jianshu.io/upload_images/2423131-33c8cba317a38291.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="9.磁盘分区.png"><br>一般情况下，根据上述分区方式满足即可满足开发需要，但需要根据个人需要进行修改。</p>
+<p><img src="http://i.imgur.com/aobchiM.png" alt="10.磁盘分区"></p>
+<p>一般情况下，根据上述分区方式满足即可满足开发需要，但需要根据个人需要进行修改。</p>
 <ul>
-<li>6 . 网络设置</li>
+<li>6 . 网络设置<br><img src="http://i.imgur.com/NO1unZJ.png" alt="11.网络设置"></li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/2423131-220314f0e7bb353f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="10.网络设置.png"><br>默认情况下，第二块网卡是未开启的，这里将右侧的开启按钮打开，则在进入到系统后，通过ifconfig命令可以查看到该网卡</p>
+<p>默认情况下，第二块网卡是未开启的，这里将右侧的开启按钮打开，则在进入到系统后，通过ifconfig命令可以查看到该网卡</p>
 <ul>
-<li>7 . 用户设置</li>
+<li>7 . 用户设置<br><img src="http://i.imgur.com/g3mna4E.png" alt="12.设置root密码"></li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/2423131-da72999de43262e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="11.设置密码和用户.png"></p>
-<p><img src="http://upload-images.jianshu.io/upload_images/2423131-9f9c4e6718672862.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="12.创建用户hadoop.png"><br>设置root密码和用户，我这里设置的用户为，Hadoop，且为管理员权限，便于后续的使用(在公司内安装最好不要分配管理员权限).<br>经过以上步骤就centos系统的各个方面设置完毕，点击安装系统即可，接下来我们会对网络进行设置配置静态IP。</p>
+<p><img src="http://i.imgur.com/L8NgQd8.png" alt="13.创建用户"></p>
+<p>设置root密码和用户，我这里设置的用户为，Hadoop，且为管理员权限，便于后续的使用(在公司内安装最好不要分配管理员权限).</p>
+<p>经过以上步骤就centos系统的各个方面设置完毕，点击安装系统即可，接下来我们会对网络进行设置配置静态IP。</p>
 <blockquote>
 <p>转载请注明出处：<a href="http://www.jianshu.com/p/e84d0973099f" target="_blank" rel="external">http://www.jianshu.com/p/e84d0973099f</a></p>
 </blockquote>
