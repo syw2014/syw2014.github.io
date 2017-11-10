@@ -4,8 +4,28 @@
 
     
   <url>
+    <loc>http://syw2014.github.io/2017/11/10/Relation-Extraction-Survey/</loc>
+    <lastmod>2017-11-10T08:24:22.987Z</lastmod>
+    <data>
+        <display>
+        <title>Relation Extraction Survey</title>
+        <pubTime>2017-11-10T08:19:19.000Z</pubTime>
+        
+        <tag>Knowledge Graph, NLP, Relation Extraction</tag>
+         
+         
+           
+             
+              <breadCrumb title="Knowledge Graph" url="http://syw2014.github.io/categories/Knowledge-Graph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://syw2014.github.io/2016/07/24/leetcode-268/</loc>
-    <lastmod>2016-07-24T12:14:41.850Z</lastmod>
+    <lastmod>2016-07-24T12:14:42.000Z</lastmod>
     <data>
         <display>
         <title>Leetcode [268] --Missing Number</title>
@@ -25,7 +45,7 @@
     
   <url>
     <loc>http://syw2014.github.io/2016/07/24/Spark%20Deployment-2/</loc>
-    <lastmod>2016-07-24T06:04:47.579Z</lastmod>
+    <lastmod>2016-07-24T06:04:48.000Z</lastmod>
     <data>
         <display>
         <title>Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网</title>
@@ -45,7 +65,7 @@
     
   <url>
     <loc>http://syw2014.github.io/2016/07/23/Spark%20Deployment-1/</loc>
-    <lastmod>2016-07-24T05:17:48.248Z</lastmod>
+    <lastmod>2016-07-24T05:17:50.000Z</lastmod>
     <data>
         <display>
         <title>Spark 开发环境搭建（一）- 虚拟机安装</title>
@@ -66,7 +86,7 @@
     
   <url>
     <loc>http://syw2014.github.io/2016/06/05/hello-world/</loc>
-    <lastmod>2016-06-05T04:48:33.343Z</lastmod>
+    <lastmod>2016-06-05T04:48:34.000Z</lastmod>
     <data>
         <display>
         <title>纪元</title>
