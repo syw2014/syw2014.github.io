@@ -95,7 +95,7 @@
 <meta property="og:description" content="实体关系抽取介绍实体关系抽（RE， Relation Extraction）取任务是信息抽取中重要的一个子任务，同时也是知识图谱构建过程中必不可少的一个环节。所谓关系抽取是指从含有实体对的句子中，抽取出该实体对对应的关系，比如句子“马化腾在1998年11月创立了腾讯”，抽取结果是&amp;lt;马化腾/人名，创立/关系，腾讯/公司&amp;gt;。这个过程分为两个任务，一个是检测出句子中是否含有实体对，第二个任务">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/D2skczR.png">
-<meta property="og:updated_time" content="2017-11-10T10:07:38.758Z">
+<meta property="og:updated_time" content="2017-11-14T01:38:36.773Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Relation Extraction Survey">
 <meta name="twitter:description" content="实体关系抽取介绍实体关系抽（RE， Relation Extraction）取任务是信息抽取中重要的一个子任务，同时也是知识图谱构建过程中必不可少的一个环节。所谓关系抽取是指从含有实体对的句子中，抽取出该实体对对应的关系，比如句子“马化腾在1998年11月创立了腾讯”，抽取结果是&amp;lt;马化腾/人名，创立/关系，腾讯/公司&amp;gt;。这个过程分为两个任务，一个是检测出句子中是否含有实体对，第二个任务">
@@ -348,9 +348,9 @@
 <a id="more"></a>
 <h2 id="研究方法思维导图"><a href="#研究方法思维导图" class="headerlink" title="研究方法思维导图"></a>研究方法思维导图</h2><p>将RE的研究思路汇总成如下框图。<br><img src="https://i.imgur.com/D2skczR.png" alt="关系抽取思维导图"></p>
 <h2 id="任务方案简述"><a href="#任务方案简述" class="headerlink" title="任务方案简述"></a>任务方案简述</h2><p>关系抽取也可以看做是一个机器学习任务，因此可以从三个反向进行解决，如上图所示。</p>
-<h3 id="基于监督学习方法"><a href="#基于监督学习方法" class="headerlink" title="基于监督学习方法"></a>基于监督学习方法</h3><p>根据RE的特点，目的是从句子中抽取或判断出实体对的某种关系，因此一种思路是将该任务等于分类任务去对待，另一种思路是基于kenel的方法进行求解。</p>
-<h4 id="Classification-Model"><a href="#Classification-Model" class="headerlink" title="Classification Model"></a>Classification Model</h4><p>基于分类模型，那么传统的分类模型都可以用来完成改任务，典型的流程是设定好关系类别，选择合适的特征（该任务中，通常特征会包括POS，NER，Position，句法解析结果）， 之后选择合适的分类器，然后训练、预测。该方式比较传统，因此问题也比较突出，需要较多的人工干预特征才能获得较好的效果。</p>
-<h4 id="Deep-Learning-Model"><a href="#Deep-Learning-Model" class="headerlink" title="Deep Learning Model"></a>Deep Learning Model</h4><p>由于近两年以来深度学习在语音和图像领域的效果，因此越来越多的学着将深度学习技术运用于NLP任务，同时也获得了较好的效果。针对于RE问题，同样是将其看做一个分类任务，采用CNN抽取特征，然后利用softmax获得最终的分类结果。常见的架构是，</p>
+<h2 id="基于监督学习方法"><a href="#基于监督学习方法" class="headerlink" title="基于监督学习方法"></a>基于监督学习方法</h2><p>根据RE的特点，目的是从句子中抽取或判断出实体对的某种关系，因此一种思路是将该任务等于分类任务去对待，另一种思路是基于kenel的方法进行求解。</p>
+<h3 id="Classification-Model"><a href="#Classification-Model" class="headerlink" title="Classification Model"></a>Classification Model</h3><p>基于分类模型，那么传统的分类模型都可以用来完成改任务，典型的流程是设定好关系类别，选择合适的特征（该任务中，通常特征会包括POS，NER，Position，句法解析结果）， 之后选择合适的分类器，然后训练、预测。该方式比较传统，因此问题也比较突出，需要较多的人工干预特征才能获得较好的效果。</p>
+<h3 id="Deep-Learning-Model"><a href="#Deep-Learning-Model" class="headerlink" title="Deep Learning Model"></a>Deep Learning Model</h3><p>由于近两年以来深度学习在语音和图像领域的效果，因此越来越多的学着将深度学习技术运用于NLP任务，同时也获得了较好的效果。针对于RE问题，同样是将其看做一个分类任务，采用CNN抽取特征，然后利用softmax获得最终的分类结果。常见的架构是，</p>
 <ul>
 <li><p>利用word embedding 技术获得句子中每个词/字的embedding，或者利用pre-trianed embedding作为初始化</p>
 </li>
@@ -375,7 +375,7 @@
 </li>
 </ul>
 <p>以上就是采用DL的方法来进行RE任务常用的方法。</p>
-<h4 id="Distant-Supervision"><a href="#Distant-Supervision" class="headerlink" title="Distant Supervision"></a>Distant Supervision</h4><p>远程监督，属于一种弱监督方式，它是利用外界的一个庞大的知识库来指导标注/扩充训练样本集。基本思想是，假设一个含有实体对的句子，如果该实体对能够和Freebase知识库中的实体对齐的话，那么该句子同时也包含了该实体对在Freebase中的关系，因此可以将该句子看成一个正样本。<br>这种假设过于强烈，因为含有实体对的句子不一定含有实体对间的关系，现有以下四种方式来解决这个问题，</p>
+<h3 id="Distant-Supervision"><a href="#Distant-Supervision" class="headerlink" title="Distant Supervision"></a>Distant Supervision</h3><p>远程监督，属于一种弱监督方式，它是利用外界的一个庞大的知识库来指导标注/扩充训练样本集。基本思想是，假设一个含有实体对的句子，如果该实体对能够和Freebase知识库中的实体对齐的话，那么该句子同时也包含了该实体对在Freebase中的关系，因此可以将该句子看成一个正样本。<br>这种假设过于强烈，因为含有实体对的句子不一定含有实体对间的关系，现有以下四种方式来解决这个问题，</p>
 <ul>
 <li><p>在构造数据集引入先验知识加以限制</p>
 </li>
@@ -387,7 +387,33 @@
 </li>
 </ul>
 <p>远程监督是一个用来增加数据的有效方法，但在中文领域中缺少类似于Freebase这种即包含实体又包含关系的大型知识库，因此具体工程效果如何，还需要进一步探索和验证。</p>
-<h3 id="Kernel-Based-Model"><a href="#Kernel-Based-Model" class="headerlink" title="Kernel Based Model"></a>Kernel Based Model</h3><h2 id="Semi-Supervised-Learning"><a href="#Semi-Supervised-Learning" class="headerlink" title="Semi-Supervised Learning"></a>Semi-Supervised Learning</h2><h3 id="Unsupervised-Learning"><a href="#Unsupervised-Learning" class="headerlink" title="Unsupervised Learning"></a>Unsupervised Learning</h3><h2 id="DataSet"><a href="#DataSet" class="headerlink" title="DataSet"></a>DataSet</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2>
+<h3 id="Kernel-Based-Model"><a href="#Kernel-Based-Model" class="headerlink" title="Kernel Based Model"></a>Kernel Based Model</h3><p>基于核函数的方法进行关系抽取是指利用核函数来计算两个关系之间的距离，它不同于其他的学习算法，不需要进行特征工程然后形成特征向量，而是直接利用字符串通过核函数计算相似度。与基于特征向量的方法相比，基于核函数的方法更加灵活，可以综合多方面的信息，且核函数具有很好的复合性，最终的关系距离可以综合多个不同信息来源的核函数符合而成。在NLP任务中常见的子序列核和解析树核。基于核函数的关系抽取详细内容参考后面给出的引用论文。</p>
+<h4 id="Sequential-String-Kernel"><a href="#Sequential-String-Kernel" class="headerlink" title="Sequential/String Kernel"></a>Sequential/String Kernel</h4><p>序列核的思想是根据两个序列/字符串的公共子串来衡量两个字符串间的相似度，每个子串会根据子串间隔来设计不同的权重。</p>
+<h4 id="Tree-Kernel"><a href="#Tree-Kernel" class="headerlink" title="Tree Kernel"></a>Tree Kernel</h4><p>基于树思想将输入的实例构造成一个句法解析树，通过子树的匹配来计算实例间的额相似度，缺点是生成树的浅层解析工具的准确率无法保证。</p>
+<h2 id="Semi-Supervised-Learning"><a href="#Semi-Supervised-Learning" class="headerlink" title="Semi-Supervised Learning"></a>Semi-Supervised Learning</h2><p>半监督方法，是利用bootstraping思想，通过某种方式构造出一批样本种子，然后利用这些种子集发现新的样本，总结出应有的规则或模式，用于发现新的样本。下面对几种常见方法做个简要介绍。</p>
+<h3 id="DIPRE"><a href="#DIPRE" class="headerlink" title="DIPRE"></a>DIPRE</h3><p>整体思想是，首先建立一批种子实体对，比如（作者，书名）；之后利用这些实体对获取同时含有这两个实体的doc或sentence当做标注样本；根据标注样本建立和调整pattern；利用pattern发现新的标注数据，并将数据加入到种子集；重复以上步骤直到满足某种设定的条件。<br>这个过程中，最繁琐的属于pattern的设计，建立pattern时可以考虑如下规则，以第一个实体开头、两个实体间间隔多少个词等。</p>
+<h3 id="Snowball"><a href="#Snowball" class="headerlink" title="Snowball"></a>Snowball</h3><p>Snowball大致思想课DIPRE类似，但根据种子发现标注数据时计算方式不同，这里是将实体和关系的Tuple表示成向量，通过计算发现样本Tuple向量和种子Tuple向量间的相似度决定是否将样本加入到样本集，根据新的种子集的向量调整种子集中心向量。</p>
+<h3 id="KnowItAll"><a href="#KnowItAll" class="headerlink" title="KnowItAll"></a>KnowItAll</h3><p>KnowItAll主要是根据Noun Phrase（NP）手工设计一些规则，根据规则进行提取。规则的形式可以如下：</p>
+<ul>
+<li>NP1 “such as” NP2</li>
+<li>NP1 “and other” NP2</li>
+<li>NP1 “include” NP2</li>
+<li>NP1 “is a” NP2</li>
+<li>NP1 “is the “ NP2  “of “  NP3</li>
+<li>“the” NP1 “of” NP2 “is” NP3</li>
+</ul>
+<h3 id="TextRunner"><a href="#TextRunner" class="headerlink" title="TextRunner"></a>TextRunner</h3><p>TextRunner 算法主要分为三个过程，<br>1）self-Supervised Learner 自监督学习过程，目标是构建样集合分类器。构建样本集的大致为：先通过一个自然语言分析器提取出样本中存在的三元组，指定一些规则对这些三元组标记为正或者负。标记完成后利用这些数据训练出一个分类器，对三元组打分，该阶段称为训练阶段。<br>2） Single-Pass Extractor: 抽取阶段，对待抽取句子进行浅层语义分析，标注其中的词性和名词短语。对名词短语，如果满足某种条件，则作为候选三元组，之后利用第一步的分类器进行分类，打分。过滤出可信的三元组，同时记录其出现的频次。<br>3）Redundancy-based Assesor , 基于冗余的评价器，对抽取的三元组进行评价，进一步提高效果</p>
+<h2 id="Unsupervised-Learning"><a href="#Unsupervised-Learning" class="headerlink" title="Unsupervised Learning"></a>Unsupervised Learning</h2><p>无监督方式主要是基于假设，拥有相同语义关系的实体对拥有相似的上下文信息，因此可以利用每个实体对上下文信息来代表该实体对的语义关系，然后对实体对的语义关系进行聚类。</p>
+<h2 id="DataSet"><a href="#DataSet" class="headerlink" title="DataSet"></a>DataSet</h2><p>关系抽取的数据集并不多，在各种paper中常见的数据集为<strong>ACE 2005</strong>（Automatic Content Extraction）和<strong>SemEval 2010 Task8</strong>，而中文领域相关数据集暂时还未发现。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li>A survey on Relation Extraction Silde</li>
+<li>A Survey of Deep Learning Methods for Relation Extraction</li>
+<li>Relation Extraction Perspective from Convolutional Neural Network</li>
+<li>A Survey On Relation Extraction</li>
+<li>基于核函数的命名实体关系抽取技术的研究</li>
+<li>基于深度学习的关系抽取技术进展</li>
+</ol>
+
       
     </div>
 
@@ -524,7 +550,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -569,7 +595,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实体关系抽取介绍"><span class="nav-number">1.</span> <span class="nav-text">实体关系抽取介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#研究方法思维导图"><span class="nav-number">2.</span> <span class="nav-text">研究方法思维导图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务方案简述"><span class="nav-number">3.</span> <span class="nav-text">任务方案简述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于监督学习方法"><span class="nav-number">3.1.</span> <span class="nav-text">基于监督学习方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Classification-Model"><span class="nav-number">3.1.1.</span> <span class="nav-text">Classification Model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Deep-Learning-Model"><span class="nav-number">3.1.2.</span> <span class="nav-text">Deep Learning Model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Distant-Supervision"><span class="nav-number">3.1.3.</span> <span class="nav-text">Distant Supervision</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kernel-Based-Model"><span class="nav-number">3.2.</span> <span class="nav-text">Kernel Based Model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Semi-Supervised-Learning"><span class="nav-number">4.</span> <span class="nav-text">Semi-Supervised Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Unsupervised-Learning"><span class="nav-number">4.1.</span> <span class="nav-text">Unsupervised Learning</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DataSet"><span class="nav-number">5.</span> <span class="nav-text">DataSet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实体关系抽取介绍"><span class="nav-number">1.</span> <span class="nav-text">实体关系抽取介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#研究方法思维导图"><span class="nav-number">2.</span> <span class="nav-text">研究方法思维导图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务方案简述"><span class="nav-number">3.</span> <span class="nav-text">任务方案简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于监督学习方法"><span class="nav-number">4.</span> <span class="nav-text">基于监督学习方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Classification-Model"><span class="nav-number">4.1.</span> <span class="nav-text">Classification Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deep-Learning-Model"><span class="nav-number">4.2.</span> <span class="nav-text">Deep Learning Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Distant-Supervision"><span class="nav-number">4.3.</span> <span class="nav-text">Distant Supervision</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kernel-Based-Model"><span class="nav-number">4.4.</span> <span class="nav-text">Kernel Based Model</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Sequential-String-Kernel"><span class="nav-number">4.4.1.</span> <span class="nav-text">Sequential/String Kernel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Tree-Kernel"><span class="nav-number">4.4.2.</span> <span class="nav-text">Tree Kernel</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Semi-Supervised-Learning"><span class="nav-number">5.</span> <span class="nav-text">Semi-Supervised Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DIPRE"><span class="nav-number">5.1.</span> <span class="nav-text">DIPRE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Snowball"><span class="nav-number">5.2.</span> <span class="nav-text">Snowball</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#KnowItAll"><span class="nav-number">5.3.</span> <span class="nav-text">KnowItAll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TextRunner"><span class="nav-number">5.4.</span> <span class="nav-text">TextRunner</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unsupervised-Learning"><span class="nav-number">6.</span> <span class="nav-text">Unsupervised Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DataSet"><span class="nav-number">7.</span> <span class="nav-text">DataSet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">8.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
           </div>
         </section>
