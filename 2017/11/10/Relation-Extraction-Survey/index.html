@@ -95,7 +95,7 @@
 <meta property="og:description" content="实体关系抽取介绍实体关系抽（RE， Relation Extraction）取任务是信息抽取中重要的一个子任务，同时也是知识图谱构建过程中必不可少的一个环节。所谓关系抽取是指从含有实体对的句子中，抽取出该实体对对应的关系，比如句子“马化腾在1998年11月创立了腾讯”，抽取结果是&amp;lt;马化腾/人名，创立/关系，腾讯/公司&amp;gt;。这个过程分为两个任务，一个是检测出句子中是否含有实体对，第二个任务">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/D2skczR.png">
-<meta property="og:updated_time" content="2017-11-14T01:38:36.773Z">
+<meta property="og:updated_time" content="2017-11-14T01:52:39.250Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Relation Extraction Survey">
 <meta name="twitter:description" content="实体关系抽取介绍实体关系抽（RE， Relation Extraction）取任务是信息抽取中重要的一个子任务，同时也是知识图谱构建过程中必不可少的一个环节。所谓关系抽取是指从含有实体对的句子中，抽取出该实体对对应的关系，比如句子“马化腾在1998年11月创立了腾讯”，抽取结果是&amp;lt;马化腾/人名，创立/关系，腾讯/公司&amp;gt;。这个过程分为两个任务，一个是检测出句子中是否含有实体对，第二个任务">
@@ -404,6 +404,7 @@
 </ul>
 <h3 id="TextRunner"><a href="#TextRunner" class="headerlink" title="TextRunner"></a>TextRunner</h3><p>TextRunner 算法主要分为三个过程，<br>1）self-Supervised Learner 自监督学习过程，目标是构建样集合分类器。构建样本集的大致为：先通过一个自然语言分析器提取出样本中存在的三元组，指定一些规则对这些三元组标记为正或者负。标记完成后利用这些数据训练出一个分类器，对三元组打分，该阶段称为训练阶段。<br>2） Single-Pass Extractor: 抽取阶段，对待抽取句子进行浅层语义分析，标注其中的词性和名词短语。对名词短语，如果满足某种条件，则作为候选三元组，之后利用第一步的分类器进行分类，打分。过滤出可信的三元组，同时记录其出现的频次。<br>3）Redundancy-based Assesor , 基于冗余的评价器，对抽取的三元组进行评价，进一步提高效果</p>
 <h2 id="Unsupervised-Learning"><a href="#Unsupervised-Learning" class="headerlink" title="Unsupervised Learning"></a>Unsupervised Learning</h2><p>无监督方式主要是基于假设，拥有相同语义关系的实体对拥有相似的上下文信息，因此可以利用每个实体对上下文信息来代表该实体对的语义关系，然后对实体对的语义关系进行聚类。</p>
+<p>综上所述，在工业届更多考虑的是准确性，因此采用的基于规则方式较多，随着样本标注数据的不断积累，逐渐引入DL方法，以提高抽取效率。</p>
 <h2 id="DataSet"><a href="#DataSet" class="headerlink" title="DataSet"></a>DataSet</h2><p>关系抽取的数据集并不多，在各种paper中常见的数据集为<strong>ACE 2005</strong>（Automatic Content Extraction）和<strong>SemEval 2010 Task8</strong>，而中文领域相关数据集暂时还未发现。</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
 <li>A survey on Relation Extraction Silde</li>
