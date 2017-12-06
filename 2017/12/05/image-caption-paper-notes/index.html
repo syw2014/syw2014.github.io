@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="算法,leetcode,算法面试," />
+  <meta name="keywords" content="Image Caption, Neural to talk, encoder-decoder," />
 
 
 
@@ -86,20 +86,25 @@
 
 
 
-<meta name="description" content="1. Problem Description Given an array containing n distinct numbers taken from 0, 1, 2, …, n, find the one that is missing from the array.For example,Given nums = [0, 1, 3] return 2">
-<meta name="keywords" content="算法,leetcode,算法面试">
+<meta name="description" content="Image Caption 介绍图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。">
+<meta name="keywords" content="Image Caption, Neural to talk, encoder-decoder">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Leetcode [268] --Missing Number">
-<meta property="og:url" content="http://syw2014.github.io/2016/07/24/leetcode-268/index.html">
+<meta property="og:title" content="image caption paper notes">
+<meta property="og:url" content="http://syw2014.github.io/2017/12/05/image-caption-paper-notes/index.html">
 <meta property="og:site_name" content="悯生">
-<meta property="og:description" content="1. Problem Description Given an array containing n distinct numbers taken from 0, 1, 2, …, n, find the one that is missing from the array.For example,Given nums = [0, 1, 3] return 2">
+<meta property="og:description" content="Image Caption 介绍图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://i.imgur.com/AdEUCNK.png">
-<meta property="og:updated_time" content="2016-07-24T12:14:42.000Z">
+<meta property="og:image" content="https://i.imgur.com/j6vF9pP.png">
+<meta property="og:image" content="https://i.imgur.com/4zI761E.png">
+<meta property="og:image" content="https://i.imgur.com/wsJHwMf.png">
+<meta property="og:image" content="https://i.imgur.com/m89sdjg.png">
+<meta property="og:image" content="https://i.imgur.com/ebyo64m.png">
+<meta property="og:image" content="https://i.imgur.com/uFZr795.png">
+<meta property="og:updated_time" content="2017-12-06T00:56:19.513Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Leetcode [268] --Missing Number">
-<meta name="twitter:description" content="1. Problem Description Given an array containing n distinct numbers taken from 0, 1, 2, …, n, find the one that is missing from the array.For example,Given nums = [0, 1, 3] return 2">
-<meta name="twitter:image" content="http://i.imgur.com/AdEUCNK.png">
+<meta name="twitter:title" content="image caption paper notes">
+<meta name="twitter:description" content="Image Caption 介绍图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。">
+<meta name="twitter:image" content="https://i.imgur.com/j6vF9pP.png">
 
 
 
@@ -117,7 +122,7 @@
   };
 </script>
 
-  <title> Leetcode [268] --Missing Number | 悯生 </title>
+  <title> image caption paper notes | 悯生 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -257,7 +262,7 @@
             
             
               
-                Leetcode [268] --Missing Number
+                image caption paper notes
               
             
           </h1>
@@ -269,8 +274,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-24T20:08:07+08:00" content="2016-07-24">
-              2016-07-24
+            <time itemprop="dateCreated" datetime="2017-12-05T11:31:11+08:00" content="2017-12-05">
+              2017-12-05
             </time>
           </span>
 
@@ -283,8 +288,20 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Algorithm-Data-Structure/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm & Data Structure</span>
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/Image-Caption/" itemprop="url" rel="index">
+                    <span itemprop="name">Image Caption</span>
                   </a>
                 </span>
 
@@ -299,8 +316,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/24/leetcode-268/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/24/leetcode-268/" itemprop="commentsCount"></span>
+                <a href="/2017/12/05/image-caption-paper-notes/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/05/image-caption-paper-notes/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -310,7 +327,7 @@
 
           
           
-             <span id="/2016/07/24/leetcode-268/" class="leancloud_visitors" data-flag-title="Leetcode [268] --Missing Number">
+             <span id="/2017/12/05/image-caption-paper-notes/" class="leancloud_visitors" data-flag-title="image caption paper notes">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -332,32 +349,37 @@
       
 
       
-        <h2 id="1-Problem-Description"><a href="#1-Problem-Description" class="headerlink" title="1. Problem Description"></a>1. Problem Description</h2><blockquote>
-<p>Given an array containing <em>n</em> distinct numbers taken from 0, 1, 2, …, n<br>, find the one that is missing from the array.<br>For example,Given <em>nums</em> = [0, 1, 3]<br> return 2<br><a id="more"></a></p>
-</blockquote>
-<p><strong>Note</strong>:Your algorithm should run in linear runtime complexity. Could you implement it using only constant extra space complexity?<br><strong>Tags</strong> : Array ,Math , Bit Manipulation<br><strong>Difficulty</strong>: Medimum<br><strong>Classification</strong>: Bit Manipulation</p>
-<hr>
-<h2 id="2-问题翻译"><a href="#2-问题翻译" class="headerlink" title="2. 问题翻译"></a>2. 问题翻译</h2><p>从0~n之间取出<em>n</em>个不同的数字，找出其中丢失的那个数。例如，<em>nums</em> = [0，1，3] ，缺失的是 2。<br><strong>要求</strong> 算法时间复杂度是<em>O</em>(n)，且只占用很少的额外空间。</p>
-<h2 id="3-解题分析"><a href="#3-解题分析" class="headerlink" title="3. 解题分析"></a>3. 解题分析</h2><p>在解决算法题之前，对问题进行准确的分析是设计良好解决方案的基础，从题干中提取出有价值信息的能力是我们刷题锻炼的目的之一。</p>
-<blockquote>
-<p>0~n中取<em>n</em>个数，找出缺失的那个数</p>
-</blockquote>
-<p>这句话中透漏出一下几点，</p>
+        <h2 id="Image-Caption-介绍"><a href="#Image-Caption-介绍" class="headerlink" title="Image Caption 介绍"></a>Image Caption 介绍</h2><p>图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。</p>
+<a id="more"></a>
+<p><img src="https://i.imgur.com/j6vF9pP.png" alt="Fig1. 图像描述示例"></p>
+<h2 id="Paper-1：-Show-and-Tell-A-Neural-Image-Caption-Generator"><a href="#Paper-1：-Show-and-Tell-A-Neural-Image-Caption-Generator" class="headerlink" title="Paper 1： Show and Tell: A Neural Image Caption Generator"></a>Paper 1： Show and Tell: A Neural Image Caption Generator</h2><p>本文[1]是Google的工作，介绍了一种end-to-end的方式来完成image caption 任务。借助于语言翻译的经验，翻译是将Source 语言转换到Target语言，类比于此，Image Caption可以看成是从image 到caption的一个翻译过程，因此建立优化目标，</p>
+<p><img src="https://i.imgur.com/4zI761E.png" alt="优化目标"></p>
+<p>其中S={s1, s2, …, }，S代表生成的sentence，有特定vocabulary中的词生成，theta是待优化的参数，I 是输入图像。<br>因此模型优化目的就是在输入特定图像I的情况下，找到一系列词，使得这些词构成一个sentence的概率最大。P(S|I)是所有词的join probability ，根据chain rule得到下式，</p>
+<p><img src="https://i.imgur.com/wsJHwMf.png" alt="语言模型"></p>
+<p>模型总体架构如下图。</p>
+<p><img src="https://i.imgur.com/m89sdjg.png" alt="模型架构"></p>
+<p>在encoder 阶段，利用CNN网络学习出image的vector representation，之后送入decoder结合标注的sentence中的词序列来训练decoder。如下图所示：</p>
+<p><img src="https://i.imgur.com/ebyo64m.png" alt="网络"></p>
+<p>训练细节如下：</p>
 <ul>
-<li>1 . 数组中元素个数为 <strong><em>n</em></strong></li>
-<li>2 . 0~n 总共有(n+1)个数，而实际只有n个，二者之间相差一个数</li>
-<li>3 . 题目未指明元素是否有序<br>以上是能够从题目得到关键信息。</li>
+<li>对于标注的sentence，在首尾加上起止符号作为标记</li>
+<li>在encoder阶段，只用CNN network最后一层输出的vector representation作为image特征表示</li>
+<li>decoder采用LSTM，</li>
+<li>encoder阶段输出的image feature 只用来初始化LSTM hidden state，(文中提到，尝试将feature 与每个 time step 的输入St进行结合，发现效果并不好，反而会造成过拟合)</li>
+<li>每个time step 的词St 初始为one-hot表示，通过网络自主学习参数。(文中提到，尝试采用pre-trained word2vec进行初始化，实验结果并没有太大的提升，因此文中最后采用前面所说的方式)</li>
+<li>统计损失，如下图：</li>
 </ul>
-<p>对于这种题目，我们脑海里面的第一解题思路是，<strong>排序-&gt;对比</strong>，但最快的排序算法时间复杂度也是<em>O</em>(nlogn)，不符合题目线性时间的要求。<br>上一个思路行不通，那么我们就要考虑别的方式，根据第二点信息，等价于告诉我们，有两个序列<strong>0~n</strong>和<strong>0~n</strong>序列的子集，二者相差一个数，怎么确定少了哪个数呢？到了这个地步，很明显我们可以对两个序列分别累加求和，将前者的总和减去后者总和即是丢失的那个数，再来看下是否满足要求，<strong>0~n</strong>求和属于连续自然数求和，我们可以直接套用<strong>数列公式</strong>，<br><img src="http://i.imgur.com/AdEUCNK.png" alt="1.自然数求和公式"></p>
-<p>时间复杂度为<em>O</em>(1),而第二个序列求和，只能通过循环来进行计算，时间复杂度为<em>O</em>(n),该算法总的时间复杂度为<em>O</em>(n)，符合题目要求，那么剩下的就是编码的问题了。<br><strong>思路二</strong><br>题目的tag中含有bit manipulation,即本题可以采用位操作来解决，根据情况可用的位运算，唯有XOR亦或运算，它的特点是，<em>相同为0，不同为1</em>；那么我们可以利用这个规律去解决问题，对两个序列<em>0~n</em> 和 <em>0~n</em> 的子集中的元素，依次进行亦或运算，之后将两个结果再次进行亦或，那么得到结果就时第二个序列中缺少的那个元素。原因是因为将亦或的原理进行推广，将一组数依次异或，若里面只有一个只出现一次的数，其他的数都出现两次，则最后的结果必然是那个只出现一次的数，因此就可以得到缺少的那个元素。对于这个算法，只需要进行两次循环，每次循环的时间复杂度是<em>O</em>(n)，空间复杂度为<em>O</em>(1)，符合题目要求。具体步骤分解如下：</p>
+<p><img src="https://i.imgur.com/uFZr795.png" alt="Loss"></p>
 <ul>
-<li>1 . <em>0~n</em> 所有元素(包括0和n) XOR，记做<strong><em>x</em></strong></li>
-<li>2 . <em>nums</em> 所有元素XOR，从nums[0] 开始， 结果记做<strong><em>y</em></strong></li>
-<li>3 . <strong><em>x</em></strong> 和 <strong><em>y</em></strong> 进行 XOR，最后结果返回</li>
+<li>采用SGD优化算法， 固定学习率， no momentum</li>
+<li>LSTM memory size 和word embedding size设为512，（因此image feature 也必须转为相同的shape才能用来初始化hidden state）</li>
 </ul>
-<h2 id="4-解题方案"><a href="#4-解题方案" class="headerlink" title="4. 解题方案"></a>4. 解题方案</h2><p><strong>Solution 1：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int missingNumber(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        unsigned int n = nums.size();</span><br><span class="line">        int total =  n*(n+1)/2;</span><br><span class="line">        for(int i = 0; i &lt; n;++i)</span><br><span class="line">            total -= nums[i];</span><br><span class="line">        return total;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p><strong>Solution 2 ：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int missingNumber(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        unsigned int n = nums.size();</span><br><span class="line">        int x = 0, y = nums[0];</span><br><span class="line">        for(int i = 0; i&lt;= n; ++i)</span><br><span class="line">            x ^= i;</span><br><span class="line">        for(int i = 1; i&lt; n; ++i)</span><br><span class="line">            y ^= nums[i];</span><br><span class="line">        return x^y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p><strong>转载请注明出处：</strong> <a href="http://www.jianshu.com/p/b14ca0d7ad86" target="_blank" rel="external">http://www.jianshu.com/p/b14ca0d7ad86</a></p>
+<p>Inference 阶段文中提到了两种方式：</p>
+<ul>
+<li>Sampling， 采样，首先根据输入图像I ，LSTM输出一个词的概率p1，(LSTM输入词S的embedding 是随机初始化的结果），然后再计算出下一个词p2,依次往复，直到采样到结束符或者达到指定长度。</li>
+<li>BeamSearch, 每个time step t都选择top k个最好的sentence，然后根据这些在t+1时间步生成k个概率最高的句子，最终选择概率最高的结果返回。</li>
+</ul>
+<p>以上就是整个paper的主要思路，想对还是比较清晰简单。</p>
 
       
     </div>
@@ -400,7 +422,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/算法-leetcode-算法面试/" rel="tag">#算法,leetcode,算法面试</a>
+            <a href="/tags/Image-Caption-Neural-to-talk-encoder-decoder/" rel="tag">#Image Caption, Neural to talk, encoder-decoder</a>
           
         </div>
       
@@ -409,17 +431,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/24/Spark Deployment-2/" rel="next" title="Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网">
-                <i class="fa fa-chevron-left"></i> Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网
+              <a href="/2017/11/10/Relation-Extraction-Survey/" rel="next" title="Relation Extraction Survey">
+                <i class="fa fa-chevron-left"></i> Relation Extraction Survey
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/10/Relation-Extraction-Survey/" rel="prev" title="Relation Extraction Survey">
-                Relation Extraction Survey <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -445,8 +463,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/07/24/leetcode-268/"
-           data-title="Leetcode [268] --Missing Number" data-url="http://syw2014.github.io/2016/07/24/leetcode-268/">
+      <div class="ds-thread" data-thread-key="2017/12/05/image-caption-paper-notes/"
+           data-title="image caption paper notes" data-url="http://syw2014.github.io/2017/12/05/image-caption-paper-notes/">
       </div>
     
   </div>
@@ -544,7 +562,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Problem-Description"><span class="nav-number">1.</span> <span class="nav-text">1. Problem Description</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-问题翻译"><span class="nav-number">2.</span> <span class="nav-text">2. 问题翻译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-解题分析"><span class="nav-number">3.</span> <span class="nav-text">3. 解题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-解题方案"><span class="nav-number">4.</span> <span class="nav-text">4. 解题方案</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Image-Caption-介绍"><span class="nav-number">1.</span> <span class="nav-text">Image Caption 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Paper-1：-Show-and-Tell-A-Neural-Image-Caption-Generator"><span class="nav-number">2.</span> <span class="nav-text">Paper 1： Show and Tell: A Neural Image Caption Generator</span></a></li></ol></div>
             
           </div>
         </section>
