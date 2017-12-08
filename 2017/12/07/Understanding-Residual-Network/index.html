@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="算法,leetcode,算法面试," />
+  <meta name="keywords" content="ResNet,Skip/Shortcut Connection," />
 
 
 
@@ -86,20 +86,24 @@
 
 
 
-<meta name="description" content="1. Problem Description Given an array containing n distinct numbers taken from 0, 1, 2, …, n, find the one that is missing from the array.For example,Given nums = [0, 1, 3] return 2">
-<meta name="keywords" content="算法,leetcode,算法面试">
+<meta name="description" content="深层网络缺陷在ILSVRC比赛中，不断的有更深层次的网络提出，从AlexNet 到VGG，网络层数不断增加。依据DL 理论，随着网络深度的增加，模型效果至少会比浅层网络有提升，但事实确并非如此，">
+<meta name="keywords" content="ResNet,Skip&#x2F;Shortcut Connection">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Leetcode [268] --Missing Number">
-<meta property="og:url" content="http://syw2014.github.io/2016/07/24/leetcode-268/index.html">
+<meta property="og:title" content="Understanding Residual Network">
+<meta property="og:url" content="http://syw2014.github.io/2017/12/07/Understanding-Residual-Network/index.html">
 <meta property="og:site_name" content="悯生">
-<meta property="og:description" content="1. Problem Description Given an array containing n distinct numbers taken from 0, 1, 2, …, n, find the one that is missing from the array.For example,Given nums = [0, 1, 3] return 2">
+<meta property="og:description" content="深层网络缺陷在ILSVRC比赛中，不断的有更深层次的网络提出，从AlexNet 到VGG，网络层数不断增加。依据DL 理论，随着网络深度的增加，模型效果至少会比浅层网络有提升，但事实确并非如此，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://i.imgur.com/AdEUCNK.png">
-<meta property="og:updated_time" content="2016-07-24T12:14:42.000Z">
+<meta property="og:image" content="https://i.imgur.com/csfsV9H.png">
+<meta property="og:image" content="https://i.imgur.com/sbdhqig.png">
+<meta property="og:image" content="https://i.imgur.com/xKSRM4V.png">
+<meta property="og:image" content="https://i.imgur.com/QxyC0m5.png">
+<meta property="og:image" content="https://i.imgur.com/fWduS5M.png">
+<meta property="og:updated_time" content="2017-12-08T05:41:41.102Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Leetcode [268] --Missing Number">
-<meta name="twitter:description" content="1. Problem Description Given an array containing n distinct numbers taken from 0, 1, 2, …, n, find the one that is missing from the array.For example,Given nums = [0, 1, 3] return 2">
-<meta name="twitter:image" content="http://i.imgur.com/AdEUCNK.png">
+<meta name="twitter:title" content="Understanding Residual Network">
+<meta name="twitter:description" content="深层网络缺陷在ILSVRC比赛中，不断的有更深层次的网络提出，从AlexNet 到VGG，网络层数不断增加。依据DL 理论，随着网络深度的增加，模型效果至少会比浅层网络有提升，但事实确并非如此，">
+<meta name="twitter:image" content="https://i.imgur.com/csfsV9H.png">
 
 
 
@@ -117,7 +121,7 @@
   };
 </script>
 
-  <title> Leetcode [268] --Missing Number | 悯生 </title>
+  <title> Understanding Residual Network | 悯生 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -257,7 +261,7 @@
             
             
               
-                Leetcode [268] --Missing Number
+                Understanding Residual Network
               
             
           </h1>
@@ -269,8 +273,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-24T20:08:07+08:00" content="2016-07-24">
-              2016-07-24
+            <time itemprop="dateCreated" datetime="2017-12-07T09:11:58+08:00" content="2017-12-07">
+              2017-12-07
             </time>
           </span>
 
@@ -283,8 +287,20 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Algorithm-Data-Structure/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm & Data Structure</span>
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/Residual-Network/" itemprop="url" rel="index">
+                    <span itemprop="name">Residual Network</span>
                   </a>
                 </span>
 
@@ -299,8 +315,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/24/leetcode-268/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/24/leetcode-268/" itemprop="commentsCount"></span>
+                <a href="/2017/12/07/Understanding-Residual-Network/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/07/Understanding-Residual-Network/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -310,7 +326,7 @@
 
           
           
-             <span id="/2016/07/24/leetcode-268/" class="leancloud_visitors" data-flag-title="Leetcode [268] --Missing Number">
+             <span id="/2017/12/07/Understanding-Residual-Network/" class="leancloud_visitors" data-flag-title="Understanding Residual Network">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -332,32 +348,30 @@
       
 
       
-        <h2 id="1-Problem-Description"><a href="#1-Problem-Description" class="headerlink" title="1. Problem Description"></a>1. Problem Description</h2><blockquote>
-<p>Given an array containing <em>n</em> distinct numbers taken from 0, 1, 2, …, n<br>, find the one that is missing from the array.<br>For example,Given <em>nums</em> = [0, 1, 3]<br> return 2<br><a id="more"></a></p>
-</blockquote>
-<p><strong>Note</strong>:Your algorithm should run in linear runtime complexity. Could you implement it using only constant extra space complexity?<br><strong>Tags</strong> : Array ,Math , Bit Manipulation<br><strong>Difficulty</strong>: Medimum<br><strong>Classification</strong>: Bit Manipulation</p>
-<hr>
-<h2 id="2-问题翻译"><a href="#2-问题翻译" class="headerlink" title="2. 问题翻译"></a>2. 问题翻译</h2><p>从0~n之间取出<em>n</em>个不同的数字，找出其中丢失的那个数。例如，<em>nums</em> = [0，1，3] ，缺失的是 2。<br><strong>要求</strong> 算法时间复杂度是<em>O</em>(n)，且只占用很少的额外空间。</p>
-<h2 id="3-解题分析"><a href="#3-解题分析" class="headerlink" title="3. 解题分析"></a>3. 解题分析</h2><p>在解决算法题之前，对问题进行准确的分析是设计良好解决方案的基础，从题干中提取出有价值信息的能力是我们刷题锻炼的目的之一。</p>
-<blockquote>
-<p>0~n中取<em>n</em>个数，找出缺失的那个数</p>
-</blockquote>
-<p>这句话中透漏出一下几点，</p>
+        <h2 id="深层网络缺陷"><a href="#深层网络缺陷" class="headerlink" title="深层网络缺陷"></a>深层网络缺陷</h2><p>在ILSVRC比赛中，不断的有更深层次的网络提出，从AlexNet 到VGG，网络层数不断增加。依据DL 理论，随着网络深度的增加，模型效果至少会比浅层网络有提升，但事实确并非如此，<br><a id="more"></a><br>网络training error 会有增加，造成这种现象的原因可能如下：</p>
 <ul>
-<li>1 . 数组中元素个数为 <strong><em>n</em></strong></li>
-<li>2 . 0~n 总共有(n+1)个数，而实际只有n个，二者之间相差一个数</li>
-<li>3 . 题目未指明元素是否有序<br>以上是能够从题目得到关键信息。</li>
+<li>梯度弥散（Vanishing Gradients）</li>
+<li>梯度爆炸（Gradients Explode）</li>
 </ul>
-<p>对于这种题目，我们脑海里面的第一解题思路是，<strong>排序-&gt;对比</strong>，但最快的排序算法时间复杂度也是<em>O</em>(nlogn)，不符合题目线性时间的要求。<br>上一个思路行不通，那么我们就要考虑别的方式，根据第二点信息，等价于告诉我们，有两个序列<strong>0~n</strong>和<strong>0~n</strong>序列的子集，二者相差一个数，怎么确定少了哪个数呢？到了这个地步，很明显我们可以对两个序列分别累加求和，将前者的总和减去后者总和即是丢失的那个数，再来看下是否满足要求，<strong>0~n</strong>求和属于连续自然数求和，我们可以直接套用<strong>数列公式</strong>，<br><img src="http://i.imgur.com/AdEUCNK.png" alt="1.自然数求和公式"></p>
-<p>时间复杂度为<em>O</em>(1),而第二个序列求和，只能通过循环来进行计算，时间复杂度为<em>O</em>(n),该算法总的时间复杂度为<em>O</em>(n)，符合题目要求，那么剩下的就是编码的问题了。<br><strong>思路二</strong><br>题目的tag中含有bit manipulation,即本题可以采用位操作来解决，根据情况可用的位运算，唯有XOR亦或运算，它的特点是，<em>相同为0，不同为1</em>；那么我们可以利用这个规律去解决问题，对两个序列<em>0~n</em> 和 <em>0~n</em> 的子集中的元素，依次进行亦或运算，之后将两个结果再次进行亦或，那么得到结果就时第二个序列中缺少的那个元素。原因是因为将亦或的原理进行推广，将一组数依次异或，若里面只有一个只出现一次的数，其他的数都出现两次，则最后的结果必然是那个只出现一次的数，因此就可以得到缺少的那个元素。对于这个算法，只需要进行两次循环，每次循环的时间复杂度是<em>O</em>(n)，空间复杂度为<em>O</em>(1)，符合题目要求。具体步骤分解如下：</p>
+<p>那么为什么会存在这些问题呢？首先我们知道随着网络加深，会使梯度信息很快下降到零，梯度为零，整体训练就会变慢。更具体点，我们采用backpropagation将梯度从最后一层向第一层进行传递，这个过程中梯度信息不断与weight matrix相乘，如果梯度是0-1之间，就造成gradient很快降为0，意味着模型参数更新很小。同样情况，梯度也可能会成倍增长，造成梯度爆炸。</p>
+<h2 id="Residual-Network-介绍"><a href="#Residual-Network-介绍" class="headerlink" title="Residual Network 介绍"></a>Residual Network 介绍</h2><p>Residual Network 最大的贡献是引入了残差，首先来解释一下残差的概念。引用论文中identity block结构如下：<br><img src="https://i.imgur.com/csfsV9H.png" alt="identity block"></p>
+<p>这个block中，强制将input x 与左侧<strong>main path</strong> 子网络的输出相连，这种叫做<strong>shortcut</strong>或者<strong>skip connection</strong>，这种结构类似于电路里面的差份放大器。</p>
+<h3 id="残差-Residual"><a href="#残差-Residual" class="headerlink" title="残差(Residual)"></a>残差(Residual)</h3><p>假设没有shortcu的网络输出为<strong><em>A</em></strong>，即<strong><em>F(x)=A</em></strong>，引入shortcut之后的网络输出<strong><em>H(x)</em></strong>，因为做的是identity即恒等变换，所以<strong><em>H(x)=A=x+F(x)</em></strong>, 将上式做个变换，<strong><em>F(x)=H(x) - x</em></strong>，那么从这个式子中可以看到子网络F(x)学习到的是identity block的输出H(x)与输入x的差值，即被称作<strong>残差</strong>(Residual)。</p>
+<h3 id="Skip-Connection-作用"><a href="#Skip-Connection-作用" class="headerlink" title="Skip Connection 作用"></a>Skip Connection 作用</h3><p><img src="https://i.imgur.com/sbdhqig.png" alt="Skip Connection"></p>
+<p>知道了什么是残差，下面来分析一下这种skip connection为什么能够使得网络可以达到更深、更易训练。<br>上图左侧的图是传统<strong><em>main path</em></strong> network，右侧是带有skip connection的residual block，利用这种block可以构建深层网络。传统网络和residual 网络主要区别是，传统网络直接学习网络输出H(x)，而residual网络学习的是输出H(x)和输入x的残差，因此我们可以选择让子网络F(x)输出为0，使得H(x)直接等于输入x，那么一个多层子网络的输出仅仅就是最后一层子网络输出。</p>
+<p>在反向传播过程中，利用残差网络可以很好的训练网络，因为可以忽略一些main path 子网络中的信息，不需要做特殊改变，通过shortcut直接从深层次网络传向低层次网络，这就使得梯度不必在所有层都进行计算，降低网络计算复杂度，同时也缓解了vanishing gradient。从另一个角度来考虑，输入x是一种低级特征，而网络中间输出可以理解成是高级或高纬特征，residual network将二者进行结合，从而能提供网络性能。</p>
+<h3 id="Skip-Connetion-种类"><a href="#Skip-Connetion-种类" class="headerlink" title="Skip Connetion 种类"></a>Skip Connetion 种类</h3><p>从前文分析中可知，skip connection对深层次网络有着重要的作用，如何实现这种skip connection呢？根据输入x和子网络F(x)输出维度的不同可分为两种实现。</p>
 <ul>
-<li>1 . <em>0~n</em> 所有元素(包括0和n) XOR，记做<strong><em>x</em></strong></li>
-<li>2 . <em>nums</em> 所有元素XOR，从nums[0] 开始， 结果记做<strong><em>y</em></strong></li>
-<li>3 . <strong><em>x</em></strong> 和 <strong><em>y</em></strong> 进行 XOR，最后结果返回</li>
+<li><p><strong>The idenetity block</strong><br>当输入x和子网络F(x)输出维度相同时，可以直接将而二者进行相加，如下图所示，<br><img src="https://i.imgur.com/xKSRM4V.png" alt="identity block"><br>上面那条路径就是shortcut或者说skip connection，下面是普通<strong>main path</strong>。</p>
+</li>
+<li><p><strong>The convolutional block</strong><br>当输入x和子网络F(x)输出维度不同时，通过一个卷积将二者维度转换为相同，网络结构如图所示：<br><img src="https://i.imgur.com/QxyC0m5.png" alt="convolutional block"></p>
+</li>
 </ul>
-<h2 id="4-解题方案"><a href="#4-解题方案" class="headerlink" title="4. 解题方案"></a>4. 解题方案</h2><p><strong>Solution 1：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int missingNumber(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        unsigned int n = nums.size();</span><br><span class="line">        int total =  n*(n+1)/2;</span><br><span class="line">        for(int i = 0; i &lt; n;++i)</span><br><span class="line">            total -= nums[i];</span><br><span class="line">        return total;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p><strong>Solution 2 ：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int missingNumber(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        unsigned int n = nums.size();</span><br><span class="line">        int x = 0, y = nums[0];</span><br><span class="line">        for(int i = 0; i&lt;= n; ++i)</span><br><span class="line">            x ^= i;</span><br><span class="line">        for(int i = 1; i&lt; n; ++i)</span><br><span class="line">            y ^= nums[i];</span><br><span class="line">        return x^y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p><strong>转载请注明出处：</strong> <a href="http://www.jianshu.com/p/b14ca0d7ad86" target="_blank" rel="external">http://www.jianshu.com/p/b14ca0d7ad86</a></p>
+<h2 id="Residual-Network-实现"><a href="#Residual-Network-实现" class="headerlink" title="Residual Network 实现"></a>Residual Network 实现</h2><p>这部分实现主依据resnet 原论文。论文中提到identity block实现有两种结构，如下图所示。<br><img src="https://i.imgur.com/fWduS5M.png" alt="implement"></p>
+<p>左侧是一种简单的实现被称作<strong>building block</strong>，每个main path(原论文中称作plain network)，这里有两层网络构成，都是 3 x 3 的卷积网络，第一个卷积之后紧跟着是一个Relu。<br>右侧网络是另一种实现，称作<strong>bottleneck building block</strong>，为什么称作bottleneck呢，因为这个plain network，前后两层用的是1 x 1卷积网络，这种卷积是最小、最细的结构，因此被称作bottleneck(个人见解)。这里 1 x 1卷积网络是用来降低和增加feature map维度。plain network中卷积之后(除了最后一个卷积)会跟着一个BN层，用来加速训练。</p>
+<p>这就是skip connection实现，都是采用最基本单元构成，实现起来也相对简单。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是对Residual network的简单分析，清楚了内部的结构及其原理，也可以很方便的进行实现，另外也可以很便捷的在一些有涉及图片任务中进行使用，相信效果会有提升。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://arxiv.org/abs/1512.03385" target="_blank" rel="external">1. Deep Residual Learning for Image Recognition</a><br><a href="https://wiseodd.github.io/techblog/2016/10/13/residual-net/" target="_blank" rel="external">2. Residual Net</a><br><a href="www.coursera.org/">3. Deep Learning Coursera</a></p>
 
       
     </div>
@@ -400,7 +414,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/算法-leetcode-算法面试/" rel="tag">#算法,leetcode,算法面试</a>
+            <a href="/tags/ResNet/" rel="tag">#ResNet</a>
+          
+            <a href="/tags/Skip-Shortcut-Connection/" rel="tag">#Skip/Shortcut Connection</a>
           
         </div>
       
@@ -409,17 +425,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/24/Spark Deployment-2/" rel="next" title="Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网">
-                <i class="fa fa-chevron-left"></i> Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网
+              <a href="/2017/12/05/image-caption-paper-notes/" rel="next" title="image caption paper notes">
+                <i class="fa fa-chevron-left"></i> image caption paper notes
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/10/Relation-Extraction-Survey/" rel="prev" title="Relation Extraction Survey">
-                Relation Extraction Survey <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -445,8 +457,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/07/24/leetcode-268/"
-           data-title="Leetcode [268] --Missing Number" data-url="http://syw2014.github.io/2016/07/24/leetcode-268/">
+      <div class="ds-thread" data-thread-key="2017/12/07/Understanding-Residual-Network/"
+           data-title="Understanding Residual Network" data-url="http://syw2014.github.io/2017/12/07/Understanding-Residual-Network/">
       </div>
     
   </div>
@@ -544,7 +556,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Problem-Description"><span class="nav-number">1.</span> <span class="nav-text">1. Problem Description</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-问题翻译"><span class="nav-number">2.</span> <span class="nav-text">2. 问题翻译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-解题分析"><span class="nav-number">3.</span> <span class="nav-text">3. 解题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-解题方案"><span class="nav-number">4.</span> <span class="nav-text">4. 解题方案</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#深层网络缺陷"><span class="nav-number">1.</span> <span class="nav-text">深层网络缺陷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Residual-Network-介绍"><span class="nav-number">2.</span> <span class="nav-text">Residual Network 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#残差-Residual"><span class="nav-number">2.1.</span> <span class="nav-text">残差(Residual)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Skip-Connection-作用"><span class="nav-number">2.2.</span> <span class="nav-text">Skip Connection 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Skip-Connetion-种类"><span class="nav-number">2.3.</span> <span class="nav-text">Skip Connetion 种类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Residual-Network-实现"><span class="nav-number">3.</span> <span class="nav-text">Residual Network 实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
         </section>
