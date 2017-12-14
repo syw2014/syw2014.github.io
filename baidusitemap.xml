@@ -4,6 +4,31 @@
 
     
   <url>
+    <loc>http://syw2014.github.io/2017/12/11/Neo4j%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D/</loc>
+    <lastmod>2017-12-14T00:41:21.106Z</lastmod>
+    <data>
+        <display>
+        <title>Neo4j使用介绍</title>
+        <pubTime>2017-12-11T08:19:42.000Z</pubTime>
+        
+        <tag>Neo4j</tag>
+         
+        <tag>Cypher</tag>
+         
+         
+           
+             
+              <breadCrumb title="Knowledge Graph" url="http://syw2014.github.io/categories/Knowledge-Graph/"/>
+          
+             
+              <breadCrumb title="Graph Database" url="http://syw2014.github.io/categories/Knowledge-Graph/Graph-Database/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://syw2014.github.io/2017/12/07/Understanding-Residual-Network/</loc>
     <lastmod>2017-12-08T05:41:41.102Z</lastmod>
     <data>
