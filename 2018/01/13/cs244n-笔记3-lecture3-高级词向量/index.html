@@ -1,0 +1,902 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="cs244n,NLP,DL," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="悯生" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="cs244n第三次课是TA Richard Socher来完成，本次课程主要是对word2vec深入分析，理解word2vec将词表示成向量，背后真正学习到了什么，如何去把握，同时引出比w2v效果更好的Glove，最后又提到了一些如何评价word vector的方法。">
+<meta name="keywords" content="cs244n,NLP,DL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cs244n笔记-lecture3:高级词向量">
+<meta property="og:url" content="http://syw2014.github.io/2018/01/13/cs244n-笔记3-lecture3-高级词向量/index.html">
+<meta property="og:site_name" content="悯生">
+<meta property="og:description" content="cs244n第三次课是TA Richard Socher来完成，本次课程主要是对word2vec深入分析，理解word2vec将词表示成向量，背后真正学习到了什么，如何去把握，同时引出比w2v效果更好的Glove，最后又提到了一些如何评价word vector的方法。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.imgur.com/BKzW0hg.png">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-d669b2eacab30255.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-6ed6eeaf3cc6d660.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-74ecb225abfd01fc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-d212f74c1ed57311.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-99a7f274592ff7d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-b1a3dad4efdbadfa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-eb2118d10a38a2a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-b3cc422d77b6090c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-9e19f0afb651831f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-81702a161dd69ccb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-2190813b1f53a0ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-7db7799942b3cab5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-83ae625858065059.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-01-14T12:58:45.957Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cs244n笔记-lecture3:高级词向量">
+<meta name="twitter:description" content="cs244n第三次课是TA Richard Socher来完成，本次课程主要是对word2vec深入分析，理解word2vec将词表示成向量，背后真正学习到了什么，如何去把握，同时引出比w2v效果更好的Glove，最后又提到了一些如何评价word vector的方法。">
+<meta name="twitter:image" content="https://i.imgur.com/BKzW0hg.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> cs244n笔记-lecture3:高级词向量 | 悯生 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?ffb4a93df57204139bba53ccb1f4b2a0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">悯生</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">正心 诚意 修身</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                cs244n笔记-lecture3:高级词向量
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-01-13T17:46:51+08:00" content="2018-01-13">
+              2018-01-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/NLP/course/" itemprop="url" rel="index">
+                    <span itemprop="name">course</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/NLP/course/cs244n/" itemprop="url" rel="index">
+                    <span itemprop="name">cs244n</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2018/01/13/cs244n-笔记3-lecture3-高级词向量/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/13/cs244n-笔记3-lecture3-高级词向量/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2018/01/13/cs244n-笔记3-lecture3-高级词向量/" class="leancloud_visitors" data-flag-title="cs244n笔记-lecture3:高级词向量">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>cs244n第三次课是TA Richard Socher来完成，本次课程主要是对word2vec深入分析，理解word2vec将词表示成向量，背后真正学习到了什么，如何去把握，同时引出比w2v效果更好的Glove，最后又提到了一些如何评价word vector的方法。<br><a id="more"></a></p>
+<h2 id="word2vec基本思想回顾"><a href="#word2vec基本思想回顾" class="headerlink" title="word2vec基本思想回顾"></a>word2vec基本思想回顾</h2><ul>
+<li>遍历corpus中每个词</li>
+<li>预测每个窗口中心词周围的词</li>
+<li>计算该窗口内梯度，利用SGD对参数（这里参数即是vector）优化</li>
+</ul>
+<h2 id="word2vec可能存在的问题"><a href="#word2vec可能存在的问题" class="headerlink" title="word2vec可能存在的问题"></a>word2vec可能存在的问题</h2><ul>
+<li>梯度稀疏<br>假设词窗口大小为m的话，仅能够得到2m+1个词，因此梯度会非常稀疏。<br>对于这种情况，有时只对词窗口中出现过的词对应的词向量进行更新。这样一来对于权重矩阵W或者（词向量矩阵）我们只需要更新特定行或列，或者为每个词语到词向量建立hash映射。但是如果有上百万个词时，向量的更新量会非常大。</li>
+</ul>
+<h2 id="用Negative-Sampling-加速计算"><a href="#用Negative-Sampling-加速计算" class="headerlink" title="用Negative Sampling 加速计算"></a>用Negative Sampling 加速计算</h2><p>在skip-gram模型中，如图所示<br><img src="https://i.imgur.com/BKzW0hg.png" alt="skip-gram"></p>
+<p>在上式中，softmax分母归一化操作需要很大的计算量，因为需要遍历整个词典计算点积总和，所以在作业1中采用negative sampling 来实现skip gram model。负采样的主要思想是，训练一个LR二分类器，正例是中心词和它周围词构成的词对，负样本是中心词和在词典中随机选取的词构成的词对。</p>
+<p>在这篇文献“Distributed RepresentaRons of Words and Phrases<br>and their Compositionality”中，采用negative sampling来实现SG模型，总体的目标函数为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-d669b2eacab30255.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>其中，T代表总词窗口的个数也即是迭代次数，k是负采样个数.在目标函数中采用Sigmod函数，函数形式和曲线如图所示。p(w)是某个unigram分布。负采样具体介绍略。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-6ed6eeaf3cc6d660.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>目标函数简化后为<br><img src="http://upload-images.jianshu.io/upload_images/2423131-74ecb225abfd01fc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>函数有两部分构成，加号左侧第一部分代表中心词和周围词真正共现的概率，后一部分是中心词和随机采样词共现的概率，因此优化的目标是使真正共现词概率最大化(前一部分)，非共现词概率最小化(后者)。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-d212f74c1ed57311.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在负采样unigram 分布p(w)的0.75次幂进行采样，一个目的是用来平滑，同时也保证了频率低的词也可以经常被采样到。</p>
+<h2 id="word2vec-总结。"><a href="#word2vec-总结。" class="headerlink" title="word2vec 总结。"></a>word2vec 总结。</h2><ul>
+<li>遍历语料库中每一个词，</li>
+<li>预测每个词周围词</li>
+<li>每次预测出一个共现词</li>
+</ul>
+<h2 id="直接构建词共现矩阵"><a href="#直接构建词共现矩阵" class="headerlink" title="直接构建词共现矩阵"></a>直接构建词共现矩阵</h2><p>我们通过找共现词然后预测出最终合适的词，那这就出来个问题，为什么我们不能基于语料库直接找共现词？之所以word2vec采用这种方式是因为参数的更新是在一个窗口或者某几个窗口之后，也就意味着需要很多次迭代才能找到共现词。<br>直接寻找共现词是完全可以的，早期的学者就有对词共现的研究–构建词共现矩阵，它主要有两种方式，一种是基于整篇文档构成词-文档矩阵，另一种是基于窗口构建矩阵，这种思想就是常说的Latent Senmentic Analysis(LSA)，和word2vec一样，它利用窗口在每个词周围获取syntatic句法（POS）和语义信息。</p>
+<h2 id="基于窗口构建共现矩阵示例"><a href="#基于窗口构建共现矩阵示例" class="headerlink" title="基于窗口构建共现矩阵示例"></a>基于窗口构建共现矩阵示例</h2><p>假设有以个语料库（这里指句子集合）</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-99a7f274592ff7d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="j"></p>
+<p>分词，根据词窗口距离统计词共现次数，词窗口一般选择1-10，这里选择1，即前后一个位置，可得到词共现矩阵为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-b1a3dad4efdbadfa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>矩阵中每一行或列都可以看做是词的一个向量，可以直接用这个向量参与一些NLP任务。但这种采用简单方式得到的词向量会有如下限制，</p>
+<ul>
+<li>向量维度和词典大小保持一致，当词典增大，维度就发生改变</li>
+<li>词典通常很大，所以向量维度很大，需要更多的存储空间</li>
+<li>可以发现矩阵存在稀疏性问题，对不同模型鲁棒性差</li>
+</ul>
+<p>由于采用慈功贤矩阵获得词向量有诸多限制，是否可以基于此获得更高效的词向量？</p>
+<h2 id="用SVD对词共现矩阵降维"><a href="#用SVD对词共现矩阵降维" class="headerlink" title="用SVD对词共现矩阵降维"></a>用SVD对词共现矩阵降维</h2><p>通过采用SVD将词共现矩阵转换为25-1000的低纬度向量可以得到更好的词向量，如图。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-eb2118d10a38a2a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这其中可以采用如下tricks，</p>
+<ul>
+<li>对高频词停用词进行过滤</li>
+<li>采用皮尔逊系数代替词频值</li>
+<li>对于频率相同的词窗口进行重采样</li>
+</ul>
+<h2 id="SVD降维存在的问题"><a href="#SVD降维存在的问题" class="headerlink" title="SVD降维存在的问题"></a>SVD降维存在的问题</h2><p>SVD计算复杂度大，对于一个N x M的矩阵复杂度为O（mn^2），不易合并新词或新文档；</p>
+<h2 id="基于频率和直接预测共现词方法对比"><a href="#基于频率和直接预测共现词方法对比" class="headerlink" title="基于频率和直接预测共现词方法对比"></a>基于频率和直接预测共现词方法对比</h2><p><img src="http://upload-images.jianshu.io/upload_images/2423131-b3cc422d77b6090c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>对比如上图。<br>基于频率统计的方法有LSA, HAL, COALS, Hellinger-PCA,具有如下特点，</p>
+<ul>
+<li>训练速度快</li>
+<li>充分利用统计性</li>
+<li>主要用来获取词间的相似性</li>
+<li>无法扩展到大规模语料</li>
+</ul>
+<p>直接预测共现词获得词向量的方法有NNLM,HLBL,RNN,Skip-gram/CBOW,有如下特点</p>
+<ul>
+<li>性能随语料库大小而变</li>
+<li>不能充分利用统计规律</li>
+<li>可以提升其他NLP任务效果</li>
+<li>能够后的词相似度以外的pattern</li>
+</ul>
+<p>既然基于计数和直接预测都有优缺点，可否直接将二者进行结合成新的模型？</p>
+<h2 id="最好的词向量模型Glove"><a href="#最好的词向量模型Glove" class="headerlink" title="最好的词向量模型Glove"></a>最好的词向量模型Glove</h2><p>模型目标函数为：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-9e19f0afb651831f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这里P(ij)是两个词共现次数，f为max函数，函数曲线如下图<br><img src="http://upload-images.jianshu.io/upload_images/2423131-81702a161dd69ccb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>该模型所具有一下好处，</p>
+<ul>
+<li>训练速度快</li>
+<li>对大规模语料也适用</li>
+<li>对于小语料库、小向量也有较好额效果</li>
+</ul>
+<p>我们知道在模型总我们对于每个词我们都有两词向量u和v，他们中都含有共现信息，实践证明，将二者合并时最佳的选择。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-2190813b1f53a0ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这节课中有一部分hightlight talk，会单独拿出来进行记录。</p>
+<h2 id="词向量评价"><a href="#词向量评价" class="headerlink" title="词向量评价"></a>词向量评价</h2><p>对词向量的评价和NLP传统评测方法一样，有两种内部(Intrinsic)和外部(extrinsic).</p>
+<ul>
+<li>内部评价指标或方式<br>专门设计单独的试验，由人工标注词语或句子相似度，与模型结果对比。好处是计算速度快，但不知道对实际应用有无帮助。</li>
+<li>外部评价<br>通过对外部实际应用的效果提升来体现。耗时较长，不能排除是否是新的词向量与旧系统的某种契合度产生。需要至少两个subsystems同时证明。这类评测中，往往会用pre-train的向量在外部任务的语料上retrain。</li>
+</ul>
+<h3 id="词向量内部评价示例"><a href="#词向量内部评价示例" class="headerlink" title="词向量内部评价示例"></a>词向量内部评价示例</h3><p>词向量类推，这一是word2vec出来之后经常会拿来举例的。“A对于B，就像C对于D”，这可以通过余弦相似度夹角得到。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-7db7799942b3cab5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>最终结果发现，将他们进行可视化之后，可以看出每个组之间的形式还是很类似的。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-83ae625858065059.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>对于词向量外部评价，就是通过词向量可以直接提升任务效果，如NER，分类等。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat.png" alt="悯生 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.png" alt="悯生 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cs244n/" rel="tag">#cs244n</a>
+          
+            <a href="/tags/NLP/" rel="tag">#NLP</a>
+          
+            <a href="/tags/DL/" rel="tag">#DL</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/11/Neo4j使用介绍/" rel="next" title="Neo4j使用介绍">
+                <i class="fa fa-chevron-left"></i> Neo4j使用介绍
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2018/01/13/cs244n-笔记3-lecture3-高级词向量/"
+           data-title="cs244n笔记-lecture3:高级词向量" data-url="http://syw2014.github.io/2018/01/13/cs244n-笔记3-lecture3-高级词向量/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/dasheng.jpg"
+               alt="悯生" />
+          <p class="site-author-name" itemprop="name">悯生</p>
+          <p class="site-description motion-element" itemprop="description">悯此忘真契，声名无求处。诗书来不及，江海渺难分。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#word2vec基本思想回顾"><span class="nav-number">1.</span> <span class="nav-text">word2vec基本思想回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#word2vec可能存在的问题"><span class="nav-number">2.</span> <span class="nav-text">word2vec可能存在的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用Negative-Sampling-加速计算"><span class="nav-number">3.</span> <span class="nav-text">用Negative Sampling 加速计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#word2vec-总结。"><span class="nav-number">4.</span> <span class="nav-text">word2vec 总结。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#直接构建词共现矩阵"><span class="nav-number">5.</span> <span class="nav-text">直接构建词共现矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于窗口构建共现矩阵示例"><span class="nav-number">6.</span> <span class="nav-text">基于窗口构建共现矩阵示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用SVD对词共现矩阵降维"><span class="nav-number">7.</span> <span class="nav-text">用SVD对词共现矩阵降维</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVD降维存在的问题"><span class="nav-number">8.</span> <span class="nav-text">SVD降维存在的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于频率和直接预测共现词方法对比"><span class="nav-number">9.</span> <span class="nav-text">基于频率和直接预测共现词方法对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最好的词向量模型Glove"><span class="nav-number">10.</span> <span class="nav-text">最好的词向量模型Glove</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#词向量评价"><span class="nav-number">11.</span> <span class="nav-text">词向量评价</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#词向量内部评价示例"><span class="nav-number">11.1.</span> <span class="nav-text">词向量内部评价示例</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">悯生</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kitblog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz", "qdahfkeMY3jcS1ebdMnOQr7I");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>
