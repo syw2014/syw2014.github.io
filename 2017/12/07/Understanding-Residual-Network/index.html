@@ -371,7 +371,7 @@
 <p>左侧是一种简单的实现被称作<strong>building block</strong>，每个main path(原论文中称作plain network)，这里有两层网络构成，都是 3 x 3 的卷积网络，第一个卷积之后紧跟着是一个Relu。<br>右侧网络是另一种实现，称作<strong>bottleneck building block</strong>，为什么称作bottleneck呢，因为这个plain network，前后两层用的是1 x 1卷积网络，这种卷积是最小、最细的结构，因此被称作bottleneck(个人见解)。这里 1 x 1卷积网络是用来降低和增加feature map维度。plain network中卷积之后(除了最后一个卷积)会跟着一个BN层，用来加速训练。</p>
 <p>这就是skip connection实现，都是采用最基本单元构成，实现起来也相对简单。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是对Residual network的简单分析，清楚了内部的结构及其原理，也可以很方便的进行实现，另外也可以很便捷的在一些有涉及图片任务中进行使用，相信效果会有提升。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://arxiv.org/abs/1512.03385" target="_blank" rel="external">1. Deep Residual Learning for Image Recognition</a><br><a href="https://wiseodd.github.io/techblog/2016/10/13/residual-net/" target="_blank" rel="external">2. Residual Net</a><br><a href="www.coursera.org/">3. Deep Learning Coursera</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://arxiv.org/abs/1512.03385" target="_blank" rel="noopener">1. Deep Residual Learning for Image Recognition</a><br><a href="https://wiseodd.github.io/techblog/2016/10/13/residual-net/" target="_blank" rel="noopener">2. Residual Net</a><br><a href="www.coursera.org/">3. Deep Learning Coursera</a></p>
 
       
     </div>
