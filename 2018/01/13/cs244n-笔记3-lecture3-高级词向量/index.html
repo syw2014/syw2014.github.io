@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-2190813b1f53a0ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-7db7799942b3cab5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-83ae625858065059.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-01-14T12:58:45.957Z">
+<meta property="og:updated_time" content="2018-01-20T11:57:43.648Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cs244n笔记-lecture3:高级词向量">
 <meta name="twitter:description" content="cs244n第三次课是TA Richard Socher来完成，本次课程主要是对word2vec深入分析，理解word2vec将词表示成向量，背后真正学习到了什么，如何去把握，同时引出比w2v效果更好的Glove，最后又提到了一些如何评价word vector的方法。">
@@ -388,7 +388,7 @@
 <h2 id="word2vec-总结。"><a href="#word2vec-总结。" class="headerlink" title="word2vec 总结。"></a>word2vec 总结。</h2><ul>
 <li>遍历语料库中每一个词，</li>
 <li>预测每个词周围词</li>
-<li>每次预测出一个共现词</li>
+<li>每次预测出一个共现词<br>这样就引出了一个问题，为什么我们不能直接找共现词而不经过这种遍历？因word2vec对于参数的更新是在一个窗口或者某几个窗口之后。答案是肯定，早之前就有对词共现的研究–词共现矩阵，主要有两种方式，一种是基于整个文档形成，另一种是基于窗口构建矩阵，这种思想就是Latent Senmentic Analysis，和word2vec一样，利用窗口在每个词周围获取syntatic句法（POS）和语义信息。</li>
 </ul>
 <h2 id="直接构建词共现矩阵"><a href="#直接构建词共现矩阵" class="headerlink" title="直接构建词共现矩阵"></a>直接构建词共现矩阵</h2><p>我们通过找共现词然后预测出最终合适的词，那这就出来个问题，为什么我们不能基于语料库直接找共现词？之所以word2vec采用这种方式是因为参数的更新是在一个窗口或者某几个窗口之后，也就意味着需要很多次迭代才能找到共现词。<br>直接寻找共现词是完全可以的，早期的学者就有对词共现的研究–构建词共现矩阵，它主要有两种方式，一种是基于整篇文档构成词-文档矩阵，另一种是基于窗口构建矩阵，这种思想就是常说的Latent Senmentic Analysis(LSA)，和word2vec一样，它利用窗口在每个词周围获取syntatic句法（POS）和语义信息。</p>
 <h2 id="基于窗口构建共现矩阵示例"><a href="#基于窗口构建共现矩阵示例" class="headerlink" title="基于窗口构建共现矩阵示例"></a>基于窗口构建共现矩阵示例</h2><p>假设有以个语料库（这里指句子集合）</p>
@@ -400,7 +400,7 @@
 <li>词典通常很大，所以向量维度很大，需要更多的存储空间</li>
 <li>可以发现矩阵存在稀疏性问题，对不同模型鲁棒性差</li>
 </ul>
-<p>由于采用慈功贤矩阵获得词向量有诸多限制，是否可以基于此获得更高效的词向量？</p>
+<p>通过采用SVD将向量转换为25-1000的低纬度向量。这其中也会牵涉到一些优化方法如对高频词停用词进行过滤，采用皮尔逊系数代替词频值。SVD进行计算词向量存在如下问题，比如，计算复杂度大，对于一个nxm的矩阵复杂度为O（mn^2），不易处理新词或文档；由于采用慈功贤矩阵获得词向量有诸多限制，是否可以基于此获得更高效的词向量？</p>
 <h2 id="用SVD对词共现矩阵降维"><a href="#用SVD对词共现矩阵降维" class="headerlink" title="用SVD对词共现矩阵降维"></a>用SVD对词共现矩阵降维</h2><p>通过采用SVD将词共现矩阵转换为25-1000的低纬度向量可以得到更好的词向量，如图。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-eb2118d10a38a2a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <p>这其中可以采用如下tricks，</p>
 <ul>
