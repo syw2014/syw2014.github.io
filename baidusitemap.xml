@@ -4,6 +4,64 @@
 
     
   <url>
+    <loc>http://syw2014.github.io/2018/01/25/conceptual%20construction%20of%20KG/</loc>
+    <lastmod>2018-01-25T08:53:04.648Z</lastmod>
+    <data>
+        <display>
+        <title>识图谱构建困惑之模式层</title>
+        <pubTime>2018-01-25T08:42:05.000Z</pubTime>
+        
+        <tag>Knowledge Graph Construction</tag>
+         
+        <tag>KG Schema</tag>
+         
+        <tag>KG Concept</tag>
+         
+        <tag>Ontology</tag>
+         
+        <tag>模式层</tag>
+         
+         
+           
+             
+              <breadCrumb title="Knowledge Graph" url="http://syw2014.github.io/categories/Knowledge-Graph/"/>
+          
+             
+              <breadCrumb title="KG Schema or Conceptual Construction" url="http://syw2014.github.io/categories/Knowledge-Graph/KG-Schema-or-Conceptual-Construction/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://syw2014.github.io/2017/11/10/Relation-Extraction-Survey/</loc>
+    <lastmod>2018-01-25T08:49:12.395Z</lastmod>
+    <data>
+        <display>
+        <title>Relation Extraction Survey</title>
+        <pubTime>2017-11-10T08:19:19.000Z</pubTime>
+        
+        <tag>Knowledge Graph</tag>
+         
+        <tag>IE</tag>
+         
+        <tag>Relation Extraction</tag>
+         
+         
+           
+             
+              <breadCrumb title="Knowledge Graph" url="http://syw2014.github.io/categories/Knowledge-Graph/"/>
+          
+             
+              <breadCrumb title="RE" url="http://syw2014.github.io/categories/Knowledge-Graph/RE/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://syw2014.github.io/2018/01/08/cs244n-%E7%AC%94%E8%AE%B02-lecture-notes1/</loc>
     <lastmod>2018-01-20T13:46:34.849Z</lastmod>
     <data>
@@ -168,29 +226,6 @@
           
              
               <breadCrumb title="Image Caption" url="http://syw2014.github.io/categories/Deep-Learning/Image-Caption/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://syw2014.github.io/2017/11/10/Relation-Extraction-Survey/</loc>
-    <lastmod>2017-11-14T01:52:39.250Z</lastmod>
-    <data>
-        <display>
-        <title>Relation Extraction Survey</title>
-        <pubTime>2017-11-10T08:19:19.000Z</pubTime>
-        
-        <tag>Knowledge Graph, NLP, Relation Extraction</tag>
-         
-         
-           
-             
-              <breadCrumb title="Knowledge Graph" url="http://syw2014.github.io/categories/Knowledge-Graph/"/>
-          
-             
-              <breadCrumb title="RE" url="http://syw2014.github.io/categories/Knowledge-Graph/RE/"/>
           
         </display>
     </data>
