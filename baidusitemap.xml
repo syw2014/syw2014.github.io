@@ -4,6 +4,40 @@
 
     
   <url>
+    <loc>http://syw2014.github.io/2018/01/30/cs244n-%E7%AC%94%E8%AE%B05-lecture4-%E8%AF%8D%E7%AA%97%E5%8F%A3%E5%88%86%E7%B1%BB%E5%8F%8ANN%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2018-01-30T01:36:31.159Z</lastmod>
+    <data>
+        <display>
+        <title>词窗口分类及神经网络基础</title>
+        <pubTime>2018-01-30T01:12:03.000Z</pubTime>
+        
+        <tag>word vector training</tag>
+         
+        <tag>window classification</tag>
+         
+        <tag>neutral network</tag>
+         
+        <tag>maximum margin loss</tag>
+         
+        <tag>softmax and cross entropy error</tag>
+         
+         
+           
+             
+              <breadCrumb title="NLP" url="http://syw2014.github.io/categories/NLP/"/>
+          
+             
+              <breadCrumb title="course" url="http://syw2014.github.io/categories/NLP/course/"/>
+          
+             
+              <breadCrumb title="cs244n" url="http://syw2014.github.io/categories/NLP/course/cs244n/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://syw2014.github.io/2018/01/25/conceptual%20construction%20of%20KG/</loc>
     <lastmod>2018-01-25T08:53:04.648Z</lastmod>
     <data>

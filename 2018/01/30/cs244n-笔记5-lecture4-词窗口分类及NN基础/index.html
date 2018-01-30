@@ -1,0 +1,909 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="word vector training,window classification,neutral network,maximum margin loss,softmax and cross entropy error," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="悯生" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="提纲这是cs244n第四课，前面三节课程主要是从词向量开始介绍，如何对文本进行表示。这节课介绍了根据上下文预测词分类问题,并从softmax过渡到神经网络。  分类背景知识介绍 在分类任务中更新词向量 窗口分类，cross entropy error求导 单层NN 最大间隔loss和反向传播">
+<meta name="keywords" content="word vector training,window classification,neutral network,maximum margin loss,softmax and cross entropy error">
+<meta property="og:type" content="article">
+<meta property="og:title" content="词窗口分类及神经网络基础">
+<meta property="og:url" content="http://syw2014.github.io/2018/01/30/cs244n-笔记5-lecture4-词窗口分类及NN基础/index.html">
+<meta property="og:site_name" content="悯生">
+<meta property="og:description" content="提纲这是cs244n第四课，前面三节课程主要是从词向量开始介绍，如何对文本进行表示。这节课介绍了根据上下文预测词分类问题,并从softmax过渡到神经网络。  分类背景知识介绍 在分类任务中更新词向量 窗口分类，cross entropy error求导 单层NN 最大间隔loss和反向传播">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-e4e29c0882b80e93.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-6211d8603e57d7a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-2a7e5c1c954f586e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-6cac988b8d131942.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-9018d0b4e568d760.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-aa918fdd924aff9a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-3f686aefe0853128.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-1dcb3356ca945387.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-159461f283e5df66.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-00725338a59aa4c5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-ecf90a87eeb9157b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-2886125a32ffbeef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-e534ecf817a0dfef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-a2d6da074909482c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-4cea937f73c80d3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-8dc07c0cdab30b60.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-53c95a6687318437.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-ffb52b8a2e45d8dd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-851e4daa7525ecce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-f25bbfe2ff0af24b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-a8a2b98b86bc166f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-51a2168fadc36d17.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-8a914938ca2240a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-c3bee03c4e6af578.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-034cc1f8eb6e60f0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-08a794395b07b476.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-3b87cc104b2d7603.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-8225bfcaa8e51710.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-070bc1b04b82ee1a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-bdb67a09fccce2b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-09c3a3d8a39bb937.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-320b3b60d1742ff3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-e048724f174e0eac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-2c7950be6711c45e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-8b499dfc4a70b2b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-4ca521856547edaa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-b4d215b3dfd4fcf6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-5fa2160dd80b9f19.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-a2a58574f448f5ab.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-bf6fbdc4e9c4ff71.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-6334d0b33ed9c895.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-0f6df7aa8d0e6a04.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-f494762d7e024989.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-8b918e77415e1293.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-a73bf9eb7436bbd7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-bd6cfef08b2398f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-84ff2187e6e96fa8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-c29dd5095c71c166.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-859ac1cf23d43868.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-01-30T01:36:31.159Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="词窗口分类及神经网络基础">
+<meta name="twitter:description" content="提纲这是cs244n第四课，前面三节课程主要是从词向量开始介绍，如何对文本进行表示。这节课介绍了根据上下文预测词分类问题,并从softmax过渡到神经网络。  分类背景知识介绍 在分类任务中更新词向量 窗口分类，cross entropy error求导 单层NN 最大间隔loss和反向传播">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2423131-e4e29c0882b80e93.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 词窗口分类及神经网络基础 | 悯生 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?ffb4a93df57204139bba53ccb1f4b2a0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">悯生</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">正心 诚意 修身</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                词窗口分类及神经网络基础
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-01-30T09:12:03+08:00" content="2018-01-30">
+              2018-01-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/NLP/course/" itemprop="url" rel="index">
+                    <span itemprop="name">course</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/NLP/course/cs244n/" itemprop="url" rel="index">
+                    <span itemprop="name">cs244n</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2018/01/30/cs244n-笔记5-lecture4-词窗口分类及NN基础/" class="leancloud_visitors" data-flag-title="词窗口分类及神经网络基础">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="提纲"><a href="#提纲" class="headerlink" title="提纲"></a>提纲</h2><p>这是cs244n第四课，前面三节课程主要是从词向量开始介绍，如何对文本进行表示。这节课介绍了根据上下文预测词分类问题,并从softmax过渡到神经网络。</p>
+<ul>
+<li>分类背景知识介绍</li>
+<li>在分类任务中更新词向量</li>
+<li>窗口分类，cross entropy error求导</li>
+<li>单层NN</li>
+<li>最大间隔loss和反向传播</li>
+</ul>
+<a id="more"></a>
+<h2 id="分类任务介绍"><a href="#分类任务介绍" class="headerlink" title="分类任务介绍"></a>分类任务介绍</h2><p>一般来说，我们有一个训练集，<br>，其中xi代表输入，可以是词的下标，向量，上下文窗口，句子，文档等，i代表第几个样本，yi是希望预测的label，通常是一个C维的one-hot向量，这个类别可以情感倾向，命名实体，购买或出售决策；也可以是后面会提到的其他词序列。对于分类任务来说，给定训练样本x和它的label y，可以采用logistic regression或svm等寻找决策界面实现分类。举个简单例子，我们对一个2维的词向量进行分类，采用LR，训练模型找到一个决策平面，目标函数和结果图如下。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-e4e29c0882b80e93.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/2423131-6211d8603e57d7a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>其中，x是d维向量，C是类别数这里指词，W是一个权重矩阵。</p>
+<h2 id="softmax"><a href="#softmax" class="headerlink" title="softmax"></a>softmax</h2><p>在上面分类目标函数中，我们采用softmax函数，softmax函数可以分解成两步，首先对于W_yX可以看成是矩阵W的第y行与x相乘，形式如下，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-2a7e5c1c954f586e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>第二步对求得结果进行归一化处理以获得概率，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-6cac988b8d131942.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="softmax-和cross-entropy-error"><a href="#softmax-和cross-entropy-error" class="headerlink" title="softmax 和cross entropy error"></a>softmax 和cross entropy error</h2><p>对于每个样本{x,y}，我们的目标是使得正确类别的概率最大，等价于最小化概率的负对数函数，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-9018d0b4e568d760.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这个目标函数其实是<strong>cross entropy</strong>。假设我们正确类别的概率分布是1， 错误类别的分布是0，那么对于一个概率分布p=[0,…0,1,…0]，计算得到的概率q，则二者之间的交叉熵损失为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-aa918fdd924aff9a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>因为p是一个one-hot向量，那么最终形式为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-3f686aefe0853128.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="从KL-divergence角度思考交叉熵"><a href="#从KL-divergence角度思考交叉熵" class="headerlink" title="从KL divergence角度思考交叉熵"></a>从KL divergence角度思考交叉熵</h2><p>cross-entropy可以看成是两个分布的熵与KL 散度之和<br><img src="http://upload-images.jianshu.io/upload_images/2423131-1dcb3356ca945387.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这个式子中，加号左边是真是概率的分布的熵(用来描述一个事物的不确定性，不确定越大，熵越大)，因为它的分布是1即是确定性，所以熵为零，即使它的分布不是1，但它也是固定的，对整体梯度并没有多少贡献。因此最小化上式就等价于优化加号右边部分，分布p和q的KL divergence，它是用来描述两个分布之间差别的一个指标，形式如下，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-159461f283e5df66.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>上式于我们之前需要优化的目标函数一样。<br>上面是针对一个样本点做的分析，在N个样本集上，误差函数为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-00725338a59aa4c5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>加上正则化项后为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-ecf90a87eeb9157b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>上式采用的是L2正则化，theta代表模型中所有的参数。加入正则化的目的是防止模型参数过分升高造成模型过拟合。过拟合的形式如图，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-2886125a32ffbeef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>横轴代表模型迭代次数或模型复杂度，蓝色代表训练误差，红色代表测试误差，过拟合的表现是训练误差很低但测试误差很大，泛化能力差。</p>
+<h2 id="ML优化"><a href="#ML优化" class="headerlink" title="ML优化"></a>ML优化</h2><p>对于一把的ML，参数由权值矩阵的列组成，维度不会太大，只需要更新决策边界即可，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-e534ecf817a0dfef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/2423131-a2d6da074909482c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在深度学习中，我们不仅仅要更新权重，同时也要更新词向量，词表大小和词向量维度会很大，就会容易过拟合。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-4cea937f73c80d3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="re-train-词向量失去泛化能力"><a href="#re-train-词向量失去泛化能力" class="headerlink" title="re-train 词向量失去泛化能力"></a>re-train 词向量失去泛化能力</h2><p>比如用LR训练一个电影评论情感的任务，在训练集中我们有“TV”和“telly”这两个词，在测试集中有“television”，使用预训练的word vectors会发现这三个单词是相似的。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-8dc07c0cdab30b60.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>现在，重新训练词向量，训练集中只有TV和telly没有television，最终的结果是不能发现这三个词具有相似性，因此分类会出现错误，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-53c95a6687318437.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>因此得到如下结论，再前节课课程也提到过，如果任务中数据集比较小，则不适合重新训练词向量，如果训练足够大，重新训练词向量可能会提升组中的效果。<br>词向量术语<br>词向量矩阵L也被叫做lookup table(在TensorFlow，对词进行embedding就是通过查表实现)，通常通过word2vec或Glove实现，而在TensorFlow里面也有具体的实现。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-ffb52b8a2e45d8dd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>word vectors = word embeddings = word representations</p>
+<h2 id="window-classification"><a href="#window-classification" class="headerlink" title="window classification"></a>window classification</h2><p>对窗口上下文中的词进行分类，比如实体识别，是把词分为Person、location、organization、none/misc四类，目前采用的方式大多是将一个词窗口中所有词词向量累加平均，但这种方式会忽略位置信息。这里介绍另外一种方式来完成NER任务，通过训练softmax分类器，输入是把一个词窗口中的所有词向量拼接在一起。比如要对句子中的Pairs进行分类，词窗口为2。如果一个词向量的维度是d，那么整个词窗口向量是5d（根据词窗口而变）的列向量。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-851e4daa7525ecce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这个时候，输入是X_window，可以写出预测出类别的概率计算公式和误差函数<br><img src="http://upload-images.jianshu.io/upload_images/2423131-f25bbfe2ff0af24b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="词窗口中向量更新"><a href="#词窗口中向量更新" class="headerlink" title="词窗口中向量更新"></a>词窗口中向量更新</h2><p>首先介绍一些符号定义，$\widehat{y}$表示预测输出向量，$t$是真是预测结果值。向量更新原则是通过误差函数对所有参数的梯度进行更新。<br>首先求误差函数对输入x的梯度，采用链式求导法则<br><img src="http://upload-images.jianshu.io/upload_images/2423131-a8a2b98b86bc166f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/2423131-51a2168fadc36d17.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在推到过程中要区分当前下标c是否和真是类别下标y相等和不相等两种情况进行求导。但是为什么上面的复合求导前面会有个求和符号，个人理解的是因为在复合求导时，所有C个函数都与输入x有关，误差对x的梯度，就是这些fc分别对x求导然后在求和。得到下面结果，这个结果是y=c和y！=c的结果复合<br><img src="http://upload-images.jianshu.io/upload_images/2423131-8a914938ca2240a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这里做个符号替换<br><img src="http://upload-images.jianshu.io/upload_images/2423131-c3bee03c4e6af578.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>那么最终误差对输入x的梯度结果为<br><img src="http://upload-images.jianshu.io/upload_images/2423131-034cc1f8eb6e60f0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/2423131-08a794395b07b476.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>因为x是一个Window中所有词的词向量拼接而成的向量，因此它的维度是5d，那么相应的梯度维度也是5d<br><img src="http://upload-images.jianshu.io/upload_images/2423131-3b87cc104b2d7603.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>然后就可以根据维度划分，进而更新每个词对应的词向量<br><img src="http://upload-images.jianshu.io/upload_images/2423131-8225bfcaa8e51710.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>通过词向量不断的更新，模型会学习的看到X_in在中心词的前面，就可能会推测出中心词可能是一个location。<br>采用同样的方式，求loss对参数wij的梯度，得到参数的更新，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-070bc1b04b82ee1a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在softmax运算中，有两处计算特别耗时，一处是f=Wx，一处是exp，在实现的时候我们会选择进行矩阵计算比如把W和x都做成矩阵然后计算，因为矩阵计算会比循环在CPU上的效果快一个量级。<br>上面介绍的是基于softmax分类等价于logistic regression，仅在小数据集上给出一个基本的、线性分类决策面，在大数据集任务复杂情况下就很受限了。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-bdb67a09fccce2b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h2><p>由于softmax线性分类的限制，我们就需要有一种模型能够学习复杂数据，那这个模型就是神经网络。它可以学到非线性的决策边界。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-09c3a3d8a39bb937.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>基本单元介绍<br><img src="http://upload-images.jianshu.io/upload_images/2423131-320b3b60d1742ff3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>一个最基本的神经单元，有三个输入，还有个bias，中间圆圈代表激活函数，一个输出构成。每一个神经元都类似以个LR分类单元<br><img src="http://upload-images.jianshu.io/upload_images/2423131-e048724f174e0eac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>输入通过加权求和之后输入到神经元，再通过sigmod激活函数后，将结果输出。以此类推，一个神经网络就就等价于同时运行多个LR程序，输出就得到一个向量，但并不具体要求LR去预测什么。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-2c7950be6711c45e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>我们还可以将这些LR的结果送入到另外一个LR当中，为了能够获得的更好的预测结果，误差函数会找到中间隐藏层变量应该是怎么的。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-8b499dfc4a70b2b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这道了这些，就可以构建多层的NN<br><img src="http://upload-images.jianshu.io/upload_images/2423131-4ca521856547edaa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="网络层中的矩阵记号"><a href="#网络层中的矩阵记号" class="headerlink" title="网络层中的矩阵记号"></a>网络层中的矩阵记号</h2><p>在NN中通常采用矩阵的形式来表示输入输出及网络中的参数，如下<br><img src="http://upload-images.jianshu.io/upload_images/2423131-b4d215b3dfd4fcf6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>z代表下一层神经元输入矩阵，f代表激活函数，常采用sigmod、tanh等函数，目的是增加非线性，那么问题来了，为什么需要给网络增加非线性呢？增加非线性的目的是提高网络拟合能力，如果没有非线性，整个网络依然只是一个线性变换的过程，从而可以转变为一个简单的线性变换Wx的形式，很明显这种明显能力有限，但增加了非线性及多层网络，就可以拟合很更复杂的函数。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-5fa2160dd80b9f19.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="利用NN实现Window-分类"><a href="#利用NN实现Window-分类" class="headerlink" title="利用NN实现Window 分类"></a>利用NN实现Window 分类</h2><p>输入依然是一个词窗口，我们的目标是判断词窗口中的中心词是否是location。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-a2a58574f448f5ab.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>先来解释单层网络构成，它是线性和非线性的组合，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-bf6fbdc4e9c4ff71.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>神经元激活指a可以用来做其他计算，比如用softmax计算概率，P(y|x)=softmax(Wa);也可以用来计算未归一化的分数，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-6334d0b33ed9c895.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>根据刚才的解释，来具体执行词窗分类，<strong>Feed-forward</strong>计算，用一个三层网络来计算词窗分数，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-0f6df7aa8d0e6a04.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="Max-margin-loss"><a href="#Max-margin-loss" class="headerlink" title="Max-margin loss"></a>Max-margin loss</h2><p>当我们计算出每个词窗得分之后，必须有一个准则来去判断这个分数到底是还是坏，这里采用max-margin loss即是使得分类间的间隔最大<br><img src="http://upload-images.jianshu.io/upload_images/2423131-f494762d7e024989.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>目标是使正确词窗得分尽量高，不正确的词窗得分尽量低。具体而言，对于一个词窗口中心词是location的score + 1应该大于词窗口中心词不是location的score，这个1是用来扩大二者之间的差距。这种loss可以理解为是<strong>Hing Loss</strong>，预测结果Sc值越大，离分类决策面距离越远，越容易被正确分类，式子中的“1”就是用来判断的一个阈值，是一个超参数,随着训练的进行只需关注那些难训练的样本即可。</p>
+<h2 id="采用反向传播进行训练"><a href="#采用反向传播进行训练" class="headerlink" title="采用反向传播进行训练"></a>采用反向传播进行训练</h2><p>定义好目标函数/损失函数之后，采用反向传播的方式进行训练。s和$s_c$得分计算公式为$s=U^{T}f(Wx+b)=U^{T}a$和$s_c=U^{T}f(Wx_c+b)=U^{T}a$,之后通过计算s和$s_c$对所有相关变量$U,W,b,x$的梯度，进而更新每个参数。<br>$$\frac{\partial{s}}{\partial{U}}=\frac{\partial{U^Ta}}{\partial{U}}=a$$<br>下面来推导对隐藏层参数$Wij$的导数，根据score计算公式有<br>$$\frac{\partial{s}}{\partial{W}}=\frac{\partial{U^Ta}}{\partial{W}}=\frac{\partial{U^Tf(Wx+b)}}{\partial{W}}$$<br>这个我们要清楚所要求的是哪个参数的梯度，由于我们求得是$Wij$的梯度，它只会出现在第i个神经元中，如图所示，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-8b918e77415e1293.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>$W_23$只在第二个$a_2$中出现，因此得到$Wij$的梯度为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-a73bf9eb7436bbd7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>由于bias b并不含变量$W_ij$,因此可得到下式，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-bd6cfef08b2398f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在上式中，$\delta_i$表示的隐藏单元误差，即<strong>local error signal</strong>，<strong>f</strong>代表神经元所选用的激活函数，因此推广到整个隐藏层，可以得到<br>$\frac{\partial{s}}{\partial{W}}=\delta{x^T}$<br>s对偏置的导数，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-84ff2187e6e96fa8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>反向传播梯度计算的一个方便之处是在计算后面层中变量梯度时，可以直接用前面层计算结果而不需要重新计算。</p>
+<p>下面推导score对输入词向量的x的导数，由于任意一个输入$x_j$都与所有的神经元相互连接，结合上图，对$a_1$和$a_2$都有影响，因此梯度计算为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-c29dd5095c71c166.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这是score对输入$x_j$的最终梯度，而$\delta$是隐藏层误差（维度与隐藏单元个数相同），在前面已经计算过，可以直接拿来用。我们刚才计算的是score对所有变量的梯度，而我们正真要计算的是目标函数或者是误差函数对变量的梯度，我们的目标函数为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-859ac1cf23d43868.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png">，举个例子，误差对$U$的梯度，<br>$$\frac{\partial{J}}{U}=1{1-s+s_c &gt; 0}((-f(Wx+b)+f(Wx_c+b)) \<br>= 1{1-s+s_c &gt; 0}(a+a_c)$$<br>因为前面已经介绍过score $s$对个参数的求导，根据这种方式，就可以求误差对所有参数的梯度。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这次课程介绍了词向量训练，词窗口分类，softmax和cross entropy error，scores和maximum margin loss，及简单的NN，误差对个变量的梯度，下一节课会详细介绍back propagation的思想。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat.png" alt="悯生 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.png" alt="悯生 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/word-vector-training/" rel="tag"><i class="fa fa-tag"></i>word vector training</a>
+          
+            <a href="/tags/window-classification/" rel="tag"><i class="fa fa-tag"></i>window classification</a>
+          
+            <a href="/tags/neutral-network/" rel="tag"><i class="fa fa-tag"></i>neutral network</a>
+          
+            <a href="/tags/maximum-margin-loss/" rel="tag"><i class="fa fa-tag"></i>maximum margin loss</a>
+          
+            <a href="/tags/softmax-and-cross-entropy-error/" rel="tag"><i class="fa fa-tag"></i>softmax and cross entropy error</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/25/conceptual construction of KG/" rel="next" title="识图谱构建困惑之模式层">
+                <i class="fa fa-chevron-left"></i> 识图谱构建困惑之模式层
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/dasheng.jpg"
+               alt="悯生" />
+          <p class="site-author-name" itemprop="name">悯生</p>
+          <p class="site-description motion-element" itemprop="description">悯此忘真契，声名无求处。诗书来不及，江海渺难分。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              神奇链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://mskitech.com/about/" title="关于本站" target="_blank">关于本站</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://www.jianshu.com/u/c44c1c14b248" title="作者简书" target="_blank">作者简书</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#提纲"><span class="nav-number">1.</span> <span class="nav-text">提纲</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分类任务介绍"><span class="nav-number">2.</span> <span class="nav-text">分类任务介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#softmax"><span class="nav-number">3.</span> <span class="nav-text">softmax</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#softmax-和cross-entropy-error"><span class="nav-number">4.</span> <span class="nav-text">softmax 和cross entropy error</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从KL-divergence角度思考交叉熵"><span class="nav-number">5.</span> <span class="nav-text">从KL divergence角度思考交叉熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ML优化"><span class="nav-number">6.</span> <span class="nav-text">ML优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#re-train-词向量失去泛化能力"><span class="nav-number">7.</span> <span class="nav-text">re-train 词向量失去泛化能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#window-classification"><span class="nav-number">8.</span> <span class="nav-text">window classification</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#词窗口中向量更新"><span class="nav-number">9.</span> <span class="nav-text">词窗口中向量更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#神经网络"><span class="nav-number">10.</span> <span class="nav-text">神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络层中的矩阵记号"><span class="nav-number">11.</span> <span class="nav-text">网络层中的矩阵记号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用NN实现Window-分类"><span class="nav-number">12.</span> <span class="nav-text">利用NN实现Window 分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Max-margin-loss"><span class="nav-number">13.</span> <span class="nav-text">Max-margin loss</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#采用反向传播进行训练"><span class="nav-number">14.</span> <span class="nav-text">采用反向传播进行训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">15.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">悯生</span>
+</div>
+
+<!--<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+-->
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+
+
+  
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz", "qdahfkeMY3jcS1ebdMnOQr7I");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>
