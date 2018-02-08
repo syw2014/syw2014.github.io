@@ -4,8 +4,36 @@
 
     
   <url>
+    <loc>http://syw2014.github.io/2017/12/07/Understanding-Residual-Network/</loc>
+    <lastmod>2018-02-08T06:25:51.269Z</lastmod>
+    <data>
+        <display>
+        <title>Understanding Residual Network</title>
+        <pubTime>2017-12-07T01:11:58.000Z</pubTime>
+        
+        <tag>ResNet</tag>
+         
+        <tag>Skip/Shortcut Connection</tag>
+         
+         
+           
+             
+              <breadCrumb title="Deep Learning" url="http://syw2014.github.io/categories/Deep-Learning/"/>
+          
+             
+              <breadCrumb title="Paper Notes" url="http://syw2014.github.io/categories/Deep-Learning/Paper-Notes/"/>
+          
+             
+              <breadCrumb title="Residual Network" url="http://syw2014.github.io/categories/Deep-Learning/Paper-Notes/Residual-Network/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://syw2014.github.io/2018/02/08/Paper-notes-attention-is-all-you-need/</loc>
-    <lastmod>2018-02-08T06:21:06.799Z</lastmod>
+    <lastmod>2018-02-08T06:25:40.144Z</lastmod>
     <data>
         <display>
         <title>Paper notes-Attention is all you need</title>
@@ -22,13 +50,13 @@
          
            
              
-              <breadCrumb title="Deep Learing" url="http://syw2014.github.io/categories/Deep-Learing/"/>
+              <breadCrumb title="Deep Learning" url="http://syw2014.github.io/categories/Deep-Learning/"/>
           
              
-              <breadCrumb title="Paper Notes" url="http://syw2014.github.io/categories/Deep-Learing/Paper-Notes/"/>
+              <breadCrumb title="Paper Notes" url="http://syw2014.github.io/categories/Deep-Learning/Paper-Notes/"/>
           
              
-              <breadCrumb title="Attention" url="http://syw2014.github.io/categories/Deep-Learing/Paper-Notes/Attention/"/>
+              <breadCrumb title="Attention" url="http://syw2014.github.io/categories/Deep-Learning/Paper-Notes/Attention/"/>
           
         </display>
     </data>
@@ -57,34 +85,6 @@
           
              
               <breadCrumb title="Image Caption" url="http://syw2014.github.io/categories/Deep-Learning/Paper-Notes/Image-Caption/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://syw2014.github.io/2017/12/07/Understanding-Residual-Network/</loc>
-    <lastmod>2018-02-08T05:55:16.424Z</lastmod>
-    <data>
-        <display>
-        <title>Understanding Residual Network</title>
-        <pubTime>2017-12-07T01:11:58.000Z</pubTime>
-        
-        <tag>ResNet</tag>
-         
-        <tag>Skip/Shortcut Connection</tag>
-         
-         
-           
-             
-              <breadCrumb title="Deep Learing" url="http://syw2014.github.io/categories/Deep-Learing/"/>
-          
-             
-              <breadCrumb title="Paper Notes" url="http://syw2014.github.io/categories/Deep-Learing/Paper-Notes/"/>
-          
-             
-              <breadCrumb title="Residual Network" url="http://syw2014.github.io/categories/Deep-Learing/Paper-Notes/Residual-Network/"/>
           
         </display>
     </data>
