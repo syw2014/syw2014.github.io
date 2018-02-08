@@ -369,7 +369,7 @@
       
         <h2 id="词向量Part-2"><a href="#词向量Part-2" class="headerlink" title="词向量Part 2"></a>词向量Part 2</h2><p>关键词：Glove， 词向量内部和外部评价，超参数在语义类推上的影响，人类判断词向量距离间的相关性，词上下文解决歧义，窗口分类<br>首先文章第一部分介绍了Glove训练词向量过程，之后讨论如何从内部及外部去评价词向量。之后讨论作为内部评价的词类比任务及如何利用它调整词向量。然后讨论词向量模型的权重参数和外部评价任务，最后讨论将ANN作为一类模型来实现NLP任务。</p>
 <a id="more"></a>
-<h3 id="与之前方法对比"><a href="#与之前方法对比" class="headerlink" title="与之前方法对比"></a>与之前方法对比</h3><p>目前为止我们有两类方法获得词向量。一类是基于count-based和矩阵分解技术(LSA,HAL)的方式.这种方式可以充分利用全据统计信息，主要用于捕获单词的相似性，但在单词类比任务表现不佳，因为它只是一个次优的空间向量结构。另一种是基于浅层窗口的方式如(Skip-gram,CBOW)，通过利用当前窗口上下文进行预测和学习word embedding，这些模型展示了超越词相似度以为的复杂语言学模式，却不能够充分利用全局共现统计信息。<br><br>相比之下，Glove由一个加权的最小二乘模型构成，它基于全局词-词的共现频次进行训练，充分利用全局统计信息。【Glove，把最小二乘作为目标函数，预测在词i上下文中出现的词j的概率】该方法能够生成具有结构意义的词向量，在词类比任务上能够达到最优效果，同时在其他词相似度任务上也比现有方法好。</p>
+<h3 id="与之前方法对比"><a href="#与之前方法对比" class="headerlink" title="与之前方法对比"></a>与之前方法对比</h3><p>目前为止我们有两类方法获得词向量。一类是基于count-based和矩阵分解技术(LSA,HAL)的方式.这种方式可以充分利用全据统计信息，主要用于捕获单词的相似性，但在单词类比任务表现不佳，因为它只是一个次优的空间向量结构。另一种是基于浅层窗口的方式如(Skip-gram,CBOW)，通过利用当前窗口上下文进行预测和学习word embedding，这些模型展示了超越词相似度以为的复杂语言学模式，却不能够充分利用全局共现统计信息。&lt;/br&gt;<br>相比之下，Glove由一个加权的最小二乘模型构成，它基于全局词-词的共现频次进行训练，充分利用全局统计信息。【Glove，把最小二乘作为目标函数，预测在词i上下文中出现的词j的概率】该方法能够生成具有结构意义的词向量，在词类比任务上能够达到最优效果，同时在其他词相似度任务上也比现有方法好。</p>
 <h3 id="共现矩阵"><a href="#共现矩阵" class="headerlink" title="共现矩阵"></a>共现矩阵</h3><p>令X代表词-词共现矩阵，X_ij表示此j在词i上下文中出现的次数（此时，词i的上下文可理解为一个doc），Xi = ∑k Xik 表示任意词k在词i上下文中出现的总次数，那我们有<br><img src="http://upload-images.jianshu.io/upload_images/2423131-b6643b5df21a2e5d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>，表示词j在词i上下文中出现的概率。<br>在实际计算时，构建这样的矩阵需要遍历整个语料库来得到这些统计数据。如果预料很大，这种统计代价很大，但只需要遍历一次即可。</p>
 <h3 id="最小二乘目标函数"><a href="#最小二乘目标函数" class="headerlink" title="最小二乘目标函数"></a>最小二乘目标函数</h3><p>对于skip-gram模型，采用softmax词j在词i上下文中出现的概率，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-468548b583f0bf0e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>训练是以随机在线方式进行，但隐含的的交叉熵可以通过如下公式计算，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-11daf1267b06eba8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png">对于同一个词i和词j可以在整个语料库中出现很多次，更高效的做法将i和j相同的指聚合在一起计算损失，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-1b249f595be1bba2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>，在这个式子中，共现次数X_ij的值来源于词前面所述的共现矩阵。交叉熵一个重要缺点是，它需要分布Q(预测出词j的分布)必须进行合适的归一化，这就需要在整个词典上进行求和，这个计算代价很大。相反，我们使用最小二乘最为目标函数，省去了P和Q中需要的归一化操作，新的目标函数如下。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-4b58b58fd26de0bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这个式子中，<img src="http://upload-images.jianshu.io/upload_images/2423131-a424aa0363eaffce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>，是未归一化的分布。这就引入另一个问题，X_ij词频数通常会很大，这使得归一化很难进行(因为，有的词频很大，有的很小，差距很大)。进一步的改进是采用P和Q的log形式计算误差，如下，<img src="http://upload-images.jianshu.io/upload_images/2423131-c9ddfdba551d3977.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png">，在这个式子中，权重X_i不能保证是最优的，因此我们采用更加一般的形式，它能够更加灵活的依赖于上下文词。<img src="http://upload-images.jianshu.io/upload_images/2423131-fa1a7b16377178fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>GloVe模型对词-词的矩阵中非零元素进行训练，能够有效利用全据统计信息，生成具有意义的子结构向量。在相同语料库、词典、窗口大小、训练时间上，它在词类比任务上由于word2vec。它能更快地取得更好的结果，而且不管速度如何，都能得到最好的结果。</p>
@@ -573,7 +573,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -581,7 +581,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -590,7 +590,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -404,8 +404,12 @@
 <h2 id="网络层中的矩阵记号"><a href="#网络层中的矩阵记号" class="headerlink" title="网络层中的矩阵记号"></a>网络层中的矩阵记号</h2><p>在NN中通常采用矩阵的形式来表示输入输出及网络中的参数，如下<br><img src="http://upload-images.jianshu.io/upload_images/2423131-b4d215b3dfd4fcf6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>z代表下一层神经元输入矩阵，f代表激活函数，常采用sigmod、tanh等函数，目的是增加非线性，那么问题来了，为什么需要给网络增加非线性呢？增加非线性的目的是提高网络拟合能力，如果没有非线性，整个网络依然只是一个线性变换的过程，从而可以转变为一个简单的线性变换Wx的形式，很明显这种明显能力有限，但增加了非线性及多层网络，就可以拟合很更复杂的函数。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-5fa2160dd80b9f19.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <h2 id="利用NN实现Window-分类"><a href="#利用NN实现Window-分类" class="headerlink" title="利用NN实现Window 分类"></a>利用NN实现Window 分类</h2><p>输入依然是一个词窗口，我们的目标是判断词窗口中的中心词是否是location。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-a2a58574f448f5ab.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>先来解释单层网络构成，它是线性和非线性的组合，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-bf6fbdc4e9c4ff71.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>神经元激活指a可以用来做其他计算，比如用softmax计算概率，P(y|x)=softmax(Wa);也可以用来计算未归一化的分数，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-6334d0b33ed9c895.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>根据刚才的解释，来具体执行词窗分类，<strong>Feed-forward</strong>计算，用一个三层网络来计算词窗分数，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-0f6df7aa8d0e6a04.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <h2 id="Max-margin-loss"><a href="#Max-margin-loss" class="headerlink" title="Max-margin loss"></a>Max-margin loss</h2><p>当我们计算出每个词窗得分之后，必须有一个准则来去判断这个分数到底是还是坏，这里采用max-margin loss即是使得分类间的间隔最大<br><img src="http://upload-images.jianshu.io/upload_images/2423131-f494762d7e024989.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>目标是使正确词窗得分尽量高，不正确的词窗得分尽量低。具体而言，对于一个词窗口中心词是location的score + 1应该大于词窗口中心词不是location的score，这个1是用来扩大二者之间的差距。这种loss可以理解为是<strong>Hing Loss</strong>，预测结果Sc值越大，离分类决策面距离越远，越容易被正确分类，式子中的“1”就是用来判断的一个阈值，是一个超参数,随着训练的进行只需关注那些难训练的样本即可。</p>
-<h2 id="采用反向传播进行训练"><a href="#采用反向传播进行训练" class="headerlink" title="采用反向传播进行训练"></a>采用反向传播进行训练</h2><p>定义好目标函数/损失函数之后，采用反向传播的方式进行训练。s和$s_c$得分计算公式为$s=U^{T}f(Wx+b)=U^{T}a$和$s_c=U^{T}f(Wx_c+b)=U^{T}a$,之后通过计算s和$s_c$对所有相关变量$U,W,b,x$的梯度，进而更新每个参数。<br>$$\frac{\partial{s}}{\partial{U}}=\frac{\partial{U^Ta}}{\partial{U}}=a$$<br>下面来推导对隐藏层参数$Wij$的导数，根据score计算公式有<br>$$\frac{\partial{s}}{\partial{W}}=\frac{\partial{U^Ta}}{\partial{W}}=\frac{\partial{U^Tf(Wx+b)}}{\partial{W}}$$<br>这个我们要清楚所要求的是哪个参数的梯度，由于我们求得是$Wij$的梯度，它只会出现在第i个神经元中，如图所示，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-8b918e77415e1293.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>$W_23$只在第二个$a_2$中出现，因此得到$Wij$的梯度为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-a73bf9eb7436bbd7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>由于bias b并不含变量$W_ij$,因此可得到下式，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-bd6cfef08b2398f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在上式中，$\delta_i$表示的隐藏单元误差，即<strong>local error signal</strong>，<strong>f</strong>代表神经元所选用的激活函数，因此推广到整个隐藏层，可以得到<br>$\frac{\partial{s}}{\partial{W}}=\delta{x^T}$<br>s对偏置的导数，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-84ff2187e6e96fa8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>反向传播梯度计算的一个方便之处是在计算后面层中变量梯度时，可以直接用前面层计算结果而不需要重新计算。</p>
-<p>下面推导score对输入词向量的x的导数，由于任意一个输入$x_j$都与所有的神经元相互连接，结合上图，对$a_1$和$a_2$都有影响，因此梯度计算为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-c29dd5095c71c166.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这是score对输入$x_j$的最终梯度，而$\delta$是隐藏层误差（维度与隐藏单元个数相同），在前面已经计算过，可以直接拿来用。我们刚才计算的是score对所有变量的梯度，而我们正真要计算的是目标函数或者是误差函数对变量的梯度，我们的目标函数为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-859ac1cf23d43868.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png">，举个例子，误差对$U$的梯度，<br>$$\frac{\partial{J}}{U}=1{1-s+s_c &gt; 0}((-f(Wx+b)+f(Wx_c+b)) \<br>= 1{1-s+s_c &gt; 0}(a+a_c)$$<br>因为前面已经介绍过score $s$对个参数的求导，根据这种方式，就可以求误差对所有参数的梯度。</p>
+<h2 id="采用反向传播进行训练"><a href="#采用反向传播进行训练" class="headerlink" title="采用反向传播进行训练"></a>采用反向传播进行训练</h2><p>定义好目标函数/损失函数之后，采用反向传播的方式进行训练。s和$s_c$得分计算公式为$s=U^{T}f(Wx+b)=U^{T}a$和$s_c=U^{T}f(Wx_c+b)=U^{T}a$,之后通过计算s和$s_c$对所有相关变量$U,W,b,x$的梯度，进而更新每个参数。</p>
+<script type="math/tex; mode=display">\frac{\partial{s}}{\partial{U}}=\frac{\partial{U^Ta}}{\partial{U}}=a</script><p>下面来推导对隐藏层参数$Wij$的导数，根据score计算公式有</p>
+<script type="math/tex; mode=display">\frac{\partial{s}}{\partial{W}}=\frac{\partial{U^Ta}}{\partial{W}}=\frac{\partial{U^Tf(Wx+b)}}{\partial{W}}</script><p>这个我们要清楚所要求的是哪个参数的梯度，由于我们求得是$Wij$的梯度，它只会出现在第i个神经元中，如图所示，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-8b918e77415e1293.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>$W_23$只在第二个$a_2$中出现，因此得到$Wij$的梯度为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-a73bf9eb7436bbd7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>由于bias b并不含变量$W_ij$,因此可得到下式，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-bd6cfef08b2398f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在上式中，$\delta_i$表示的隐藏单元误差，即<strong>local error signal</strong>，<strong>f</strong>代表神经元所选用的激活函数，因此推广到整个隐藏层，可以得到<br>$\frac{\partial{s}}{\partial{W}}=\delta{x^T}$<br>s对偏置的导数，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-84ff2187e6e96fa8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>反向传播梯度计算的一个方便之处是在计算后面层中变量梯度时，可以直接用前面层计算结果而不需要重新计算。</p>
+<p>下面推导score对输入词向量的x的导数，由于任意一个输入$x_j$都与所有的神经元相互连接，结合上图，对$a_1$和$a_2$都有影响，因此梯度计算为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-c29dd5095c71c166.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这是score对输入$x_j$的最终梯度，而$\delta$是隐藏层误差（维度与隐藏单元个数相同），在前面已经计算过，可以直接拿来用。我们刚才计算的是score对所有变量的梯度，而我们正真要计算的是目标函数或者是误差函数对变量的梯度，我们的目标函数为，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-859ac1cf23d43868.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png">，举个例子，误差对$U$的梯度，</p>
+<script type="math/tex; mode=display">\frac{\partial{J}}{U}=1\{1-s+s_c > 0\}((-f(Wx+b)+f(Wx_c+b)) \\
+= 1\{1-s+s_c > 0\}(a+a_c)</script><p>因为前面已经介绍过score $s$对个参数的求导，根据这种方式，就可以求误差对所有参数的梯度。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这次课程介绍了词向量训练，词窗口分类，softmax和cross entropy error，scores和maximum margin loss，及简单的NN，误差对个变量的梯度，下一节课会详细介绍back propagation的思想。</p>
 
       
@@ -473,6 +477,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/08/Paper-notes-attention-is-all-you-need/" rel="prev" title="Paper notes-Attention is all you need">
+                Paper notes-Attention is all you need <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -563,7 +571,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -571,7 +579,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -580,7 +588,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
