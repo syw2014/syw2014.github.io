@@ -1299,10 +1299,8 @@ pre .javascript .function {
     display: none;
   }
 }
-@media (max-width: 767px) {
-  .posts-expand .post-comments-count {
-    display: none;
-  }
+.posts-expand .post-comments-count {
+  display: none;
 }
 .post-more-link {
   margin-top: 50px;
@@ -1653,7 +1651,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #5d5dab;
+  background: #88ffc6;
 }
 .links-of-blogroll {
   font-size: 13px;
