@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-9634bc558b6b2252.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-5ce2293e31cd8728.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-b863b6bcaf488c99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-03-26T00:52:07.251Z">
+<meta property="og:updated_time" content="2018-03-26T00:54:45.979Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="paper-notes-entity-linking">
 <meta name="twitter:description" content="论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection最近在看知识图谱应用方面的报告，看到了清华大学做的图谱，然后就尝试了下。最让吸引我的是那么做的实体链接相关的工作(地址)，效果非常好，截图如下。">
@@ -409,7 +409,7 @@
 </li>
 <li><p>Context Mention and Entity<br>定义在同一篇文档或同一个词窗口内除m以为的mention记为$C<em>{M}(m)={m</em>{c1}, m<em>{c2},…,m</em>{|C<em>{M}(m)|}} \subseteq M$,但这个集合中的mention并不一定有对应的实体链接，记可能被mention链接的实体集合为$C</em>{E}(m)={e<em>{c1}, e</em>{c2},…,e<em>{|C</em>{M}(m)|}} \subseteq M$<br>定义完所需要的符号之后，那么一起来看下文章具体的实现思路。</p>
 </li>
-<li>Preprocessing<br>首先根据构建一个dictionary D，它包含所有实体的各种形式【待添加】。词典是key value形式，key实体表面形式的一个列表，value是这些形式对应的实体集合，之后根据文档d生成一个mention集合(ngram, n &lt; 5)，然后再D中进行查询，如果在key中出现则加入到mention集合，这样就生成了一个mention集合M，在查询key的同时会把对应实体加入到E（m）.<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2>整个算法思路是这样的，首先根据标注的数据分别训练EL模型和NED模型，首先构造出两个特征向量（下文会详细介绍），利用分类模型训练出两个权重向量$W<em>{el}={w</em>{1}^{el},w<em>{2}^{el},w</em>{3}^{el},w<em>{4}^{el}}$,和$W</em>{ned}={w<em>{1}^{ned},w</em>{2}^{ned},w<em>{3}^{ned},w</em>{4}^{ned}}$,NED模型输出表示一个m是实体的confidence，EL模型输出表示的是一个m链接到一个实体e的confidence，之后可以通过模型相互迭代来不断提高confidence，增最终的链接准确率。整体架构图如下，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-5ce2293e31cd8728.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+<li>Preprocessing<br>首先根据构建一个dictionary D，它包含所有实体的各种形式【待添加】。词典是key value形式，key实体表面形式的一个列表，value是这些形式对应的实体集合，之后根据文档d生成一个mention集合(ngram, n &lt; 5)，然后再D中进行查询，如果在key中出现则加入到mention集合，这样就生成了一个mention集合M，在查询key的同时会把对应实体加入到E（m）.<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2>整个算法思路是这样的，首先根据标注的数据分别训练EL模型和NED模型，首先构造出两个特征向量（下文会详细介绍），利用分类模型训练出两个权重向量<script type="math/tex">W_{el}=\{w_{1}^{el},w_{2}^{el},w_{3}^{el},w_{4}^{el}\}</script>,和<script type="math/tex">W_{ned}=\{w_{1}^{ned},w_{2}^{ned},w_{3}^{ned},w_{4}^{ned}\}</script>,NED模型输出表示一个m是实体的confidence，EL模型输出表示的是一个m链接到一个实体e的confidence，之后可以通过模型相互迭代来不断提高confidence，增最终的链接准确率。整体架构图如下，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-5ce2293e31cd8728.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
 </ul>
 <h2 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h2><p>将NED 和EL模型当做一个二分类进行建模，文章中提到采用SVM算法。首先要做的就是整理训练集，如果m能真正链接到实体集$E(m)$中的实体$e_m$上，则$(m,e_m)$为positive sample，而m与其他实体实体组成的实体对则称为negative sample。EL和NED模型可以表示为，</p>
 <script type="math/tex; mode=display">El_m(e)=W_{el}\cdot F_m(e)\\
