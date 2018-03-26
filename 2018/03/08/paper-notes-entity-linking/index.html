@@ -94,27 +94,25 @@
 
 
   
-  <meta name="keywords" content="ResNet,Skip/Shortcut Connection," />
+  <meta name="keywords" content="Knowledge Graph,[object Object],Entity Linking," />
 
 
-<meta name="description" content="深层网络缺陷在ILSVRC比赛中，不断的有更深层次的网络提出，从AlexNet 到VGG，网络层数不断增加。依据DL 理论，随着网络深度的增加，模型效果至少会比浅层网络有提升，但事实确并非如此，">
-<meta name="keywords" content="ResNet,Skip&#x2F;Shortcut Connection">
+<meta name="description" content="论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection最近在看知识图谱应用方面的报告，看到了清华大学做的图谱，然后就尝试了下。最让吸引我的是那么做的实体链接相关的工作(地址)，效果非常好，截图如下。">
+<meta name="keywords" content="Knowledge Graph,[object Object],Entity Linking">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Understanding Residual Network">
-<meta property="og:url" content="http://syw2014.github.io/2017/12/07/Understanding-Residual-Network/index.html">
+<meta property="og:title" content="paper-notes-entity-linking">
+<meta property="og:url" content="http://syw2014.github.io/2018/03/08/paper-notes-entity-linking/index.html">
 <meta property="og:site_name" content="悯生">
-<meta property="og:description" content="深层网络缺陷在ILSVRC比赛中，不断的有更深层次的网络提出，从AlexNet 到VGG，网络层数不断增加。依据DL 理论，随着网络深度的增加，模型效果至少会比浅层网络有提升，但事实确并非如此，">
+<meta property="og:description" content="论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection最近在看知识图谱应用方面的报告，看到了清华大学做的图谱，然后就尝试了下。最让吸引我的是那么做的实体链接相关的工作(地址)，效果非常好，截图如下。">
 <meta property="og:locale" content="zh-hans">
-<meta property="og:image" content="https://i.imgur.com/csfsV9H.png">
-<meta property="og:image" content="https://i.imgur.com/sbdhqig.png">
-<meta property="og:image" content="https://i.imgur.com/xKSRM4V.png">
-<meta property="og:image" content="https://i.imgur.com/QxyC0m5.png">
-<meta property="og:image" content="https://i.imgur.com/fWduS5M.png">
-<meta property="og:updated_time" content="2018-02-08T06:25:51.269Z">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-9634bc558b6b2252.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-5ce2293e31cd8728.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-b863b6bcaf488c99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-03-26T00:49:13.193Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Understanding Residual Network">
-<meta name="twitter:description" content="深层网络缺陷在ILSVRC比赛中，不断的有更深层次的网络提出，从AlexNet 到VGG，网络层数不断增加。依据DL 理论，随着网络深度的增加，模型效果至少会比浅层网络有提升，但事实确并非如此，">
-<meta name="twitter:image" content="https://i.imgur.com/csfsV9H.png">
+<meta name="twitter:title" content="paper-notes-entity-linking">
+<meta name="twitter:description" content="论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection最近在看知识图谱应用方面的报告，看到了清华大学做的图谱，然后就尝试了下。最让吸引我的是那么做的实体链接相关的工作(地址)，效果非常好，截图如下。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2423131-9634bc558b6b2252.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -123,7 +121,7 @@
 
 
 
-  <link rel="canonical" href="http://syw2014.github.io/2017/12/07/Understanding-Residual-Network/"/>
+  <link rel="canonical" href="http://syw2014.github.io/2018/03/08/paper-notes-entity-linking/"/>
 
 
 
@@ -132,7 +130,7 @@
     sidebar: "",
   };
 </script>
-  <title>Understanding Residual Network | 悯生</title>
+  <title>paper-notes-entity-linking | 悯生</title>
   
 
 
@@ -295,7 +293,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://syw2014.github.io/2017/12/07/Understanding-Residual-Network/">
+    <link itemprop="mainEntityOfPage" href="http://syw2014.github.io/2018/03/08/paper-notes-entity-linking/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="悯生">
@@ -312,7 +310,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Understanding Residual Network</h1>
+          <h1 class="post-title" itemprop="name headline">paper-notes-entity-linking</h1>
         
 
         <div class="post-meta">
@@ -324,7 +322,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-07T09:11:58+08:00">2017-12-07</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-08T16:24:11+08:00">2018-03-08</time>
             
 
             
@@ -334,38 +332,6 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Deep-Learning/Paper-Notes/" itemprop="url" rel="index"><span itemprop="name">Paper Notes</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Deep-Learning/Paper-Notes/Residual-Network/" itemprop="url" rel="index"><span itemprop="name">Residual Network</span></a></span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -373,7 +339,7 @@
 
           
           
-             <span id="/2017/12/07/Understanding-Residual-Network/" class="leancloud_visitors" data-flag-title="Understanding Residual Network">
+             <span id="/2018/03/08/paper-notes-entity-linking/" class="leancloud_visitors" data-flag-title="paper-notes-entity-linking">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -404,30 +370,35 @@
       
 
       
-        <h2 id="深层网络缺陷"><a href="#深层网络缺陷" class="headerlink" title="深层网络缺陷"></a>深层网络缺陷</h2><p>在ILSVRC比赛中，不断的有更深层次的网络提出，从AlexNet 到VGG，网络层数不断增加。依据DL 理论，随着网络深度的增加，模型效果至少会比浅层网络有提升，但事实确并非如此，<br><a id="more"></a><br>网络training error 会有增加，造成这种现象的原因可能如下：</p>
-<ul>
-<li>梯度弥散（Vanishing Gradients）</li>
-<li>梯度爆炸（Gradients Explode）</li>
+        <h2 id="论文笔记：-Domain-Specific-Entity-Linking-via-Fake-Named-Entity-Detection"><a href="#论文笔记：-Domain-Specific-Entity-Linking-via-Fake-Named-Entity-Detection" class="headerlink" title="论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection"></a>论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection</h2><p>最近在看知识图谱应用方面的报告，看到了清华大学做的图谱，然后就尝试了下。最让吸引我的是那么做的实体链接相关的工作(<a href="http://166.111.68.66:8880/EntityLinkingWeb/" target="_blank" rel="noopener">地址</a>)，效果非常好，截图如下。<br><a id="more"></a><br><img src="http://upload-images.jianshu.io/upload_images/2423131-9634bc558b6b2252.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>于是引起了我的好奇心，探究效果实现的原理，庆幸的是清华大学将他们的工作都发表了论文，那这篇笔记就是我看到的第一篇他们的文章<a href="https://link.springer.com/chapter/10.1007/978-3-319-32025-0_7" target="_blank" rel="noopener">Domain-Specific Entity Linking via Fake Named Entity Detection</a>,下面就来仔细分析他们实体链接的实现。</p>
+<h2 id="Named-Entity-Detection-and-Entity-Linking-Introduction"><a href="#Named-Entity-Detection-and-Entity-Linking-Introduction" class="headerlink" title="Named Entity Detection and Entity Linking Introduction"></a>Named Entity Detection and Entity Linking Introduction</h2><p>实体检测，是指从文本中检测出相关的实体；实体链接是将检测出的实体链接到已有知识库上，比如搜“王者荣耀怎么玩”，会检测出“王者荣耀”是一个实体，然后这个实体会被链接到知识库(一般自己构建或公开，这里用百度百科)“<a href="https://baike.baidu.com/item/%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80/18752941”" target="_blank" rel="noopener">https://baike.baidu.com/item/%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80/18752941”</a>.<br>传统的实体链接方式是先检测出实体，然后作为输入进行实体链接，忽略了实体检测(NED)和实体链接(EL)二者间的关联性，文章提出一种新的思路来在垂直领域进行EL，将NED和EL组成一个联合模型，实验结果表明这种方式可以满足使用场景。</p>
+<h2 id="Challenges-in-domain-specific-EL-problem"><a href="#Challenges-in-domain-specific-EL-problem" class="headerlink" title="Challenges in domain-specific EL problem"></a>Challenges in domain-specific EL problem</h2><ul>
+<li>Fake Named Entity<br>假命名实体，这个概念是这篇文章首次提出的。给定一个文档(这里指一条文本数据)和一个特定领域的知识库，文档中会存在很多<strong>常用短语</strong>(Common phrases)可能链接到知识库的某个实体上，但并不是所有的短语都有对应的实体链接，那些能够成功链接到知识库上的短语称作<strong>真实实体(True Named Entity, TNE)</strong>,不能够链接到知识库的短语称作<strong>假实体(False Named Entity, FNE)</strong>.传统方法并不会考虑FNE的问题，而且对于垂直领域进行EL效果并不好。</li>
+<li>Interdeependency<br>现在流行的做法是将NED和EL用pipline 或sequencial的方式来设计，并不会考虑NED和EL直接的依赖性。如果NED选择了FNE，那么肯定会影响EL最终效果。<br>检测FNE和将正确的短语文本(mention)是很重要的，在垂直领域中textual mention 会比较有歧义性，必须考虑同时考虑NED和EL。</li>
 </ul>
-<p>那么为什么会存在这些问题呢？首先我们知道随着网络加深，会使梯度信息很快下降到零，梯度为零，整体训练就会变慢。更具体点，我们采用backpropagation将梯度从最后一层向第一层进行传递，这个过程中梯度信息不断与weight matrix相乘，如果梯度是0-1之间，就造成gradient很快降为0，意味着模型参数更新很小。同样情况，梯度也可能会成倍增长，造成梯度爆炸。</p>
-<h2 id="Residual-Network-介绍"><a href="#Residual-Network-介绍" class="headerlink" title="Residual Network 介绍"></a>Residual Network 介绍</h2><p>Residual Network 最大的贡献是引入了残差，首先来解释一下残差的概念。引用论文中identity block结构如下：<br><img src="https://i.imgur.com/csfsV9H.png" alt="identity block"></p>
-<p>这个block中，强制将input x 与左侧<strong>main path</strong> 子网络的输出相连，这种叫做<strong>shortcut</strong>或者<strong>skip connection</strong>，这种结构类似于电路里面的差份放大器。</p>
-<h3 id="残差-Residual"><a href="#残差-Residual" class="headerlink" title="残差(Residual)"></a>残差(Residual)</h3><p>假设没有shortcu的网络输出为<strong><em>A</em></strong>，即<strong><em>F(x)=A</em></strong>，引入shortcut之后的网络输出<strong><em>H(x)</em></strong>，因为做的是identity即恒等变换，所以<strong><em>H(x)=A=x+F(x)</em></strong>, 将上式做个变换，<strong><em>F(x)=H(x) - x</em></strong>，那么从这个式子中可以看到子网络F(x)学习到的是identity block的输出H(x)与输入x的差值，即被称作<strong>残差</strong>(Residual)。</p>
-<h3 id="Skip-Connection-作用"><a href="#Skip-Connection-作用" class="headerlink" title="Skip Connection 作用"></a>Skip Connection 作用</h3><p><img src="https://i.imgur.com/sbdhqig.png" alt="Skip Connection"></p>
-<p>知道了什么是残差，下面来分析一下这种skip connection为什么能够使得网络可以达到更深、更易训练。<br>上图左侧的图是传统<strong><em>main path</em></strong> network，右侧是带有skip connection的residual block，利用这种block可以构建深层网络。传统网络和residual 网络主要区别是，传统网络直接学习网络输出H(x)，而residual网络学习的是输出H(x)和输入x的残差，因此我们可以选择让子网络F(x)输出为0，使得H(x)直接等于输入x，那么一个多层子网络的输出仅仅就是最后一层子网络输出。</p>
-<p>在反向传播过程中，利用残差网络可以很好的训练网络，因为可以忽略一些main path 子网络中的信息，不需要做特殊改变，通过shortcut直接从深层次网络传向低层次网络，这就使得梯度不必在所有层都进行计算，降低网络计算复杂度，同时也缓解了vanishing gradient。从另一个角度来考虑，输入x是一种低级特征，而网络中间输出可以理解成是高级或高纬特征，residual network将二者进行结合，从而能提供网络性能。</p>
-<h3 id="Skip-Connetion-种类"><a href="#Skip-Connetion-种类" class="headerlink" title="Skip Connetion 种类"></a>Skip Connetion 种类</h3><p>从前文分析中可知，skip connection对深层次网络有着重要的作用，如何实现这种skip connection呢？根据输入x和子网络F(x)输出维度的不同可分为两种实现。</p>
-<ul>
-<li><p><strong>The idenetity block</strong><br>当输入x和子网络F(x)输出维度相同时，可以直接将而二者进行相加，如下图所示，<br><img src="https://i.imgur.com/xKSRM4V.png" alt="identity block"><br>上面那条路径就是shortcut或者说skip connection，下面是普通<strong>main path</strong>。</p>
+<h2 id="Introduce-fundamental-concepts"><a href="#Introduce-fundamental-concepts" class="headerlink" title="Introduce fundamental concepts"></a>Introduce fundamental concepts</h2><ul>
+<li>Domain-Specific Knowledge Base<br>将知识库定义为$DSKB={C,E,P,R}$，其中C表示概念集合(concepts)比如这里是影视知识库，那么概念可以是演员、电影、制片人等；E是概念下面的实体；P是描述概念和实体的属性结合比如演员名字、电影上映时间等；R是一个三元组集合，每个元素都是一个三元组，描述的是两个实体间的关系或实体和概念间的关系。文章中提到的影视知识库数据来源于百度百科、豆瓣，包括23个concept，91个properties，多余70w个实体，1000w个三元组。</li>
+<li><p>Mentions and Linked Entites<br>这里的mention都是一些可能被链接到实体上的文本短语，这些短语都是有小于5个字的词组成。作如下内容定义，$M={m<em>1,m_2,..,m</em>{|M|}}$表示mention的集合，$E(m)={e<em>1, e_2,…,e</em>{E{(m)}}}$表示候选mention m可能链接的候选实体集合；$e_m \in E(m)$表示m真是链接的实体.</p>
 </li>
-<li><p><strong>The convolutional block</strong><br>当输入x和子网络F(x)输出维度不同时，通过一个卷积将二者维度转换为相同，网络结构如图所示：<br><img src="https://i.imgur.com/QxyC0m5.png" alt="convolutional block"></p>
+<li><p>Fake Named Entity<br>定义$M<em>F = {m</em>{f1}, m<em>{f2},…,m</em>{|M<em>F|}} \subseteq M$，表示没有对应实体链接的mentions，$M_T = {m</em>{t1}, m<em>{t2},…,m</em>{|M_T|}} \subseteq M$，表示可以链接到实体的mention集合。</p>
 </li>
+<li><p>Context Mention and Entity<br>定义在同一篇文档或同一个词窗口内除m以为的mention记为$C<em>{M}(m)={m</em>{c1}, m<em>{c2},…,m</em>{|C<em>{M}(m)|}} \subseteq M$,但这个集合中的mention并不一定有对应的实体链接，记可能被mention链接的实体集合为$C</em>{E}(m)={e<em>{c1}, e</em>{c2},…,e<em>{|C</em>{M}(m)|}} \subseteq M$<br>定义完所需要的符号之后，那么一起来看下文章具体的实现思路。</p>
+</li>
+<li>Preprocessing<br>首先根据构建一个dictionary D，它包含所有实体的各种形式【待添加】。词典是key value形式，key实体表面形式的一个列表，value是这些形式对应的实体集合，之后根据文档d生成一个mention集合(ngram, n &lt; 5)，然后再D中进行查询，如果在key中出现则加入到mention集合，这样就生成了一个mention集合M，在查询key的同时会把对应实体加入到E（m）.<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2>整个算法思路是这样的，首先根据标注的数据分别训练EL模型和NED模型，首先构造出两个特征向量（下文会详细介绍），利用分类模型训练出两个权重向量$W<em>{el}={w</em>{1}^{el},w<em>{2}^{el},w</em>{3}^{el},w<em>{4}^{el}}$,和$W</em>{ned}={w<em>{1}^{ned},w</em>{2}^{ned},w<em>{3}^{ned},w</em>{4}^{ned}}$,NED模型输出表示一个m是实体的confidence，EL模型输出表示的是一个m链接到一个实体e的confidence，之后可以通过模型相互迭代来不断提高confidence，增最终的链接准确率。整体架构图如下，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-5ce2293e31cd8728.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
 </ul>
-<h2 id="Residual-Network-实现"><a href="#Residual-Network-实现" class="headerlink" title="Residual Network 实现"></a>Residual Network 实现</h2><p>这部分实现主依据resnet 原论文。论文中提到identity block实现有两种结构，如下图所示。<br><img src="https://i.imgur.com/fWduS5M.png" alt="implement"></p>
-<p>左侧是一种简单的实现被称作<strong>building block</strong>，每个main path(原论文中称作plain network)，这里有两层网络构成，都是 3 x 3 的卷积网络，第一个卷积之后紧跟着是一个Relu。<br>右侧网络是另一种实现，称作<strong>bottleneck building block</strong>，为什么称作bottleneck呢，因为这个plain network，前后两层用的是1 x 1卷积网络，这种卷积是最小、最细的结构，因此被称作bottleneck(个人见解)。这里 1 x 1卷积网络是用来降低和增加feature map维度。plain network中卷积之后(除了最后一个卷积)会跟着一个BN层，用来加速训练。</p>
-<p>这就是skip connection实现，都是采用最基本单元构成，实现起来也相对简单。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是对Residual network的简单分析，清楚了内部的结构及其原理，也可以很方便的进行实现，另外也可以很便捷的在一些有涉及图片任务中进行使用，相信效果会有提升。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://arxiv.org/abs/1512.03385" target="_blank" rel="noopener">1. Deep Residual Learning for Image Recognition</a><br><a href="https://wiseodd.github.io/techblog/2016/10/13/residual-net/" target="_blank" rel="noopener">2. Residual Net</a><br><a href="www.coursera.org/">3. Deep Learning Coursera</a></p>
+<h2 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h2><p>将NED 和EL模型当做一个二分类进行建模，文章中提到采用SVM算法。首先要做的就是整理训练集，如果m能真正链接到实体集$E(m)$中的实体$e_m$上，则$(m,e_m)$为positive sample，而m与其他实体实体组成的实体对则称为negative sample。EL和NED模型可以表示为，</p>
+<script type="math/tex; mode=display">El_m(e)=W_{el}\cdot F_m(e)\\
+Ned(m)=W_{ned} \cdot F(m)</script><p>对于EL模型，对候选实体集$E(m)$中所有实体进行计算，然后选择confidence最高作为最终m最终的链接实体；对于NED模型，对一个文档生成的所有mention进行计算，根据计算的score判断它是否是一个真实的实体。因此可以通过计算一个模型的输出来迭代另一个模型的特征，从而提高整体效果。</p>
+<h3 id="Features-in-EL-Model"><a href="#Features-in-EL-Model" class="headerlink" title="Features in EL Model"></a>Features in EL Model</h3><ul>
+<li><strong>Popularity</strong><br>这个指标主要是根据具体的场景进行设计，文章中所研究的是影视领域，主要数据为评论数据，因此人们更容易讨论流行和经典的影视作品，计算公式如下，<script type="math/tex; mode=display">Pri_m(e)=\frac{count_m(e)}{\Sigma_{e \in E(m)}count_m(e)}</script>其中，$count_m(e)$表示的是mention m链接到百度百科中实体的个数，比如“王者荣耀”一词，在百度百科中链接到实体“王者荣耀(2015年腾讯天美发行的MOBA手游)”的次数。(这里有点不理解的是，如果这个特征描述的是mention链接到百科实体e的次数，那这个次数不是1吗，会存在一个mention多次链接到同一实体的情况吗？)文章中同时提到这个特征可以离线进行计算。</li>
+<li>Context Relatedness<br>上下文关联性，同一篇文中的mention更倾向于讨论具有相同语义的一个或多个topic，基于这个原则出发，设计该特征，通过计算候选实体$e \in E(m)$（文档计算出的最大score的实体？）和其他context entites（其他mention对应的实体），具体计算公式如下：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-b863b6bcaf488c99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>其中<script type="math/tex">e_c</script>是指前一次EL模型mention m得到最大score的实体，记作$e_{top}(m_c)$.在计算context relatedness时采用两种方式进行计算，一种是WML基于维基百科的超链接结构，计算公式为$WML(e_i, e_j)=\frac{log(max(|E_i|,|E_j|))-log(|E_i \bigcup E_j|)}{log(|W|)-loog(min(|E_i|,|E_j|))}$,$E_i$和$E_j$是指链接到知识库中实体$e_i$和$e_j$的实体集合，W是知识库中所含实体的总数。另外一种方式是通过将实体$e_i$和$e_j$用bag-of-words进行表示然后计算Jaccard distance。</li>
+<li>Content Similarity<br>这个特征定义的是mention和它对应的entity之间的相似度，通过计算Jaccrad distance得到。</li>
+</ul>
+<h3 id="Features-in-NED-Model"><a href="#Features-in-NED-Model" class="headerlink" title="Features in NED Model"></a>Features in NED Model</h3><ul>
+<li>Link Probability</li>
+<li>Link Certainty</li>
+<li>Coherence</li>
+</ul>
 
       
     </div>
@@ -477,9 +448,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/ResNet/" rel="tag"><i class="fa fa-tag"></i>ResNet</a>
+            <a href="/tags/Knowledge-Graph/" rel="tag"><i class="fa fa-tag"></i>Knowledge Graph</a>
           
-            <a href="/tags/Skip-Shortcut-Connection/" rel="tag"><i class="fa fa-tag"></i>Skip/Shortcut Connection</a>
+            <a href="/tags/object-Object/" rel="tag"><i class="fa fa-tag"></i>[object Object]</a>
+          
+            <a href="/tags/Entity-Linking/" rel="tag"><i class="fa fa-tag"></i>Entity Linking</a>
           
         </div>
       
@@ -492,8 +465,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/05/image-caption-paper-notes/" rel="next" title="image caption paper notes">
-                <i class="fa fa-chevron-left"></i> image caption paper notes
+              <a href="/2018/03/03/text-semantics/" rel="next" title="Semantic correlation calculation">
+                <i class="fa fa-chevron-left"></i> Semantic correlation calculation
               </a>
             
           </div>
@@ -501,10 +474,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/11/Neo4j使用介绍/" rel="prev" title="Neo4j使用介绍">
-                Neo4j使用介绍 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -779,7 +748,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#深层网络缺陷"><span class="nav-number">1.</span> <span class="nav-text">深层网络缺陷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Residual-Network-介绍"><span class="nav-number">2.</span> <span class="nav-text">Residual Network 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#残差-Residual"><span class="nav-number">2.1.</span> <span class="nav-text">残差(Residual)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Skip-Connection-作用"><span class="nav-number">2.2.</span> <span class="nav-text">Skip Connection 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Skip-Connetion-种类"><span class="nav-number">2.3.</span> <span class="nav-text">Skip Connetion 种类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Residual-Network-实现"><span class="nav-number">3.</span> <span class="nav-text">Residual Network 实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#论文笔记：-Domain-Specific-Entity-Linking-via-Fake-Named-Entity-Detection"><span class="nav-number">1.</span> <span class="nav-text">论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Named-Entity-Detection-and-Entity-Linking-Introduction"><span class="nav-number">2.</span> <span class="nav-text">Named Entity Detection and Entity Linking Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Challenges-in-domain-specific-EL-problem"><span class="nav-number">3.</span> <span class="nav-text">Challenges in domain-specific EL problem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduce-fundamental-concepts"><span class="nav-number">4.</span> <span class="nav-text">Introduce fundamental concepts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Algorithm"><span class="nav-number">5.</span> <span class="nav-text">Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Training"><span class="nav-number">6.</span> <span class="nav-text">Training</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Features-in-EL-Model"><span class="nav-number">6.1.</span> <span class="nav-text">Features in EL Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Features-in-NED-Model"><span class="nav-number">6.2.</span> <span class="nav-text">Features in NED Model</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -950,9 +919,9 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://syw2014.github.io/2017/12/07/Understanding-Residual-Network/';
-        this.page.identifier = '2017/12/07/Understanding-Residual-Network/';
-        this.page.title = 'Understanding Residual Network';
+        this.page.url = 'http://syw2014.github.io/2018/03/08/paper-notes-entity-linking/';
+        this.page.identifier = '2018/03/08/paper-notes-entity-linking/';
+        this.page.title = 'paper-notes-entity-linking';
       };
       function loadComments () {
         var d = document, s = d.createElement('script');
