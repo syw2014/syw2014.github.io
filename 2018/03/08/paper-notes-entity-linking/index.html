@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-9634bc558b6b2252.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-5ce2293e31cd8728.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-b863b6bcaf488c99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-03-26T00:54:45.979Z">
+<meta property="og:updated_time" content="2018-03-26T00:57:57.960Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="paper-notes-entity-linking">
 <meta name="twitter:description" content="论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection最近在看知识图谱应用方面的报告，看到了清华大学做的图谱，然后就尝试了下。最让吸引我的是那么做的实体链接相关的工作(地址)，效果非常好，截图如下。">
@@ -403,11 +403,11 @@
 </ul>
 <h2 id="Introduce-fundamental-concepts"><a href="#Introduce-fundamental-concepts" class="headerlink" title="Introduce fundamental concepts"></a>Introduce fundamental concepts</h2><ul>
 <li>Domain-Specific Knowledge Base<br>将知识库定义为$DSKB={C,E,P,R}$，其中C表示概念集合(concepts)比如这里是影视知识库，那么概念可以是演员、电影、制片人等；E是概念下面的实体；P是描述概念和实体的属性结合比如演员名字、电影上映时间等；R是一个三元组集合，每个元素都是一个三元组，描述的是两个实体间的关系或实体和概念间的关系。文章中提到的影视知识库数据来源于百度百科、豆瓣，包括23个concept，91个properties，多余70w个实体，1000w个三元组。</li>
-<li><p>Mentions and Linked Entites<br>这里的mention都是一些可能被链接到实体上的文本短语，这些短语都是有小于5个字的词组成。作如下内容定义，$M={m<em>1,m_2,..,m</em>{|M|}}$表示mention的集合，$E(m)={e<em>1, e_2,…,e</em>{E{(m)}}}$表示候选mention m可能链接的候选实体集合；$e_m \in E(m)$表示m真是链接的实体.</p>
+<li><p>Mentions and Linked Entites<br>这里的mention都是一些可能被链接到实体上的文本短语，这些短语都是有小于5个字的词组成。作如下内容定义，<script type="math/tex">M=\{m_1,m_2,..,m_{|M|}\}</script>表示mention的集合，<script type="math/tex">E(m)=\{e_1, e_2,...,e_{E{(m)}}\}</script>表示候选mention m可能链接的候选实体集合；<script type="math/tex">e_m \in E(m)</script>表示m真是链接的实体.</p>
 </li>
-<li><p>Fake Named Entity<br>定义$M<em>F = {m</em>{f1}, m<em>{f2},…,m</em>{|M<em>F|}} \subseteq M$，表示没有对应实体链接的mentions，$M_T = {m</em>{t1}, m<em>{t2},…,m</em>{|M_T|}} \subseteq M$，表示可以链接到实体的mention集合。</p>
+<li><p>Fake Named Entity<br>定义<script type="math/tex">M_F = {m_{f1}, m_{f2},...,m_{|M_F|}} \subseteq M</script>，表示没有对应实体链接的mentions，<script type="math/tex">M_T = {m_{t1}, m_{t2},...,m_{|M_T|}} \subseteq M</script>，表示可以链接到实体的mention集合。</p>
 </li>
-<li><p>Context Mention and Entity<br>定义在同一篇文档或同一个词窗口内除m以为的mention记为$C<em>{M}(m)={m</em>{c1}, m<em>{c2},…,m</em>{|C<em>{M}(m)|}} \subseteq M$,但这个集合中的mention并不一定有对应的实体链接，记可能被mention链接的实体集合为$C</em>{E}(m)={e<em>{c1}, e</em>{c2},…,e<em>{|C</em>{M}(m)|}} \subseteq M$<br>定义完所需要的符号之后，那么一起来看下文章具体的实现思路。</p>
+<li><p>Context Mention and Entity<br>定义在同一篇文档或同一个词窗口内除m以为的mention记为<script type="math/tex">C_{M}(m)=\{m_{c1}, m_{c2},...,m_{|C_{M}(m)|}\} \subseteq M</script>,但这个集合中的mention并不一定有对应的实体链接，记可能被mention链接的实体集合为<script type="math/tex">C_{E}(m)=\{e_{c1}, e_{c2},...,e_{|C_{M}(m)|}\} \subseteq M</script><br>定义完所需要的符号之后，那么一起来看下文章具体的实现思路。</p>
 </li>
 <li>Preprocessing<br>首先根据构建一个dictionary D，它包含所有实体的各种形式【待添加】。词典是key value形式，key实体表面形式的一个列表，value是这些形式对应的实体集合，之后根据文档d生成一个mention集合(ngram, n &lt; 5)，然后再D中进行查询，如果在key中出现则加入到mention集合，这样就生成了一个mention集合M，在查询key的同时会把对应实体加入到E（m）.<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2>整个算法思路是这样的，首先根据标注的数据分别训练EL模型和NED模型，首先构造出两个特征向量（下文会详细介绍），利用分类模型训练出两个权重向量<script type="math/tex">W_{el}=\{w_{1}^{el},w_{2}^{el},w_{3}^{el},w_{4}^{el}\}</script>,和<script type="math/tex">W_{ned}=\{w_{1}^{ned},w_{2}^{ned},w_{3}^{ned},w_{4}^{ned}\}</script>,NED模型输出表示一个m是实体的confidence，EL模型输出表示的是一个m链接到一个实体e的confidence，之后可以通过模型相互迭代来不断提高confidence，增最终的链接准确率。整体架构图如下，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-5ce2293e31cd8728.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
 </ul>
