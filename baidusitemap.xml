@@ -5,20 +5,24 @@
     
   <url>
     <loc>http://syw2014.github.io/2018/03/08/paper-notes-entity-linking/</loc>
-    <lastmod>2018-03-26T00:49:13.193Z</lastmod>
+    <lastmod>2018-03-26T00:52:07.251Z</lastmod>
     <data>
         <display>
         <title>paper-notes-entity-linking</title>
         <pubTime>2018-03-08T08:24:11.000Z</pubTime>
         
-        <tag>Knowledge Graph</tag>
-         
-        <tag>[object Object]</tag>
-         
         <tag>Entity Linking</tag>
+         
+        <tag>Entity Detection</tag>
          
          
            
+             
+              <breadCrumb title="Knowledge Graph" url="http://syw2014.github.io/categories/Knowledge-Graph/"/>
+          
+             
+              <breadCrumb title="Entity Linking" url="http://syw2014.github.io/categories/Knowledge-Graph/Entity-Linking/"/>
+          
         </display>
     </data>
     </url>
