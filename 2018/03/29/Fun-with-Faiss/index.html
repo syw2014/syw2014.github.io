@@ -94,19 +94,23 @@
 
 
   
-  <meta name="keywords" content="Blog,悯生,机器学习,NLP,DL" />
+  <meta name="keywords" content="Faiss,Similarity Search,Vector Cluster," />
 
 
-<meta name="description" content="悯此忘真契，声名无求处。诗书来不及，江海渺难分。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="悯生">
-<meta property="og:url" content="http://syw2014.github.io/tags/word-vector-training/index.html">
+<meta name="description" content="Faiss">
+<meta name="keywords" content="Faiss,Similarity Search,Vector Cluster">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fun with Faiss">
+<meta property="og:url" content="http://syw2014.github.io/2018/03/29/Fun-with-Faiss/index.html">
 <meta property="og:site_name" content="悯生">
-<meta property="og:description" content="悯此忘真契，声名无求处。诗书来不及，江海渺难分。">
+<meta property="og:description" content="Faiss">
 <meta property="og:locale" content="zh-hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2423131-189164efe06cc1e3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-03-30T02:31:38.553Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="悯生">
-<meta name="twitter:description" content="悯此忘真契，声名无求处。诗书来不及，江海渺难分。">
+<meta name="twitter:title" content="Fun with Faiss">
+<meta name="twitter:description" content="Faiss">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2423131-189164efe06cc1e3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -115,7 +119,7 @@
 
 
 
-  <link rel="canonical" href="http://syw2014.github.io/tags/word-vector-training/"/>
+  <link rel="canonical" href="http://syw2014.github.io/2018/03/29/Fun-with-Faiss/"/>
 
 
 
@@ -124,7 +128,7 @@
     sidebar: "",
   };
 </script>
-  <title>Tag: word vector training | 悯生</title>
+  <title>Fun with Faiss | 悯生</title>
   
 
 
@@ -181,7 +185,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -271,58 +275,252 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>word vector training<small>Tag</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://syw2014.github.io/2018/03/29/Fun-with-Faiss/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="悯生">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/dasheng.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="悯生">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/01/30/cs244n-笔记5-lecture4-词窗口分类及NN基础/" itemprop="url">
-              
-                <span itemprop="name">cs244n-笔记5-lecture4-词窗口分类及神经网络基础</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">Fun with Faiss</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-30T09:12:03+08:00"
-              content="2018-01-30" >
-          01-30
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-29T10:28:16+08:00">2018-03-29</time>
+            
 
-    </header>
-  </article>
+            
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/29/Fun-with-Faiss/" class="leancloud_visitors" data-flag-title="Fun with Faiss">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Views&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/2423131-189164efe06cc1e3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Faiss"><br>Faiss<br><a id="more"></a></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p><a href="https://github.com/facebookresearch/faiss" target="_blank" rel="noopener">Faiss(Fast AI similarity search)</a> 是Facebook开源的一款基于dense vector快速search 和clustering的工具。底层基于C++实现，用python做封装，而且部分算法为GPU实现。本文主要记录Faiss的安装过程，Faiss随提供了python包，但是要基于conda，而conda在实际中用的较少，所以采用源码编译安装，并编译python接口。</p>
+<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><p>Faiss提供了<a href="https://github.com/facebookresearch/faiss/blob/master/INSTALL.md" target="_blank" rel="noopener">INSTALL </a>说明，它依赖于OpenBLAS/LAPACK，因此需实现安装。编译过程分为三个步骤</p>
+<ul>
+<li>编译C++ core 和examples</li>
+<li>编译python 接口</li>
+<li>编译GPU部分</li>
+</ul>
+<p>需要注意的是后面两步依赖于第一步的成功编译。</p>
+<h3 id="Install-OpenBLAS-LAPACK"><a href="#Install-OpenBLAS-LAPACK" class="headerlink" title="Install OpenBLAS/LAPACK"></a>Install OpenBLAS/LAPACK</h3><ul>
+<li>OpenBLAS 安装</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wget http://www.netlib.org/blas/blas.tgz</span><br><span class="line">tar zxf blas.tgz</span><br><span class="line">cd blas.tgz</span><br><span class="line">// 32位系统</span><br><span class="line">gfortran -O2 -std=legacy -fno-second-underscore -c *.f</span><br><span class="line">// 64 为系统</span><br><span class="line">gfortran -O3 -std=legacy -m64 -fno-second-underscore -fPIC -c *.f</span><br><span class="line">ar r libfblas.a *.o</span><br><span class="line">ranlib libfblas.a</span><br><span class="line">rm -rf *.o      // 清理文件</span><br><span class="line">export BLAS=~/src/BLAS-3.5.0/libfblas.a //导出BLAS环境变量</span><br></pre></td></tr></table></figure>
+<ul>
+<li>LAPACK</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">wget http://www.netlib.org/lapack/lapack.tgz</span><br><span class="line">tar zxf lapack.tgz</span><br><span class="line">cd lapack-3.8.0/</span><br><span class="line">cp INSTALL/make.inc.gfortran make.inc   # On Linux with lapack-3.2.1 or newer</span><br><span class="line">make lapacklib</span><br><span class="line">// 注意：在执行make lapacklib之前，编辑make.inc文件，给OPTS和NOOPT这两个设置都加上-fPIC选项。如果是64位系统，还需要加上-m64选项。修改后，看起来像这样：</span><br><span class="line">FORTRAN  = gfortran </span><br><span class="line">OPTS     = -O2 -frecursive -fPIC -m64</span><br><span class="line">DRVOPTS  = $(OPTS)</span><br><span class="line">NOOPT    = -O0 -frecursive -fPIC -m64</span><br><span class="line">LOADER   = gfortran</span><br><span class="line">make clean      # 清理文件</span><br><span class="line">export LAPACK=~/src/lapack-3.8.0/   # 导出LAPACK环境变量</span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试BLAS/Lapack</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">make tests/test_blas</span><br><span class="line"></span><br><span class="line">./tests/test_blas</span><br></pre></td></tr></table></figure>
+<p>至此前期的依赖已经完成，下面可以按照文档的安装进行，注意python接口编译完成之后需要将路径加载到系统路径，否则只能在编译所在目录使用，gpu版本编译的时候需要注意cuda的版本，避免和现有版本起冲突。</p>
 
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="悯生 WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="悯生 Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Faiss/" rel="tag"><i class="fa fa-tag"></i>Faiss</a>
+          
+            <a href="/tags/Similarity-Search/" rel="tag"><i class="fa fa-tag"></i>Similarity Search</a>
+          
+            <a href="/tags/Vector-Cluster/" rel="tag"><i class="fa fa-tag"></i>Vector Cluster</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/08/paper-notes-entity-linking/" rel="next" title="paper-notes-entity-linking">
+                <i class="fa fa-chevron-left"></i> paper-notes-entity-linking
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -343,8 +541,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -549,6 +756,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install"><span class="nav-number">2.</span> <span class="nav-text">Install</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-OpenBLAS-LAPACK"><span class="nav-number">2.1.</span> <span class="nav-text">Install OpenBLAS/LAPACK</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -694,6 +917,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.4"></script>
+
+
 
   
 
@@ -706,6 +933,23 @@
 
   
 
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://syw2014.github.io/2018/03/29/Fun-with-Faiss/';
+        this.page.identifier = '2018/03/29/Fun-with-Faiss/';
+        this.page.title = 'Fun with Faiss';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://mskitech.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
   
 
 
