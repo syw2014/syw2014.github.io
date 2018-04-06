@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=6.0.4">
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.0.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  
+  <meta name="keywords" content="前向计算,反向计算,AdaGrad,NN Tips and Tricks," />
+
+
+<meta name="description" content="关键词：神经网络，前向计算，反向传播，Max-margion Loss, xavier 参数初始化，梯度检查，学习率，Adgrad.这个笔记首先介绍单层和多层神经网络，如何使用NN进行分类任务。之后讨论如何利用反向传播（梯度下降）来训练神经网络，更新网络网络中的参数。然后讨论一些在实际训练网络中会涉及的问题，如激活函数选择、梯度检查、Xavier 参数初始化、学习率、Adagrad优化算法，最后探">
+<meta name="keywords" content="前向计算,反向计算,AdaGrad,NN Tips and Tricks">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cs244n-笔记6-lecture-notes3">
+<meta property="og:url" content="http://syw2014.github.io/2018/04/06/cs244n-笔记6-lecture-notes3/index.html">
+<meta property="og:site_name" content="悯生">
+<meta property="og:description" content="关键词：神经网络，前向计算，反向传播，Max-margion Loss, xavier 参数初始化，梯度检查，学习率，Adgrad.这个笔记首先介绍单层和多层神经网络，如何使用NN进行分类任务。之后讨论如何利用反向传播（梯度下降）来训练神经网络，更新网络网络中的参数。然后讨论一些在实际训练网络中会涉及的问题，如激活函数选择、梯度检查、Xavier 参数初始化、学习率、Adagrad优化算法，最后探">
+<meta property="og:locale" content="zh-hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-ad026b24a407e734.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-a9b1637e392d0085.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-edf96a1102d36dfb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-c77dce298a887f1d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-e194d5729d9015e3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-31474e1bb7f8cc74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-fbd304fbbd806552.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-6ae1b6697e987fa4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-15128cf81c7d1105.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-46b195e02790f8ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-a4341fd781261e26.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-4a375917fcfd87d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-cfaca7c88bdb78ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-89c944a5fd054365.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-3097260485b22656.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-1afd88da34744058.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2423131-67d67cad0ddbe764.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2423131-cb2e5733705cace7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-04-06T06:09:56.130Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cs244n-笔记6-lecture-notes3">
+<meta name="twitter:description" content="关键词：神经网络，前向计算，反向传播，Max-margion Loss, xavier 参数初始化，梯度检查，学习率，Adgrad.这个笔记首先介绍单层和多层神经网络，如何使用NN进行分类任务。之后讨论如何利用反向传播（梯度下降）来训练神经网络，更新网络网络中的参数。然后讨论一些在实际训练网络中会涉及的问题，如激活函数选择、梯度检查、Xavier 参数初始化、学习率、Adagrad优化算法，最后探">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2423131-ad026b24a407e734.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="悯生" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://syw2014.github.io/2018/04/06/cs244n-笔记6-lecture-notes3/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+  <title>cs244n-笔记6-lecture-notes3 | 悯生</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ffb4a93df57204139bba53ccb1f4b2a0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">悯生</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">正心 诚意 修身</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://syw2014.github.io/2018/04/06/cs244n-笔记6-lecture-notes3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="悯生">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/dasheng.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="悯生">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">cs244n-笔记6-lecture-notes3</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-06T13:48:13+08:00">2018-04-06</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/NLP/CS244N/" itemprop="url" rel="index"><span itemprop="name">CS244N</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/06/cs244n-笔记6-lecture-notes3/" class="leancloud_visitors" data-flag-title="cs244n-笔记6-lecture-notes3">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Views&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>关键词：神经网络，前向计算，反向传播，Max-margion Loss, xavier 参数初始化，梯度检查，学习率，Adgrad.<br>这个笔记首先介绍单层和多层神经网络，如何使用NN进行分类任务。之后讨论如何利用反向传播（梯度下降）来训练神经网络，更新网络网络中的参数。然后讨论一些在实际训练网络中会涉及的问题，如激活函数选择、梯度检查、Xavier 参数初始化、学习率、Adagrad优化算法，最后探讨如何使用RNN来学习语言模型。<br><a id="more"></a></p>
+<h2 id="Neural-Networks-Foundations"><a href="#Neural-Networks-Foundations" class="headerlink" title="Neural Networks: Foundations"></a>Neural Networks: Foundations</h2><p>现实生活中的数据往往是线性不可分，因此需要类似于NN这种具有非线性决策边界的模型来实现分类任务，那就来看下NN是如何来实现非线性分类的。</p>
+<h3 id="A-Neuron"><a href="#A-Neuron" class="headerlink" title="A Neuron"></a>A Neuron</h3><p>一个神经元就是一计算单元，它是构成NN的最基本单元，输入$n$ input生成一个输出，每个神经元的输出是和相连的边也即是权重来决定的。常见的神经元激活函数是<strong>Sigmod</strong>函数（binary logistics regression），它接收一个$n$维的x，产生一个scalar a，在输入之前会有一个n维的权重向量w和一个bias b作用于x，具体计算为，</p>
+<script type="math/tex; mode=display">a=\frac{1}{1+exp(-(W^Tx+b))}</script><p>通常我们会将b集成得到w中，以表示成向量的形式，结构如图所示。</p>
+<script type="math/tex; mode=display">a=\frac{1}{1+exp(-[W^T \quad b]\dot[x \quad 1])}</script><p><img src="http://upload-images.jianshu.io/upload_images/2423131-ad026b24a407e734.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="A-Single-Layer-of-Neurons"><a href="#A-Single-Layer-of-Neurons" class="headerlink" title="A Single Layer of Neurons"></a>A Single Layer of Neurons</h3><p>将单个神经元扩展到多个神经元的情况，即我们将输入$x$输入到多个神经元中，但依然是单层网络，因为只有一层，结构图如下。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-a9b1637e392d0085.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>记不同神经元的权重为${w^{(1)},…,w^{(m)}}$,每个神经元的bias为<script type="math/tex">\{b_{1},...,b_{m} \}</script>,相应的神经元输出为<script type="math/tex">\{ a_{1},...,a_{m} \}</script></p>
+<script type="math/tex; mode=display">a_{1} = \frac{1}{1+exp(w^{(1)T}x+b1)} \\
+.\\
+.\\
+.\\
+a_{m} = \frac{1}{1+exp(w^{(m)T}x+bm)} \\</script><p>其中，每个w都是一个向量，其维度与x维度相同，m为神经元个数，表示成向量形式。</p>
+<script type="math/tex; mode=display">\sigma{(z)}=\left[\frac{1}{1+exp(z_1)},..., \frac{1}{1+exp(z_m)} \right]^T \\
+b = \left[ b_1,...,b_m \right]^T \in R^m \\
+W = \left[w^{(1)T},...,w^{(m)T} \right]^T \in R^{m\times n} \\
+z = Wx +b \\
+\left[ a^{(1)}, ..., a^{z}\right]^T = \sigma{(z)}=\sigma(Wx+b)</script><p>上面就是多个神经元情况下的输出计算公式，那么如何理解多个神经元情况呢?多个神经元可以理解为不同特征的加权组合，这样一来就可以解释为什么深度学习不需要人工特征工程。</p>
+<h3 id="Feed-forward-Computation"><a href="#Feed-forward-Computation" class="headerlink" title="Feed-forward Computation"></a>Feed-forward Computation</h3><p>前面我们已经看到如何将一个输入向量$x \in R^{n}$送到sigmod函数，并产生激活值$a \in R^m$.这个操作背后的含义是什么，如何去理解这个过程。以实体识别为例，这句话“Museums in Pairs are amazing”,要判断Pairs是否是一个实体词。这种情况下，我们不但希望获得词窗口中每个词的词向量，同时也希望能够得到这些词的分类情况。直接通过softmax计算是不能得到期望的结果，通常也需要中间层的输出分数，因此可以采用另外一个矩阵$U \in R^{m \times 1}$来得到非归一化的score，<script type="math/tex">s=U^TA=U^Tf(Wx+b)</script></p>
+<h3 id="Maximum-Margin-Objective-Function"><a href="#Maximum-Margin-Objective-Function" class="headerlink" title="Maximum Margin Objective Function"></a>Maximum Margin Objective Function</h3><p>和大多数机器学习模型一样，也需要有一种目标函数来度量NN模型，以最小化误差函数，这里介绍一种常用的误差函数-<strong>最大间隔</strong>，它的目标是使分为true label的score远远大于分为false label的score。<br>用前文提到NER的例子，记真实词窗口“Museums in Pairs are amazing”对应的score为$s$，错误词窗口“Not all museums in Pairs”对应的score为$s_c$(c的含义是“corrupt”)。我们的优化目标是$maximize(s-s_c)$或者$minimize(s_c-s)$.通常我们会将上述式子进一步变形为$s_c-s &gt; 0$,因为我们关注的仅仅是正例得分大于负例得分其他情况并不关心，所以我们希望误差是这样一种情况，当$s_c&gt; s$时误差为$s_c -s$，否则误差为0，这样目标函数变为，</p>
+<script type="math/tex; mode=display">minimize(J)=max(s_c-s, 0)</script><p>上述目标函数存在一个问题，它所产生的间隔并不是非常安全，怎么理解这个问题呢。想想一下，我们在做的分类有两个label，正类和负类，我们的目标是找到一个分割平面将这两类样本分开，按照上面的目标函数，正类和负类在分割平面的上（因为是$s_c-s$与0比较），这就存在一个分类风险，平面上点既可以是正类也可是负类。我们期望找的正类的score尽可能高于负类，最好是大到多出来一个微小的$\Delta$,一般我们会令$\Delta=1$，那么新的目标函数为，</p>
+<script type="math/tex; mode=display">minimize(J)=max(\Delta+s_c-s, 0)=max(1+s_c+s, 0)</script><p>其中，$s_c=U^Tf(Wx_c+b)$和$s=U^Tf(Wx+b)$.最大间隔目标函数在SVM算法中有更多的讨论。</p>
+<h3 id="Training-with-Backpropagation-Elemental"><a href="#Training-with-Backpropagation-Elemental" class="headerlink" title="Training with Backpropagation - Elemental"></a>Training with Backpropagation - Elemental</h3><p>这一节具体来讨论一下如何根据cost 函数训练模型参数，当cost为0时参数不需要更新，因为此时的梯度信息为零，参数更新公式为，</p>
+<script type="math/tex; mode=display">\theta^{(t+1)}=\theta^{(t)}-\alpha\Delta_{\theta^{(t)}}J</script><p>通过反向传播算法和链式法则来实现对每个参数的微分，为了进一步理解反向传播的过程，下面通过一个具体的例子来说明。网络结构图如下，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-edf96a1102d36dfb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这个神经网络含有一个单隐层和一个输出单元，符号说明。</p>
+<ul>
+<li>$x_i$ 网络输入</li>
+<li>$s$ 网络输出</li>
+<li>每一层网络都有输入和输出包括输入层和输出层，记第k层网络的第j个神经元的输入为<script type="math/tex">z_{j}^{k}</script>，神经元激活输出记作<script type="math/tex">a_{j}^{k}</script></li>
+<li>把第k层第j个神经元的反向传播误差记作$\delta_{j}^{k}$</li>
+<li>对于第一层来说是输入层，并不是第一个隐含层（出去输入层和输出层以为的层），对于输入层有，<script type="math/tex">x_j=z_{j}^{k}=a_{j}^{k}</script></li>
+<li>记第k层的输出到第k+1层的输入转换矩阵为$W^{(k)}$,有$W^{1}=W$和$W^{(2)}=U$<br>令目标函数为<script type="math/tex">J=(1+s_c-s)</script>,现在对上图中的<script type="math/tex">W_{14}^(1)</script>（第一层中的第4个神经元的权重），从网络结构中可以看出，这个参数贡献给<script type="math/tex">z_{1}^{(2)}</script>和<script type="math/tex">a_{1}^{(2)}</script>，由损失函数得到<script type="math/tex; mode=display">\frac{\partial J}{\partial s}=-\frac{\partial J}{\partial s}=-1</script>先来求score对权重$W_{ij}^{(1)}$的梯度，<script type="math/tex; mode=display">\frac{\partial s}{\partial W_{ij}^{(1)}}=\frac{\partial W^{(2)}a^{(2)}}{\partial W_{ij}^{(1)}}=\frac{\partial W_{i}^{(2)}a_{i}^{(2)}}{\partial W_{ij}^{(1)}} \\
+W_{i}^{(2)}\frac{\partial a_{i}^{(2)}}{\partial W_{ij}^{(1)}}=W_{i}^{(2)}\frac{\partial a_{i}^{(2)}}{\partial z_{i}^{(2)}}\frac{\partial z_{i}^{(2)}}{\partial W_{ij}^{(1)}} \\
+= W_{i}^{(2)} \frac{\partial f(z_{i}^{(2)})}{\partial z_{i}^{(2)}} \frac{\partial z_{i}^{(2)}}{\partial W_{ij}^{(1)}} \\
+= W_{i}^{(2)} f^{\prime}(z_{i}^{(2)}) \frac{\partial z_{i}^{(2)}}{\partial W_{ij}^{(1)}} \\
+= W_{i}^{(2)} f^{\prime}(z_{i}^{(2)}) \frac{\partial (b_{i}^{(1)} + a_{1}^{(1)}W_{i1}^{(1)}+a_{2}^{(1)}W_{i2}^{(1)})+a_{3}^{(1)}W_{i3}^{(1)}+a_{4}^{(1)}W_{i4}^{(1)}}{\partial W_{ij}^{(1)}} \\
+= W_{i}^{(2)} f^{\prime}(z_{i}^{(2)}) \frac{\partial (b_{i}^{(1)} + \Sigma_{k}a_{k}^{(1)}W_{ik}^{(1)})}{\partial W_{ij}^{(1)}} \\
+= W_{i}^{(2)} f^{\prime}(z_{i}^{(2)}) a_{j}^{(1)} \\
+= \delta_{i}^{(2)} \cdot a_{j}^{(1)}</script>其中j=i，<br>通过上面的推导过程发现，score对参数<script type="math/tex">W_{ij}^{(1)}</script>的梯度最终等于 <script type="math/tex">\delta_{i}^{(2)} \cdot a_{j}^{(1)}</script>，<script type="math/tex">\delta_{i}^{(2)}</script>是第2层第i个神经元的反向传播误差，<script type="math/tex">a_{j}^{(1)}</script>乘以<script type="math/tex">W_{ij}</script>是第2层第i个神经元的输入。下图为更新参数<script type="math/tex">w_{ij}^{(1)}</script>的子图<br><img src="http://upload-images.jianshu.io/upload_images/2423131-c77dce298a887f1d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>结合上图具体分析在反向传播过程中误差共享对的好处，假设我们对参数$W_{14}^{(1)}$进行更新。</li>
+<li>神经元1的误差开始从$a_{1}^{(3)}$（它是神经元1的输出）开始传播</li>
+<li>误差乘以神经元1的local gradient，因为神经元1是由<script type="math/tex">z_{1}^{(3)}=a_{1}^{(3)}</script>,此时的误差为1，即<script type="math/tex">\delta_{1}^{(3)}=1</script></li>
+<li>误差反向向前传播达到<script type="math/tex">z_{1}^{(3)}</script>,现在误差开始向<script type="math/tex">a_{1}^{(2)}</script>传播，同样误差也会向其他相连的神经元传播，这里以这个为例进行说明。</li>
+<li>此时的误差<script type="math/tex">\delta_{1}^{(3)} \cdot W_{1}^{(2)}=W_{1}^{(2)}</script>,因此在<script type="math/tex">a_{1}^{(2)}</script>的误差为<script type="math/tex">W_{1}^{(2)}</script></li>
+<li>和第二步一样，误差需要通过神经元下欠传递，因为<script type="math/tex">a_{1}^{(2)}=f(z_{1}^{(2)})</script>,所以此神经元的local gradient为<script type="math/tex">f^{\prime}(z_{1}^{(2)})</script></li>
+<li>因为<script type="math/tex">z_{1}^{(2)}</script>的误差为<script type="math/tex">\delta_{1}^{(2)}=f^{\prime}(z_{1}^{(2)}) \cdot W_{1}^{(2)}</script></li>
+<li>最后这个误差通过相乘依然向前传播到<script type="math/tex">W_{14}^{(1)}</script>，因此<script type="math/tex">W_{14}^{(1)}</script>最终的梯度为<script type="math/tex">a_{4}^{(1)}f^{\prime}(z_{1}^{(2)})W_{1}^{(2)}</script><br>通过分析网络得到的参数误差梯度和前面通过公式计算得到的一致，因为就可以通过这两种方式计算梯度。</li>
+</ul>
+<p><strong>Bias Updates</strong>:对于bias的更新和其他参数一样，对于第k层第i个神经元的bias误差是<script type="math/tex">\delta_{i}^{(k)}</script>。例如更新<script type="math/tex">b_{1}^{(1)}</script>，它的梯度为<script type="math/tex">f^{\prime}(z_{1}^{(2)})W_{1}^{(2)}</script><br><strong>Generalized steps to propagate <script type="math/tex">\delta^{(k)} to \delta^{(k-1)}</script></strong>,<br>示例如图，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-e194d5729d9015e3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/2423131-31474e1bb7f8cc74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<ul>
+<li>记<script type="math/tex">\delta_{i}^{(k)}</script>为第k层第i神经元输入<script type="math/tex">z_{i}^{(k)}</script>的误差，如图上图</li>
+<li>通过将误差$\delta<em>{i}^{(k)}$ 乘以路径上的权重$$W</em>{ij}^{(k-1)}<script type="math/tex">传播到</script>a<em>{j}^{(k-1)}$$,因此在$a</em>{j}^{(k-1)}$的误差为<script type="math/tex">delta_{i}^{(k)}W_{ij}^{(k-1)}</script></li>
+<li>因为<script type="math/tex">a_{j}^{(k-1)}</script>可能与下一层的多个神经元相连如上图8所示，它也接收第k层中其他节点m的误差，因此<script type="math/tex">a_{j}^{(k-1)}</script>接收到的误差为<script type="math/tex">delta_{i}^{(k)}W_{ij}^{(k-1)}+delta_{m}^{(k)}W_{mj}^{(k-1)}</script>,更进一步的，记作<script type="math/tex">\Sigma_{i}\delta_{i}^{(k)}W_{ij}^{(k-1)}</script></li>
+<li>现在得到了<script type="math/tex">a_{j}^{(k-1)}</script>的误差，然后通过乘以神经元的local gradient <script type="math/tex">f\prime{(z_{j}^{(k-1)})}</script>继续向前传递</li>
+<li>误差传递到了<script type="math/tex">z_{j}^{(k-1)}</script>,记作<script type="math/tex">\delta_{j}^{(k-1)}=f\prime(z_{j}^{(k-1)})\Sigma_{i}\delta_{i}^{(k)}W_{ij}^{(k-1)}</script></li>
+</ul>
+<p>以上就是误差从第k层传递到k-1层的具体过程。</p>
+<h3 id="Training-with-Backpropagation-Vectorized"><a href="#Training-with-Backpropagation-Vectorized" class="headerlink" title="Training with Backpropagation - Vectorized"></a>Training with Backpropagation - Vectorized</h3><p>上一节中我们讨论在模型中对某个具体的参数计算梯度，这节我们会用矩阵和向量的形式来表示模型参数和偏差，这样就可以通过一次运算计算出所有参数的梯度。对于一个给定参数<script type="math/tex">W_{ij}^{(k)}</script>的误差梯度为<script type="math/tex">\delta_{i}^{(k+1)}\times a_{j}^{(k)}</script>,我们记$W^{(k)}$表示从第k层的神经元输出$a^{(k)}$到下一层神经元输入$z^{(k+1)}$的权重矩阵，可以得到误差对整个权重矩阵的梯度，如下<br><img src="http://upload-images.jianshu.io/upload_images/2423131-fbd304fbbd806552.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>通过前面的公式我们可以得到误差向量<script type="math/tex">\delta_{j}^{(k)}=f^{\prime}(z_{j}^{(k)})\Sigma_{i}\delta_{i}^{(k+1)}W_{ij}^{(k)}</script>，将它变换为向量形式，</p>
+<script type="math/tex; mode=display">\delta^{(kk)}=f^{\prime}(z^{(k)})\circ (W^{(k)T}\delta^{(k+1)})</script><p>其中$\circ$表示向量之间进行 element wise product即两个向量对应元素之间进行相乘$(\circ: R^{N} \times R^{N} \to R^{N})$<br>为什么要以矩阵或者向量的形式进行计算呢？因为采用矩阵的形式进行计算，可以通过一个科学计算工具如Numpy/SciPy，而且还可以通过GPU在底层进行优化，另外也减少了计算的冗余。</p>
+<h2 id="Neural-Networks-Tips-and-Tricks"><a href="#Neural-Networks-Tips-and-Tricks" class="headerlink" title="Neural Networks: Tips and Tricks"></a>Neural Networks: Tips and Tricks</h2><p>前面从数学角度分析了NN背后的原理，这节将从实际应用的角度来分析一些tips 和 tricks。</p>
+<h3 id="Gradient-Check"><a href="#Gradient-Check" class="headerlink" title="Gradient Check"></a>Gradient Check</h3><p>下面介绍一种通过数值计算的方式近似求解参数梯度，这种方式可以作为梯度检查的有效判断。给定一个模型参数向量$\theta$ 和loss 函数$J$,则由中心差分公式给出$\theta_i$的数值梯度，</p>
+<script type="math/tex; mode=display">f^{\prime} \approx \frac{J(\theta^{(i+)})-J(\theta^{i-})}{2 \epsilon}</script><p>其中，$\epsilon$ 是一个很小的数据通常为$1e^{-5}$，$J(\theta^{(i+)})$是在前向计算过程中对参数$\theta$的第i个元素输入施加一个很小的扰动形成的误差，同理$J(\theta^{(i-)})$施加一个很小的扰动$-\epsilon$.通过这两个前向计算，可以近似计算模型中参数的梯度，因为这种方式是来源梯度的计算公式。<br>我们知道可以通过梯度检查可以计算参数的梯度，一个很自然的问题是为什么我们不利用梯度检查的方式计算梯度而是使用反向传播呢？主要是因为梯度检查的方式效率太低，每个参数的梯度需要进行2次前向计算，模型中可能会含有成百上万、甚至几十万个参数，这样的计算非常庞大，系统是不可能接受的，而通过反向传播，在每一次迭代的过程中我们可以计算出所有参数的梯度，效率非常高，正是这个原因采用反向传播使得神经网络的训练得到了极大的发展。下面给出一段梯度检查的代码，可以利用这个代码进行梯度检查。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">def eval_numerical_gradient(f, x):</span><br><span class="line">    &quot;&quot;&quot; A naive implementation of numerical gradient of f at x</span><br><span class="line">    Args:</span><br><span class="line">        f: should be a function that takes a single argument</span><br><span class="line">        x: is the point (numpy array) to evaluate the gradient at</span><br><span class="line">    Return:</span><br><span class="line">        grad: numerical gradient</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    fx = f(x) # evaluate function value at original point</span><br><span class="line">    grad = np.zeros(fx.shape)</span><br><span class="line">    h = 0.00001</span><br><span class="line">    # iterate over all indexes in x </span><br><span class="line">    it = np.nditer(x, flags=[&apos;multi_index&apos;], op_flags=[&apos;readwrite&apos;])</span><br><span class="line">    while not it.finished:   </span><br><span class="line">        # evaluate function at x +h</span><br><span class="line">        ix = it.multi_index</span><br><span class="line">        old_value = x[ix]</span><br><span class="line">        x[ix] = old_value + h # increment by h</span><br><span class="line">        fxh_left = f(x) # evaluate at f(x+h)</span><br><span class="line">        x[ix] = old_value - h # decrement by h</span><br><span class="line">        fxh_right = f(x) # evaluate at f(x-h)</span><br><span class="line">        x[ix] = old_value # restore to previous value</span><br><span class="line">        # compute the partial derivative</span><br><span class="line">        grad[ix] = (fxh_left - fxh_right) / (2*h)</span><br><span class="line">        it.iternext() # nneext dimension       </span><br><span class="line">    return grad</span><br></pre></td></tr></table></figure></p>
+<h3 id="Regularization"><a href="#Regularization" class="headerlink" title="Regularization"></a>Regularization</h3><p>神经网络和其他机器学习模型一样，很容易过拟合，因为模型会尽可能的利用训练数据去拟合，从而丢掉了泛华能力，也即是处理未知数据的能力。常用的解决过拟合问题(也称作高方差)技术手段是在损失函数中加入有参数构成的正则化项，一般可用的有L1-norm和L2-norm，如下，<br>$J<em>{R}=J+\lambda\Sigma</em>{i=1}^{L}\parallel{W^{(i)}}\parallel<em>{F}$<br>在上式中，$\parallel{W^{(i)}}\parallel</em>{F}$是全中矩阵的范数，W是所有参数矩阵除去偏差，每个元素i都代表一个网络中的权重矩阵， $\lambda$是超参数，用来控制正则化项对损失函数的贡献。正则化项的作用是使模型中的参数不至于过大，从而避免模型过拟合。参数$\lambda$需要不断的进行finetune，过大说明模型参数比较小，导致模型学习能力不够，学习效果变差；过小会造成过拟合。有一点是需要注意的，正则化项中并不含bias。除L2-norm以外，还有L1-norm，dropout等都是正则化技术。</p>
+<h3 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h3><p>Dropout同样是一个有效的正则化技术，首次在论文“Dropout: A Simple Way to Prevent Neural Networks from Overfitting”提出。主要思想在训练阶段，以（1-p）的概率在forward 和backword计算中，随机失活一部分神经元，p是需要设置的超参数，表示保留的概率，在测试阶段用全部的网络进行预测。这种随机失活神经元的做法可以从数据中学到更有价值的信息，防止过拟合，而且能够得到较好的效果。为什么dropout可以有如此的效果呢？一个直观感觉是，在训练阶段随机失活一部神经元，相当于形成了很多个不同的小的网络，而在预测的时候所有这些网络都加入预测，最终结果是这些网络融合的结果。<br>在实际的实现过程中，首先获得每个神经元的输出$h$，以概率p随机保留每个神经元，或者将其设置为0；在反向传播阶段，只计算那些在前向计算中保留的神经元的梯度，最后在测试阶段，用所有神经元进行预测。</p>
+<h3 id="Neuron-Units"><a href="#Neuron-Units" class="headerlink" title="Neuron Units"></a>Neuron Units</h3><p>在神经网络中有各种各样的激活函数，这节会对常用的非线性激活函数进行介绍。</p>
+<ul>
+<li><p><strong>Sigmod</strong>：公式如下：</p>
+<script type="math/tex; mode=display">\sigma(z)=\frac{1}{1+exp(z)}</script><p>其中，$\sigma(z) \in (0,1)$,函数曲线为：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-6ae1b6697e987fa4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>sigmod函数的导数为，</p>
+<script type="math/tex; mode=display">\sigma^{\prime}(z)=\frac{-exp(-z)}{1+exp(-z)}=\sigma(z)(1-\sigma(z))</script></li>
+<li><p><strong>tanh</strong>:它和sigmod函数的区别是，它的输出范围在-1 到1 直间，公式如下：</p>
+<script type="math/tex; mode=display">tanh(z)=\frac{exp(z)-exp(-z)}{exp(z)+exp(-z)}=2\sigma(2z)-1</script><p>其中，$tanh(z) \in (-1, 1)$<br>函数图像为：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-15128cf81c7d1105.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>函数导数为：</p>
+<script type="math/tex; mode=display">tanh\prime(z)=1-(\frac{exp(z)-exp(-z)}{exp(z)+exp(-z)})^2=1-tanh^{2}(z)</script></li>
+<li><p><strong>Hard tanh</strong>: 有些时候我们会选择这各激活函数，因为它计算代价比较小。函数公式和导数为<br><img src="http://upload-images.jianshu.io/upload_images/2423131-46b195e02790f8ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>函数图像为<br><img src="http://upload-images.jianshu.io/upload_images/2423131-a4341fd781261e26.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+</li>
+<li><p><strong>Soft sign</strong>:<br>函数公式和导数为：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-4a375917fcfd87d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>其中，sgn是符号函数，返回值取决于z的符号是+1 还是-1</p>
+</li>
+<li><p><strong>ReLU</strong>: rectified liniear unit,在深度网络经常使用，</p>
+<script type="math/tex; mode=display">rect(z)=max(z, 0)</script><p>导数为：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-cfaca7c88bdb78ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>函数图像为：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-89c944a5fd054365.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+</li>
+<li><p><strong>Leaky ReLU</strong>；<br>函数和导数为：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-3097260485b22656.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>函数图像为：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-1afd88da34744058.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+</li>
+</ul>
+<h2 id="Data-Preprocessing"><a href="#Data-Preprocessing" class="headerlink" title="Data Preprocessing"></a>Data Preprocessing</h2><p>在进行机器学习任务时，为了使得模型能够获得一个较好的效果，我们通常会对数据采取一些预处理策略，这些处理主要包括以下几个方面。</p>
+<ul>
+<li><p><strong>去均值</strong><br>通常我们希望数据的中心在零点，因此我们会把数据集减去一个均值，这个均值是利用训练集计算出来，但它会应用在validation、training、testing数据集上，以确保数据分布相同。</p>
+</li>
+<li><p><strong>归一化</strong><br>归一化是指将输入特征的维度都转换为相同的数值范围，便于处理，因为不同的特征获取的方式和来源都不同，因此需要进行归一化处理。将训练集中每部数据除以他们响应的标准差而进行归一化。</p>
+</li>
+<li><p><strong>白化</strong><br>白化（whitening）处理在图像处理领域中使用较多，它的目的是减少数据的冗余性、减少数据间的相关性、使所有特征具有相同的方差。为什么会有白化操作呢，拿图像来说，相邻像素之间具有很强的相关性，所以输入数据是冗余的，因此需要进行白化处理。具体的操作来说，首先对数据进行去均值，得到一个新的数据集$X^{\prime}$，然后使用SVD分解对$X^{\prime}$进行处理，得到矩阵$U,S,V$，然后将新数据集采用$UX^{\prime}$映射，最后将映射后的结果的每个维度除以S中对应的奇异值，如果奇异值为零用一个很小的数代替，从而完成白化处理。</p>
+</li>
+</ul>
+<p>以上这些预处理操作也需要结合具体的任务来操作，这里只是简单介绍几种方法。</p>
+<h2 id="Parameter-Initialization"><a href="#Parameter-Initialization" class="headerlink" title="Parameter Initialization"></a>Parameter Initialization</h2><p>深度学习另一外个需要注意点是参数的初始化策略，经过实际的验证发现，对于网络中的权重初利用正太分布进行随机初始化为0附件的一个值网络会获得一个较好的效果，而在实际的工程中，我们会选择Xavier初始化策略，该策略表明对于sigmoid 和tanh 函数，权重矩阵采用如下的一个正态分布进行初始化，bias初始化为0，会获得很好的效果.<br><img src="https://upload-images.jianshu.io/upload_images/2423131-67d67cad0ddbe764.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="learning-Strategies"><a href="#learning-Strategies" class="headerlink" title="learning Strategies"></a>learning Strategies</h2><p>对于学习策略，这里指的是学习率的设置问题，在进行网络训练的时候，我们遵循的一个原则是，刚开始训练的时候网络的loss比较大，梯度需要大幅度的进行减少，因此这个阶段需要有大的学习率，而在网络训练的后期，loss减少了很多，这个时候应该采用较小的幅度减少梯度，以避免梯度来回波动而无法达到最优值。在工程中会根据梯度的情况对梯度进行clip，对学习率进行衰减。</p>
+<h2 id="Adaptive-Optimization-Methods"><a href="#Adaptive-Optimization-Methods" class="headerlink" title="Adaptive Optimization Methods"></a>Adaptive Optimization Methods</h2><p>优化策略是深度学习中另外一个比较重要的策略。这里主要介绍一下AdaGrad，它是SGD的一种优化之后的方法，学习率对每个参数而言都是不相同的，它取决于前一次的梯度变化，换句话说如果之前的梯度改变不大那它的学习率会变大，具体公式如下<br><img src="https://upload-images.jianshu.io/upload_images/2423131-cb2e5733705cace7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>下面有几种实现方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># A1 RMS</span><br><span class="line"># Assume the gradient dx and parameter vector x</span><br><span class="line">cache += dx**2</span><br><span class="line">x += - learning_rate * dx / np.sqrt(cache + 1e-8)</span><br><span class="line"></span><br><span class="line"># --------------------------------</span><br><span class="line"># A2 RMSProp</span><br><span class="line"># Update rule for RMS prop</span><br><span class="line">cache = decay_rate * cache + (1 - decay_rate) * dx**2</span><br><span class="line">x += - learning_rate * dx / (np.sqrt(cache) + eps)</span><br><span class="line"></span><br><span class="line">#----------------------------------</span><br><span class="line"># A3 Adam</span><br><span class="line"># Update rule for Adam</span><br><span class="line">m = beta1*m + (1-beta1)*dx</span><br><span class="line">v = beta2*v + (1-beta2)*(dx**2)</span><br><span class="line">x += - learning_rate * m / (np.sqrt(v) +eps)</span><br></pre></td></tr></table></figure></p>
+<p>详细的优化策略后续会有文章单独介绍，敬请期待！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="悯生 WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="悯生 Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前向计算/" rel="tag"><i class="fa fa-tag"></i>前向计算</a>
+          
+            <a href="/tags/反向计算/" rel="tag"><i class="fa fa-tag"></i>反向计算</a>
+          
+            <a href="/tags/AdaGrad/" rel="tag"><i class="fa fa-tag"></i>AdaGrad</a>
+          
+            <a href="/tags/NN-Tips-and-Tricks/" rel="tag"><i class="fa fa-tag"></i>NN Tips and Tricks</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/29/Fun-with-Faiss/" rel="next" title="Fun with Faiss">
+                <i class="fa fa-chevron-left"></i> Fun with Faiss
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/dasheng.jpg"
+                alt="悯生" />
+            
+              <p class="site-author-name" itemprop="name">悯生</p>
+              <p class="site-description motion-element" itemprop="description">悯此忘真契，声名无求处。诗书来不及，江海渺难分。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                神奇链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://mskitech.com/about/" title="关于本站" target="_blank">关于本站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.jianshu.com/u/c44c1c14b248" title="作者简书" target="_blank">作者简书</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Neural-Networks-Foundations"><span class="nav-number">1.</span> <span class="nav-text">Neural Networks: Foundations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-Neuron"><span class="nav-number">1.1.</span> <span class="nav-text">A Neuron</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-Single-Layer-of-Neurons"><span class="nav-number">1.2.</span> <span class="nav-text">A Single Layer of Neurons</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Feed-forward-Computation"><span class="nav-number">1.3.</span> <span class="nav-text">Feed-forward Computation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maximum-Margin-Objective-Function"><span class="nav-number">1.4.</span> <span class="nav-text">Maximum Margin Objective Function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-with-Backpropagation-Elemental"><span class="nav-number">1.5.</span> <span class="nav-text">Training with Backpropagation - Elemental</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-with-Backpropagation-Vectorized"><span class="nav-number">1.6.</span> <span class="nav-text">Training with Backpropagation - Vectorized</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Neural-Networks-Tips-and-Tricks"><span class="nav-number">2.</span> <span class="nav-text">Neural Networks: Tips and Tricks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-Check"><span class="nav-number">2.1.</span> <span class="nav-text">Gradient Check</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Regularization"><span class="nav-number">2.2.</span> <span class="nav-text">Regularization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dropout"><span class="nav-number">2.3.</span> <span class="nav-text">Dropout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Neuron-Units"><span class="nav-number">2.4.</span> <span class="nav-text">Neuron Units</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-Preprocessing"><span class="nav-number">3.</span> <span class="nav-text">Data Preprocessing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parameter-Initialization"><span class="nav-number">4.</span> <span class="nav-text">Parameter Initialization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#learning-Strategies"><span class="nav-number">5.</span> <span class="nav-text">learning Strategies</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adaptive-Optimization-Methods"><span class="nav-number">6.</span> <span class="nav-text">Adaptive Optimization Methods</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">悯生</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.ui.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.4"></script>
+
+
+
+  
+
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://syw2014.github.io/2018/04/06/cs244n-笔记6-lecture-notes3/';
+        this.page.identifier = '2018/04/06/cs244n-笔记6-lecture-notes3/';
+        this.page.title = 'cs244n-笔记6-lecture-notes3';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://mskitech.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz", "qdahfkeMY3jcS1ebdMnOQr7I");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            
+            counter.save(null, {
+              success: function(counter) {
+                
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            
+              var newcounter = new Counter();
+              /* Set ACL */
+              var acl = new AV.ACL();
+              acl.setPublicReadAccess(true);
+              acl.setPublicWriteAccess(true);
+              newcounter.setACL(acl);
+              /* End Set ACL */
+              newcounter.set("title", title);
+              newcounter.set("url", url);
+              newcounter.set("time", 1);
+              newcounter.save(null, {
+                success: function(newcounter) {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                },
+                error: function(newcounter, error) {
+                  console.log('Failed to create');
+                }
+              });
+            
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
