@@ -2,86 +2,100 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://syw2014.github.io/2018/03/29/Fun-with-Faiss/</loc>
-    
-    <lastmod>2018-03-30T02:31:38.553Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://syw2014.github.io/2018/03/08/paper-notes-entity-linking/</loc>
-    
-    <lastmod>2018-03-26T01:05:24.150Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://syw2014.github.io/2018/03/03/text-semantics/</loc>
-    
-    <lastmod>2018-03-03T06:15:10.799Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://syw2014.github.io/2017/12/07/Understanding-Residual-Network/</loc>
-    
-    <lastmod>2018-02-08T06:25:51.269Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://syw2014.github.io/2018/02/08/Paper-notes-attention-is-all-you-need/</loc>
-    
-    <lastmod>2018-02-08T06:25:40.144Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://syw2014.github.io/2017/12/05/image-caption-paper-notes/</loc>
-    
-    <lastmod>2018-02-08T05:55:41.642Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://syw2014.github.io/2018/01/30/cs244n-%E7%AC%94%E8%AE%B05-lecture4-%E8%AF%8D%E7%AA%97%E5%8F%A3%E5%88%86%E7%B1%BB%E5%8F%8ANN%E5%9F%BA%E7%A1%80/</loc>
-    
-    <lastmod>2018-01-30T01:40:53.721Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://syw2014.github.io/2018/01/25/conceptual%20construction%20of%20KG/</loc>
-    
-    <lastmod>2018-01-25T08:53:04.648Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://syw2014.github.io/2017/11/10/Relation-Extraction-Survey/</loc>
-    
-    <lastmod>2018-01-25T08:49:12.395Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://syw2014.github.io/2018/01/08/cs244n-%E7%AC%94%E8%AE%B02-lecture-notes1/</loc>
     
-    <lastmod>2018-01-20T13:46:34.849Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://syw2014.github.io/2018/01/20/cs244n-%E7%AC%94%E8%AE%B04-lecture-notes2/</loc>
-    
-    <lastmod>2018-01-20T13:44:23.671Z</lastmod>
+    <lastmod>2018-04-06T03:50:18.861Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://syw2014.github.io/2018/01/13/cs244n-%E7%AC%94%E8%AE%B03-lecture3-%E9%AB%98%E7%BA%A7%E8%AF%8D%E5%90%91%E9%87%8F/</loc>
     
-    <lastmod>2018-01-20T13:44:21.562Z</lastmod>
+    <lastmod>2018-04-06T03:48:45.972Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://syw2014.github.io/2018/01/20/cs244n-%E7%AC%94%E8%AE%B04-lecture-notes2/</loc>
+    
+    <lastmod>2018-04-06T03:48:01.950Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://syw2014.github.io/2018/01/30/cs244n-%E7%AC%94%E8%AE%B05-lecture4-%E8%AF%8D%E7%AA%97%E5%8F%A3%E5%88%86%E7%B1%BB%E5%8F%8ANN%E5%9F%BA%E7%A1%80/</loc>
+    
+    <lastmod>2018-04-06T03:44:47.599Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://syw2014.github.io/2017/12/05/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0-Show%20and%20Tell%20A%20Neural%20Image%20Caption%20Generator/</loc>
+    
+    <lastmod>2018-04-06T03:42:59.456Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://syw2014.github.io/2018/03/03/text-semantics/</loc>
+    
+    <lastmod>2018-04-06T03:38:48.208Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://syw2014.github.io/2017/12/07/Understanding-Residual-Network/</loc>
+    
+    <lastmod>2018-04-06T03:36:54.480Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://syw2014.github.io/2018/03/08/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0-Domain%20Specific%20Entity%20Linking%20via%20Fake%20Named%20Entity%20Detection/</loc>
+    
+    <lastmod>2018-04-06T03:35:08.395Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://syw2014.github.io/2018/02/08/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0-Attention%20is%20all%20you%20need/</loc>
+    
+    <lastmod>2018-04-06T03:33:59.988Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://syw2014.github.io/2018/01/25/Conceptual%20Construction%20of%20KG/</loc>
+    
+    <lastmod>2018-04-06T03:27:40.278Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://syw2014.github.io/2017/11/10/Relation-Extraction-Survey/</loc>
+    
+    <lastmod>2018-04-06T03:27:01.756Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://syw2014.github.io/2016/07/24/Spark%20Deployment-2/</loc>
+    
+    <lastmod>2018-04-06T03:25:27.344Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://syw2014.github.io/2016/07/23/Spark%20Deployment-1/</loc>
+    
+    <lastmod>2018-04-06T03:24:58.241Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://syw2014.github.io/2018/03/29/Fun-with-Faiss/</loc>
+    
+    <lastmod>2018-03-30T02:31:38.553Z</lastmod>
     
   </url>
   
@@ -96,20 +110,6 @@
     <loc>http://syw2014.github.io/2016/07/24/leetcode-268/</loc>
     
     <lastmod>2016-07-24T12:14:42.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://syw2014.github.io/2016/07/24/Spark%20Deployment-2/</loc>
-    
-    <lastmod>2016-07-24T06:04:48.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://syw2014.github.io/2016/07/23/Spark%20Deployment-1/</loc>
-    
-    <lastmod>2016-07-24T05:17:50.000Z</lastmod>
     
   </url>
   

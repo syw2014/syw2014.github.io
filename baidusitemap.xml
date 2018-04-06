@@ -4,23 +4,28 @@
 
     
   <url>
-    <loc>http://syw2014.github.io/2018/03/29/Fun-with-Faiss/</loc>
-    <lastmod>2018-03-30T02:31:38.553Z</lastmod>
+    <loc>http://syw2014.github.io/2018/01/08/cs244n-%E7%AC%94%E8%AE%B02-lecture-notes1/</loc>
+    <lastmod>2018-04-06T03:50:18.861Z</lastmod>
     <data>
         <display>
-        <title>Fun with Faiss</title>
-        <pubTime>2018-03-29T02:28:16.000Z</pubTime>
+        <title>cs244n-笔记2-lecture notes1:词向量Part 1</title>
+        <pubTime>2018-01-08T13:41:37.000Z</pubTime>
         
-        <tag>Faiss</tag>
+        <tag>cs244n</tag>
          
-        <tag>Similarity Search</tag>
+        <tag>NLP</tag>
          
-        <tag>Vector Cluster</tag>
+        <tag>DL</tag>
+         
+        <tag>word2vec</tag>
          
          
            
              
               <breadCrumb title="NLP" url="http://syw2014.github.io/categories/NLP/"/>
+          
+             
+              <breadCrumb title="CS244N" url="http://syw2014.github.io/categories/NLP/CS244N/"/>
           
         </display>
     </data>
@@ -28,24 +33,113 @@
 
     
   <url>
-    <loc>http://syw2014.github.io/2018/03/08/paper-notes-entity-linking/</loc>
-    <lastmod>2018-03-26T01:05:24.150Z</lastmod>
+    <loc>http://syw2014.github.io/2018/01/13/cs244n-%E7%AC%94%E8%AE%B03-lecture3-%E9%AB%98%E7%BA%A7%E8%AF%8D%E5%90%91%E9%87%8F/</loc>
+    <lastmod>2018-04-06T03:48:45.972Z</lastmod>
     <data>
         <display>
-        <title>paper-notes-entity-linking</title>
-        <pubTime>2018-03-08T08:24:11.000Z</pubTime>
+        <title>cs244n-笔记3-lecture3:高级词向量</title>
+        <pubTime>2018-01-13T09:46:51.000Z</pubTime>
         
-        <tag>Entity Linking</tag>
+        <tag>cs244n</tag>
          
-        <tag>Entity Detection</tag>
+        <tag>NLP</tag>
+         
+        <tag>DL</tag>
+         
+        <tag>word2vec</tag>
          
          
            
              
-              <breadCrumb title="Knowledge Graph" url="http://syw2014.github.io/categories/Knowledge-Graph/"/>
+              <breadCrumb title="NLP" url="http://syw2014.github.io/categories/NLP/"/>
           
              
-              <breadCrumb title="Entity Linking" url="http://syw2014.github.io/categories/Knowledge-Graph/Entity-Linking/"/>
+              <breadCrumb title="CS244N" url="http://syw2014.github.io/categories/NLP/CS244N/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://syw2014.github.io/2018/01/20/cs244n-%E7%AC%94%E8%AE%B04-lecture-notes2/</loc>
+    <lastmod>2018-04-06T03:48:01.950Z</lastmod>
+    <data>
+        <display>
+        <title>cs244n-笔记4-lecture notes2:词向量Part 2</title>
+        <pubTime>2018-01-20T12:15:47.000Z</pubTime>
+        
+        <tag>cs244n</tag>
+         
+        <tag>NLP</tag>
+         
+        <tag>DL</tag>
+         
+        <tag>word2vec</tag>
+         
+         
+           
+             
+              <breadCrumb title="NLP" url="http://syw2014.github.io/categories/NLP/"/>
+          
+             
+              <breadCrumb title="CS244N" url="http://syw2014.github.io/categories/NLP/CS244N/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://syw2014.github.io/2018/01/30/cs244n-%E7%AC%94%E8%AE%B05-lecture4-%E8%AF%8D%E7%AA%97%E5%8F%A3%E5%88%86%E7%B1%BB%E5%8F%8ANN%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2018-04-06T03:44:47.599Z</lastmod>
+    <data>
+        <display>
+        <title>cs244n-笔记5-lecture4-词窗口分类及神经网络基础</title>
+        <pubTime>2018-01-30T01:12:03.000Z</pubTime>
+        
+        <tag>word vector training</tag>
+         
+        <tag>window classification</tag>
+         
+        <tag>neutral network</tag>
+         
+        <tag>maximum margin loss</tag>
+         
+        <tag>softmax and cross entropy error</tag>
+         
+         
+           
+             
+              <breadCrumb title="NLP" url="http://syw2014.github.io/categories/NLP/"/>
+          
+             
+              <breadCrumb title="CS244N" url="http://syw2014.github.io/categories/NLP/CS244N/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://syw2014.github.io/2017/12/05/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0-Show%20and%20Tell%20A%20Neural%20Image%20Caption%20Generator/</loc>
+    <lastmod>2018-04-06T03:42:59.456Z</lastmod>
+    <data>
+        <display>
+        <title>论文笔记-Show and Tell A Neural Image Caption Generator</title>
+        <pubTime>2017-12-05T03:31:11.000Z</pubTime>
+        
+        <tag>Image Caption</tag>
+         
+        <tag>encoder-decoder</tag>
+         
+         
+           
+             
+              <breadCrumb title="Deep Learning" url="http://syw2014.github.io/categories/Deep-Learning/"/>
+          
+             
+              <breadCrumb title="Image Caption" url="http://syw2014.github.io/categories/Deep-Learning/Image-Caption/"/>
           
         </display>
     </data>
@@ -54,7 +148,7 @@
     
   <url>
     <loc>http://syw2014.github.io/2018/03/03/text-semantics/</loc>
-    <lastmod>2018-03-03T06:15:10.799Z</lastmod>
+    <lastmod>2018-04-06T03:38:48.208Z</lastmod>
     <data>
         <display>
         <title>Semantic correlation calculation</title>
@@ -79,7 +173,7 @@
     
   <url>
     <loc>http://syw2014.github.io/2017/12/07/Understanding-Residual-Network/</loc>
-    <lastmod>2018-02-08T06:25:51.269Z</lastmod>
+    <lastmod>2018-04-06T03:36:54.480Z</lastmod>
     <data>
         <display>
         <title>Understanding Residual Network</title>
@@ -95,10 +189,7 @@
               <breadCrumb title="Deep Learning" url="http://syw2014.github.io/categories/Deep-Learning/"/>
           
              
-              <breadCrumb title="Paper Notes" url="http://syw2014.github.io/categories/Deep-Learning/Paper-Notes/"/>
-          
-             
-              <breadCrumb title="Residual Network" url="http://syw2014.github.io/categories/Deep-Learning/Paper-Notes/Residual-Network/"/>
+              <breadCrumb title="Residual Network" url="http://syw2014.github.io/categories/Deep-Learning/Residual-Network/"/>
           
         </display>
     </data>
@@ -106,11 +197,36 @@
 
     
   <url>
-    <loc>http://syw2014.github.io/2018/02/08/Paper-notes-attention-is-all-you-need/</loc>
-    <lastmod>2018-02-08T06:25:40.144Z</lastmod>
+    <loc>http://syw2014.github.io/2018/03/08/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0-Domain%20Specific%20Entity%20Linking%20via%20Fake%20Named%20Entity%20Detection/</loc>
+    <lastmod>2018-04-06T03:35:08.395Z</lastmod>
     <data>
         <display>
-        <title>Paper notes-Attention is all you need</title>
+        <title>论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection</title>
+        <pubTime>2018-03-08T08:24:11.000Z</pubTime>
+        
+        <tag>Entity Linking</tag>
+         
+        <tag>Entity Detection</tag>
+         
+         
+           
+             
+              <breadCrumb title="Knowledge Graph" url="http://syw2014.github.io/categories/Knowledge-Graph/"/>
+          
+             
+              <breadCrumb title="Entity Linking" url="http://syw2014.github.io/categories/Knowledge-Graph/Entity-Linking/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://syw2014.github.io/2018/02/08/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0-Attention%20is%20all%20you%20need/</loc>
+    <lastmod>2018-04-06T03:33:59.988Z</lastmod>
+    <data>
+        <display>
+        <title>论文笔记-Attention is all you need</title>
         <pubTime>2018-02-08T05:43:55.000Z</pubTime>
         
         <tag>Attention</tag>
@@ -127,10 +243,7 @@
               <breadCrumb title="Deep Learning" url="http://syw2014.github.io/categories/Deep-Learning/"/>
           
              
-              <breadCrumb title="Paper Notes" url="http://syw2014.github.io/categories/Deep-Learning/Paper-Notes/"/>
-          
-             
-              <breadCrumb title="Attention" url="http://syw2014.github.io/categories/Deep-Learning/Paper-Notes/Attention/"/>
+              <breadCrumb title="Attention" url="http://syw2014.github.io/categories/Deep-Learning/Attention/"/>
           
         </display>
     </data>
@@ -138,70 +251,8 @@
 
     
   <url>
-    <loc>http://syw2014.github.io/2017/12/05/image-caption-paper-notes/</loc>
-    <lastmod>2018-02-08T05:55:41.642Z</lastmod>
-    <data>
-        <display>
-        <title>image caption paper notes</title>
-        <pubTime>2017-12-05T03:31:11.000Z</pubTime>
-        
-        <tag>Image Caption</tag>
-         
-        <tag>encoder-decoder</tag>
-         
-         
-           
-             
-              <breadCrumb title="Deep Learning" url="http://syw2014.github.io/categories/Deep-Learning/"/>
-          
-             
-              <breadCrumb title="Paper Notes" url="http://syw2014.github.io/categories/Deep-Learning/Paper-Notes/"/>
-          
-             
-              <breadCrumb title="Image Caption" url="http://syw2014.github.io/categories/Deep-Learning/Paper-Notes/Image-Caption/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://syw2014.github.io/2018/01/30/cs244n-%E7%AC%94%E8%AE%B05-lecture4-%E8%AF%8D%E7%AA%97%E5%8F%A3%E5%88%86%E7%B1%BB%E5%8F%8ANN%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2018-01-30T01:40:53.721Z</lastmod>
-    <data>
-        <display>
-        <title>cs244n-笔记5-lecture4-词窗口分类及神经网络基础</title>
-        <pubTime>2018-01-30T01:12:03.000Z</pubTime>
-        
-        <tag>word vector training</tag>
-         
-        <tag>window classification</tag>
-         
-        <tag>neutral network</tag>
-         
-        <tag>maximum margin loss</tag>
-         
-        <tag>softmax and cross entropy error</tag>
-         
-         
-           
-             
-              <breadCrumb title="NLP" url="http://syw2014.github.io/categories/NLP/"/>
-          
-             
-              <breadCrumb title="course" url="http://syw2014.github.io/categories/NLP/course/"/>
-          
-             
-              <breadCrumb title="cs244n" url="http://syw2014.github.io/categories/NLP/course/cs244n/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://syw2014.github.io/2018/01/25/conceptual%20construction%20of%20KG/</loc>
-    <lastmod>2018-01-25T08:53:04.648Z</lastmod>
+    <loc>http://syw2014.github.io/2018/01/25/Conceptual%20Construction%20of%20KG/</loc>
+    <lastmod>2018-04-06T03:27:40.278Z</lastmod>
     <data>
         <display>
         <title>识图谱构建困惑之模式层</title>
@@ -223,7 +274,7 @@
               <breadCrumb title="Knowledge Graph" url="http://syw2014.github.io/categories/Knowledge-Graph/"/>
           
              
-              <breadCrumb title="KG Schema or Conceptual Construction" url="http://syw2014.github.io/categories/Knowledge-Graph/KG-Schema-or-Conceptual-Construction/"/>
+              <breadCrumb title="Conceptual Construction" url="http://syw2014.github.io/categories/Knowledge-Graph/Conceptual-Construction/"/>
           
         </display>
     </data>
@@ -232,7 +283,7 @@
     
   <url>
     <loc>http://syw2014.github.io/2017/11/10/Relation-Extraction-Survey/</loc>
-    <lastmod>2018-01-25T08:49:12.395Z</lastmod>
+    <lastmod>2018-04-06T03:27:01.756Z</lastmod>
     <data>
         <display>
         <title>Relation Extraction Survey</title>
@@ -250,7 +301,7 @@
               <breadCrumb title="Knowledge Graph" url="http://syw2014.github.io/categories/Knowledge-Graph/"/>
           
              
-              <breadCrumb title="RE" url="http://syw2014.github.io/categories/Knowledge-Graph/RE/"/>
+              <breadCrumb title="Relation Extraction" url="http://syw2014.github.io/categories/Knowledge-Graph/Relation-Extraction/"/>
           
         </display>
     </data>
@@ -258,31 +309,19 @@
 
     
   <url>
-    <loc>http://syw2014.github.io/2018/01/08/cs244n-%E7%AC%94%E8%AE%B02-lecture-notes1/</loc>
-    <lastmod>2018-01-20T13:46:34.849Z</lastmod>
+    <loc>http://syw2014.github.io/2016/07/24/Spark%20Deployment-2/</loc>
+    <lastmod>2018-04-06T03:25:27.344Z</lastmod>
     <data>
         <display>
-        <title>cs244n笔记2-lecture notes1:词向量Part 1</title>
-        <pubTime>2018-01-08T13:41:37.000Z</pubTime>
+        <title>Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网</title>
+        <pubTime>2016-07-24T05:21:36.000Z</pubTime>
         
-        <tag>cs244n</tag>
-         
-        <tag>NLP</tag>
-         
-        <tag>DL</tag>
-         
-        <tag>word2vec</tag>
+        <tag>虚拟机静态ip，上网</tag>
          
          
            
              
-              <breadCrumb title="NLP" url="http://syw2014.github.io/categories/NLP/"/>
-          
-             
-              <breadCrumb title="course" url="http://syw2014.github.io/categories/NLP/course/"/>
-          
-             
-              <breadCrumb title="cs244n" url="http://syw2014.github.io/categories/NLP/course/cs244n/"/>
+              <breadCrumb title="Big Data" url="http://syw2014.github.io/categories/Big-Data/"/>
           
         </display>
     </data>
@@ -290,31 +329,19 @@
 
     
   <url>
-    <loc>http://syw2014.github.io/2018/01/20/cs244n-%E7%AC%94%E8%AE%B04-lecture-notes2/</loc>
-    <lastmod>2018-01-20T13:44:23.671Z</lastmod>
+    <loc>http://syw2014.github.io/2016/07/23/Spark%20Deployment-1/</loc>
+    <lastmod>2018-04-06T03:24:58.241Z</lastmod>
     <data>
         <display>
-        <title>cs244n笔记4-lecture notes2:词向量Part 2</title>
-        <pubTime>2018-01-20T12:15:47.000Z</pubTime>
+        <title>Spark 开发环境搭建（一）- 虚拟机安装</title>
+        <pubTime>2016-07-23T04:05:09.000Z</pubTime>
         
-        <tag>cs244n</tag>
-         
-        <tag>NLP</tag>
-         
-        <tag>DL</tag>
-         
-        <tag>word2vec</tag>
+        <tag>spark 环境搭建</tag>
          
          
            
              
-              <breadCrumb title="NLP" url="http://syw2014.github.io/categories/NLP/"/>
-          
-             
-              <breadCrumb title="course" url="http://syw2014.github.io/categories/NLP/course/"/>
-          
-             
-              <breadCrumb title="cs244n" url="http://syw2014.github.io/categories/NLP/course/cs244n/"/>
+              <breadCrumb title="Big Data" url="http://syw2014.github.io/categories/Big-Data/"/>
           
         </display>
     </data>
@@ -322,31 +349,23 @@
 
     
   <url>
-    <loc>http://syw2014.github.io/2018/01/13/cs244n-%E7%AC%94%E8%AE%B03-lecture3-%E9%AB%98%E7%BA%A7%E8%AF%8D%E5%90%91%E9%87%8F/</loc>
-    <lastmod>2018-01-20T13:44:21.562Z</lastmod>
+    <loc>http://syw2014.github.io/2018/03/29/Fun-with-Faiss/</loc>
+    <lastmod>2018-03-30T02:31:38.553Z</lastmod>
     <data>
         <display>
-        <title>cs244n笔记3-lecture3:高级词向量</title>
-        <pubTime>2018-01-13T09:46:51.000Z</pubTime>
+        <title>Fun with Faiss</title>
+        <pubTime>2018-03-29T02:28:16.000Z</pubTime>
         
-        <tag>cs244n</tag>
+        <tag>Faiss</tag>
          
-        <tag>NLP</tag>
+        <tag>Similarity Search</tag>
          
-        <tag>DL</tag>
-         
-        <tag>word2vec</tag>
+        <tag>Vector Cluster</tag>
          
          
            
              
               <breadCrumb title="NLP" url="http://syw2014.github.io/categories/NLP/"/>
-          
-             
-              <breadCrumb title="course" url="http://syw2014.github.io/categories/NLP/course/"/>
-          
-             
-              <breadCrumb title="cs244n" url="http://syw2014.github.io/categories/NLP/course/cs244n/"/>
           
         </display>
     </data>
@@ -392,46 +411,6 @@
            
              
               <breadCrumb title="Algorithm &amp; Data Structure" url="http://syw2014.github.io/categories/Algorithm-Data-Structure/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://syw2014.github.io/2016/07/24/Spark%20Deployment-2/</loc>
-    <lastmod>2016-07-24T06:04:48.000Z</lastmod>
-    <data>
-        <display>
-        <title>Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网</title>
-        <pubTime>2016-07-24T05:21:36.000Z</pubTime>
-        
-        <tag>虚拟机静态ip，上网</tag>
-         
-         
-           
-             
-              <breadCrumb title="big data, spark" url="http://syw2014.github.io/categories/big-data-spark/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://syw2014.github.io/2016/07/23/Spark%20Deployment-1/</loc>
-    <lastmod>2016-07-24T05:17:50.000Z</lastmod>
-    <data>
-        <display>
-        <title>Spark 开发环境搭建（一）- 虚拟机安装</title>
-        <pubTime>2016-07-23T04:05:09.000Z</pubTime>
-        
-        <tag>spark 环境搭建</tag>
-         
-         
-           
-             
-              <breadCrumb title="big data, spark" url="http://syw2014.github.io/categories/big-data-spark/"/>
           
         </display>
     </data>

@@ -94,28 +94,25 @@
 
 
   
-  <meta name="keywords" content="Image Caption,encoder-decoder," />
+  <meta name="keywords" content="Entity Linking,Entity Detection," />
 
 
-<meta name="description" content="Image Caption 介绍图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。">
-<meta name="keywords" content="Image Caption,encoder-decoder">
+<meta name="description" content="论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection最近在看知识图谱应用方面的报告，看到了清华大学做的图谱，然后就尝试了下。最让吸引我的是那么做的实体链接相关的工作(地址)，效果非常好，截图如下。">
+<meta name="keywords" content="Entity Linking,Entity Detection">
 <meta property="og:type" content="article">
-<meta property="og:title" content="image caption paper notes">
-<meta property="og:url" content="http://syw2014.github.io/2017/12/05/image-caption-paper-notes/index.html">
+<meta property="og:title" content="论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection">
+<meta property="og:url" content="http://syw2014.github.io/2018/03/08/论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection/index.html">
 <meta property="og:site_name" content="悯生">
-<meta property="og:description" content="Image Caption 介绍图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。">
+<meta property="og:description" content="论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection最近在看知识图谱应用方面的报告，看到了清华大学做的图谱，然后就尝试了下。最让吸引我的是那么做的实体链接相关的工作(地址)，效果非常好，截图如下。">
 <meta property="og:locale" content="zh-hans">
-<meta property="og:image" content="https://i.imgur.com/j6vF9pP.png">
-<meta property="og:image" content="https://i.imgur.com/4zI761E.png">
-<meta property="og:image" content="https://i.imgur.com/wsJHwMf.png">
-<meta property="og:image" content="https://i.imgur.com/m89sdjg.png">
-<meta property="og:image" content="https://i.imgur.com/ebyo64m.png">
-<meta property="og:image" content="https://i.imgur.com/uFZr795.png">
-<meta property="og:updated_time" content="2018-02-08T05:55:41.642Z">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-9634bc558b6b2252.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-5ce2293e31cd8728.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-b863b6bcaf488c99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-04-06T03:35:08.395Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="image caption paper notes">
-<meta name="twitter:description" content="Image Caption 介绍图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。">
-<meta name="twitter:image" content="https://i.imgur.com/j6vF9pP.png">
+<meta name="twitter:title" content="论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection">
+<meta name="twitter:description" content="论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection最近在看知识图谱应用方面的报告，看到了清华大学做的图谱，然后就尝试了下。最让吸引我的是那么做的实体链接相关的工作(地址)，效果非常好，截图如下。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2423131-9634bc558b6b2252.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -124,7 +121,7 @@
 
 
 
-  <link rel="canonical" href="http://syw2014.github.io/2017/12/05/image-caption-paper-notes/"/>
+  <link rel="canonical" href="http://syw2014.github.io/2018/03/08/论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection/"/>
 
 
 
@@ -133,7 +130,7 @@
     sidebar: "",
   };
 </script>
-  <title>image caption paper notes | 悯生</title>
+  <title>论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection | 悯生</title>
   
 
 
@@ -296,7 +293,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://syw2014.github.io/2017/12/05/image-caption-paper-notes/">
+    <link itemprop="mainEntityOfPage" href="http://syw2014.github.io/2018/03/08/论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="悯生">
@@ -313,7 +310,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">image caption paper notes</h1>
+          <h1 class="post-title" itemprop="name headline">论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection</h1>
         
 
         <div class="post-meta">
@@ -325,7 +322,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-05T11:31:11+08:00">2017-12-05</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-08T16:24:11+08:00">2018-03-08</time>
             
 
             
@@ -346,21 +343,14 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Knowledge-Graph/" itemprop="url" rel="index"><span itemprop="name">Knowledge Graph</span></a></span>
 
                 
                 
                   , 
                 
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Deep-Learning/Paper-Notes/" itemprop="url" rel="index"><span itemprop="name">Paper Notes</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Deep-Learning/Paper-Notes/Image-Caption/" itemprop="url" rel="index"><span itemprop="name">Image Caption</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Knowledge-Graph/Entity-Linking/" itemprop="url" rel="index"><span itemprop="name">Entity Linking</span></a></span>
 
                 
                 
@@ -374,7 +364,7 @@
 
           
           
-             <span id="/2017/12/05/image-caption-paper-notes/" class="leancloud_visitors" data-flag-title="image caption paper notes">
+             <span id="/2018/03/08/论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection/" class="leancloud_visitors" data-flag-title="论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -405,37 +395,35 @@
       
 
       
-        <h2 id="Image-Caption-介绍"><a href="#Image-Caption-介绍" class="headerlink" title="Image Caption 介绍"></a>Image Caption 介绍</h2><p>图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。</p>
-<a id="more"></a>
-<p><img src="https://i.imgur.com/j6vF9pP.png" alt="Fig1. 图像描述示例"></p>
-<h2 id="Paper-1：-Show-and-Tell-A-Neural-Image-Caption-Generator"><a href="#Paper-1：-Show-and-Tell-A-Neural-Image-Caption-Generator" class="headerlink" title="Paper 1： Show and Tell: A Neural Image Caption Generator"></a>Paper 1： Show and Tell: A Neural Image Caption Generator</h2><p>本文[1]是Google的工作，介绍了一种end-to-end的方式来完成image caption 任务。借助于语言翻译的经验，翻译是将Source 语言转换到Target语言，类比于此，Image Caption可以看成是从image 到caption的一个翻译过程，因此建立优化目标，</p>
-<p><img src="https://i.imgur.com/4zI761E.png" alt="优化目标"></p>
-<p>其中S={s1, s2, …, }，S代表生成的sentence，有特定vocabulary中的词生成，theta是待优化的参数，I 是输入图像。<br>因此模型优化目的就是在输入特定图像I的情况下，找到一系列词，使得这些词构成一个sentence的概率最大。P(S|I)是所有词的join probability ，根据chain rule得到下式，</p>
-<p><img src="https://i.imgur.com/wsJHwMf.png" alt="语言模型"></p>
-<p>模型总体架构如下图。</p>
-<p><img src="https://i.imgur.com/m89sdjg.png" alt="模型架构"></p>
-<p>在encoder 阶段，利用CNN网络学习出image的vector representation，之后送入decoder结合标注的sentence中的词序列来训练decoder。如下图所示：</p>
-<p><img src="https://i.imgur.com/ebyo64m.png" alt="网络"></p>
-<p>训练细节如下：</p>
-<ul>
-<li>对于标注的sentence，在首尾加上起止符号作为标记</li>
-<li>在encoder阶段，只用CNN network最后一层输出的vector representation作为image特征表示</li>
-<li>decoder采用LSTM，</li>
-<li>encoder阶段输出的image feature 只用来初始化LSTM hidden state，(文中提到，尝试将feature 与每个 time step 的输入St进行结合，发现效果并不好，反而会造成过拟合)</li>
-<li>每个time step 的词St 初始为one-hot表示，通过网络自主学习参数。(文中提到，尝试采用pre-trained word2vec进行初始化，实验结果并没有太大的提升，因此文中最后采用前面所说的方式)</li>
-<li>统计损失，如下图：</li>
+        <h2 id="论文笔记：-Domain-Specific-Entity-Linking-via-Fake-Named-Entity-Detection"><a href="#论文笔记：-Domain-Specific-Entity-Linking-via-Fake-Named-Entity-Detection" class="headerlink" title="论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection"></a>论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection</h2><p>最近在看知识图谱应用方面的报告，看到了清华大学做的图谱，然后就尝试了下。最让吸引我的是那么做的实体链接相关的工作(<a href="http://166.111.68.66:8880/EntityLinkingWeb/" target="_blank" rel="noopener">地址</a>)，效果非常好，截图如下。<br><a id="more"></a><br><img src="http://upload-images.jianshu.io/upload_images/2423131-9634bc558b6b2252.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>于是引起了我的好奇心，探究效果实现的原理，庆幸的是清华大学将他们的工作都发表了论文，那这篇笔记就是我看到的第一篇他们的文章<a href="https://link.springer.com/chapter/10.1007/978-3-319-32025-0_7" target="_blank" rel="noopener">Domain-Specific Entity Linking via Fake Named Entity Detection</a>,下面就来仔细分析他们实体链接的实现。</p>
+<h2 id="Named-Entity-Detection-and-Entity-Linking-Introduction"><a href="#Named-Entity-Detection-and-Entity-Linking-Introduction" class="headerlink" title="Named Entity Detection and Entity Linking Introduction"></a>Named Entity Detection and Entity Linking Introduction</h2><p>实体检测，是指从文本中检测出相关的实体；实体链接是将检测出的实体链接到已有知识库上，比如搜“王者荣耀怎么玩”，会检测出“王者荣耀”是一个实体，然后这个实体会被链接到知识库(一般自己构建或公开，这里用百度百科)“<a href="https://baike.baidu.com/item/%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80/18752941”" target="_blank" rel="noopener">https://baike.baidu.com/item/%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80/18752941”</a>.<br>传统的实体链接方式是先检测出实体，然后作为输入进行实体链接，忽略了实体检测(NED)和实体链接(EL)二者间的关联性，文章提出一种新的思路来在垂直领域进行EL，将NED和EL组成一个联合模型，实验结果表明这种方式可以满足使用场景。</p>
+<h2 id="Challenges-in-domain-specific-EL-problem"><a href="#Challenges-in-domain-specific-EL-problem" class="headerlink" title="Challenges in domain-specific EL problem"></a>Challenges in domain-specific EL problem</h2><ul>
+<li>Fake Named Entity<br>假命名实体，这个概念是这篇文章首次提出的。给定一个文档(这里指一条文本数据)和一个特定领域的知识库，文档中会存在很多<strong>常用短语</strong>(Common phrases)可能链接到知识库的某个实体上，但并不是所有的短语都有对应的实体链接，那些能够成功链接到知识库上的短语称作<strong>真实实体(True Named Entity, TNE)</strong>,不能够链接到知识库的短语称作<strong>假实体(False Named Entity, FNE)</strong>.传统方法并不会考虑FNE的问题，而且对于垂直领域进行EL效果并不好。</li>
+<li>Interdeependency<br>现在流行的做法是将NED和EL用pipline 或sequencial的方式来设计，并不会考虑NED和EL直接的依赖性。如果NED选择了FNE，那么肯定会影响EL最终效果。<br>检测FNE和将正确的短语文本(mention)是很重要的，在垂直领域中textual mention 会比较有歧义性，必须考虑同时考虑NED和EL。</li>
 </ul>
-<p><img src="https://i.imgur.com/uFZr795.png" alt="Loss"></p>
-<ul>
-<li>采用SGD优化算法， 固定学习率， no momentum</li>
-<li>LSTM memory size 和word embedding size设为512，（因此image feature 也必须转为相同的shape才能用来初始化hidden state）</li>
+<h2 id="Introduce-fundamental-concepts"><a href="#Introduce-fundamental-concepts" class="headerlink" title="Introduce fundamental concepts"></a>Introduce fundamental concepts</h2><ul>
+<li>Domain-Specific Knowledge Base<br>将知识库定义为$DSKB={C,E,P,R}$，其中C表示概念集合(concepts)比如这里是影视知识库，那么概念可以是演员、电影、制片人等；E是概念下面的实体；P是描述概念和实体的属性结合比如演员名字、电影上映时间等；R是一个三元组集合，每个元素都是一个三元组，描述的是两个实体间的关系或实体和概念间的关系。文章中提到的影视知识库数据来源于百度百科、豆瓣，包括23个concept，91个properties，多余70w个实体，1000w个三元组。</li>
+<li><p>Mentions and Linked Entites<br>这里的mention都是一些可能被链接到实体上的文本短语，这些短语都是有小于5个字的词组成。作如下内容定义，$M={m<em>1,m_2,..,m</em>{|M|}}$ 表示mention的集合，$E(m)={e<em>1, e_2,…,e</em>{E{(m)}}}$ 表示候选mention m可能链接的候选实体集合；$e_m \in E(m)$ 表示m真是链接的实体.</p>
+</li>
+<li><p>Fake Named Entity<br>定义<script type="math/tex">M_F = {m_{f1}, m_{f2},...,m_{|M_F|}} \subseteq M</script>，表示没有对应实体链接的mentions，<script type="math/tex">M_T = {m_{t1}, m_{t2},...,m_{|M_T|}} \subseteq M</script>，表示可以链接到实体的mention集合。</p>
+</li>
+<li><p>Context Mention and Entity<br>定义在同一篇文档或同一个词窗口内除m以为的mention记为<script type="math/tex">C_{M}(m)=\{m_{c1}, m_{c2},...,m_{|C_{M}(m)|}\} \subseteq M</script>,但这个集合中的mention并不一定有对应的实体链接，记可能被mention链接的实体集合为<script type="math/tex">C_{E}(m)=\{e_{c1}, e_{c2},...,e_{|C_{M}(m)|}\} \subseteq M</script><br>定义完所需要的符号之后，那么一起来看下文章具体的实现思路。</p>
+</li>
+<li>Preprocessing<br>首先根据构建一个dictionary D，它包含所有实体的各种形式【待添加】。词典是key value形式，key实体表面形式的一个列表，value是这些形式对应的实体集合，之后根据文档d生成一个mention集合(ngram, n &lt; 5)，然后再D中进行查询，如果在key中出现则加入到mention集合，这样就生成了一个mention集合M，在查询key的同时会把对应实体加入到E（m）.<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2>整个算法思路是这样的，首先根据标注的数据分别训练EL模型和NED模型，首先构造出两个特征向量（下文会详细介绍），利用分类模型训练出两个权重向量<script type="math/tex">W_{el}=\{w_{1}^{el},w_{2}^{el},w_{3}^{el},w_{4}^{el}\}</script>,和<script type="math/tex">W_{ned}=\{w_{1}^{ned},w_{2}^{ned},w_{3}^{ned},w_{4}^{ned}\}</script>,NED模型输出表示一个m是实体的confidence，EL模型输出表示的是一个m链接到一个实体e的confidence，之后可以通过模型相互迭代来不断提高confidence，增最终的链接准确率。整体架构图如下，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-5ce2293e31cd8728.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
 </ul>
-<p>Inference 阶段文中提到了两种方式：</p>
-<ul>
-<li>Sampling， 采样，首先根据输入图像I ，LSTM输出一个词的概率p1，(LSTM输入词S的embedding 是随机初始化的结果），然后再计算出下一个词p2,依次往复，直到采样到结束符或者达到指定长度。</li>
-<li>BeamSearch, 每个time step t都选择top k个最好的sentence，然后根据这些在t+1时间步生成k个概率最高的句子，最终选择概率最高的结果返回。</li>
+<h2 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h2><p>将NED 和EL模型当做一个二分类进行建模，文章中提到采用SVM算法。首先要做的就是整理训练集，如果m能真正链接到实体集$E(m)$中的实体$e_m$上，则$(m,e_m)$为positive sample，而m与其他实体实体组成的实体对则称为negative sample。EL和NED模型可以表示为，</p>
+<script type="math/tex; mode=display">El_m(e)=W_{el}\cdot F_m(e)\\
+Ned(m)=W_{ned} \cdot F(m)</script><p>对于EL模型，对候选实体集$E(m)$中所有实体进行计算，然后选择confidence最高作为最终m最终的链接实体；对于NED模型，对一个文档生成的所有mention进行计算，根据计算的score判断它是否是一个真实的实体。因此可以通过计算一个模型的输出来迭代另一个模型的特征，从而提高整体效果。</p>
+<h3 id="Features-in-EL-Model"><a href="#Features-in-EL-Model" class="headerlink" title="Features in EL Model"></a>Features in EL Model</h3><ul>
+<li><strong>Popularity</strong><br>这个指标主要是根据具体的场景进行设计，文章中所研究的是影视领域，主要数据为评论数据，因此人们更容易讨论流行和经典的影视作品，计算公式如下，<script type="math/tex; mode=display">Pri_m(e)=\frac{count_m(e)}{\Sigma_{e \in E(m)}count_m(e)}</script>其中，$count_m(e)$表示的是mention m链接到百度百科中实体的个数，比如“王者荣耀”一词，在百度百科中链接到实体“王者荣耀(2015年腾讯天美发行的MOBA手游)”的次数。(这里有点不理解的是，如果这个特征描述的是mention链接到百科实体e的次数，那这个次数不是1吗，会存在一个mention多次链接到同一实体的情况吗？)文章中同时提到这个特征可以离线进行计算。</li>
+<li>Context Relatedness<br>上下文关联性，同一篇文中的mention更倾向于讨论具有相同语义的一个或多个topic，基于这个原则出发，设计该特征，通过计算候选实体$e \in E(m)$（文档计算出的最大score的实体？）和其他context entites（其他mention对应的实体），具体计算公式如下：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-b863b6bcaf488c99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>其中<script type="math/tex">e_c</script>是指前一次EL模型mention m得到最大score的实体，记作$e_{top}(m_c)$.在计算context relatedness时采用两种方式进行计算，一种是WML基于维基百科的超链接结构，计算公式为$WML(e_i, e_j)=\frac{log(max(|E_i|,|E_j|))-log(|E_i \bigcup E_j|)}{log(|W|)-loog(min(|E_i|,|E_j|))}$,$E_i$和$E_j$是指链接到知识库中实体$e_i$和$e_j$的实体集合，W是知识库中所含实体的总数。另外一种方式是通过将实体$e_i$和$e_j$用bag-of-words进行表示然后计算Jaccard distance。</li>
+<li>Content Similarity<br>这个特征定义的是mention和它对应的entity之间的相似度，通过计算Jaccrad distance得到。</li>
 </ul>
-<p>以上就是整个paper的主要思路，想对还是比较清晰简单。</p>
+<h3 id="Features-in-NED-Model"><a href="#Features-in-NED-Model" class="headerlink" title="Features in NED Model"></a>Features in NED Model</h3><ul>
+<li>Link Probability</li>
+<li>Link Certainty</li>
+<li>Coherence</li>
+</ul>
 
       
     </div>
@@ -485,9 +473,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Image-Caption/" rel="tag"><i class="fa fa-tag"></i>Image Caption</a>
+            <a href="/tags/Entity-Linking/" rel="tag"><i class="fa fa-tag"></i>Entity Linking</a>
           
-            <a href="/tags/encoder-decoder/" rel="tag"><i class="fa fa-tag"></i>encoder-decoder</a>
+            <a href="/tags/Entity-Detection/" rel="tag"><i class="fa fa-tag"></i>Entity Detection</a>
           
         </div>
       
@@ -500,8 +488,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/10/Relation-Extraction-Survey/" rel="next" title="Relation Extraction Survey">
-                <i class="fa fa-chevron-left"></i> Relation Extraction Survey
+              <a href="/2018/03/03/text-semantics/" rel="next" title="Semantic correlation calculation">
+                <i class="fa fa-chevron-left"></i> Semantic correlation calculation
               </a>
             
           </div>
@@ -510,8 +498,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/07/Understanding-Residual-Network/" rel="prev" title="Understanding Residual Network">
-                Understanding Residual Network <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/29/Fun-with-Faiss/" rel="prev" title="Fun with Faiss">
+                Fun with Faiss <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -641,11 +629,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -795,7 +779,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Image-Caption-介绍"><span class="nav-number">1.</span> <span class="nav-text">Image Caption 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Paper-1：-Show-and-Tell-A-Neural-Image-Caption-Generator"><span class="nav-number">2.</span> <span class="nav-text">Paper 1： Show and Tell: A Neural Image Caption Generator</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#论文笔记：-Domain-Specific-Entity-Linking-via-Fake-Named-Entity-Detection"><span class="nav-number">1.</span> <span class="nav-text">论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Named-Entity-Detection-and-Entity-Linking-Introduction"><span class="nav-number">2.</span> <span class="nav-text">Named Entity Detection and Entity Linking Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Challenges-in-domain-specific-EL-problem"><span class="nav-number">3.</span> <span class="nav-text">Challenges in domain-specific EL problem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduce-fundamental-concepts"><span class="nav-number">4.</span> <span class="nav-text">Introduce fundamental concepts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Algorithm"><span class="nav-number">5.</span> <span class="nav-text">Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Training"><span class="nav-number">6.</span> <span class="nav-text">Training</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Features-in-EL-Model"><span class="nav-number">6.1.</span> <span class="nav-text">Features in EL Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Features-in-NED-Model"><span class="nav-number">6.2.</span> <span class="nav-text">Features in NED Model</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -966,9 +950,9 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://syw2014.github.io/2017/12/05/image-caption-paper-notes/';
-        this.page.identifier = '2017/12/05/image-caption-paper-notes/';
-        this.page.title = 'image caption paper notes';
+        this.page.url = 'http://syw2014.github.io/2018/03/08/论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection/';
+        this.page.identifier = '2018/03/08/论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection/';
+        this.page.title = '论文笔记-Domain Specific Entity Linking via Fake Named Entity Detection';
       };
       function loadComments () {
         var d = document, s = d.createElement('script');

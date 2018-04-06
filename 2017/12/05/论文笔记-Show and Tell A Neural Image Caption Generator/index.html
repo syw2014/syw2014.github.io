@@ -94,24 +94,28 @@
 
 
   
-  <meta name="keywords" content="Attention,Self-Attention,序列建模,序列模型并行化," />
+  <meta name="keywords" content="Image Caption,encoder-decoder," />
 
 
-<meta name="description" content="该论文是Google在2017年的一个工作，单从论文题目来看能够让很多人神往，在做NLP任务时它没有提RNN，没有提CNN，而且可以获得state-of-the-art效果，最近就对这篇文章内容进行了细致分析，做笔记如下。">
-<meta name="keywords" content="Attention,Self-Attention,序列建模,序列模型并行化">
+<meta name="description" content="Image Caption 介绍图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。">
+<meta name="keywords" content="Image Caption,encoder-decoder">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Paper notes-Attention is all you need">
-<meta property="og:url" content="http://syw2014.github.io/2018/02/08/Paper-notes-attention-is-all-you-need/index.html">
+<meta property="og:title" content="论文笔记-Show and Tell A Neural Image Caption Generator">
+<meta property="og:url" content="http://syw2014.github.io/2017/12/05/论文笔记-Show and Tell A Neural Image Caption Generator/index.html">
 <meta property="og:site_name" content="悯生">
-<meta property="og:description" content="该论文是Google在2017年的一个工作，单从论文题目来看能够让很多人神往，在做NLP任务时它没有提RNN，没有提CNN，而且可以获得state-of-the-art效果，最近就对这篇文章内容进行了细致分析，做笔记如下。">
+<meta property="og:description" content="Image Caption 介绍图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。">
 <meta property="og:locale" content="zh-hans">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-a7fbbac2f390012d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2423131-f9816e3d7c6fcc38.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-02-08T06:25:40.144Z">
+<meta property="og:image" content="https://i.imgur.com/j6vF9pP.png">
+<meta property="og:image" content="https://i.imgur.com/4zI761E.png">
+<meta property="og:image" content="https://i.imgur.com/wsJHwMf.png">
+<meta property="og:image" content="https://i.imgur.com/m89sdjg.png">
+<meta property="og:image" content="https://i.imgur.com/ebyo64m.png">
+<meta property="og:image" content="https://i.imgur.com/uFZr795.png">
+<meta property="og:updated_time" content="2018-04-06T03:42:59.456Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Paper notes-Attention is all you need">
-<meta name="twitter:description" content="该论文是Google在2017年的一个工作，单从论文题目来看能够让很多人神往，在做NLP任务时它没有提RNN，没有提CNN，而且可以获得state-of-the-art效果，最近就对这篇文章内容进行了细致分析，做笔记如下。">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2423131-a7fbbac2f390012d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="论文笔记-Show and Tell A Neural Image Caption Generator">
+<meta name="twitter:description" content="Image Caption 介绍图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。">
+<meta name="twitter:image" content="https://i.imgur.com/j6vF9pP.png">
 
 
 
@@ -120,7 +124,7 @@
 
 
 
-  <link rel="canonical" href="http://syw2014.github.io/2018/02/08/Paper-notes-attention-is-all-you-need/"/>
+  <link rel="canonical" href="http://syw2014.github.io/2017/12/05/论文笔记-Show and Tell A Neural Image Caption Generator/"/>
 
 
 
@@ -129,7 +133,7 @@
     sidebar: "",
   };
 </script>
-  <title>Paper notes-Attention is all you need | 悯生</title>
+  <title>论文笔记-Show and Tell A Neural Image Caption Generator | 悯生</title>
   
 
 
@@ -292,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://syw2014.github.io/2018/02/08/Paper-notes-attention-is-all-you-need/">
+    <link itemprop="mainEntityOfPage" href="http://syw2014.github.io/2017/12/05/论文笔记-Show and Tell A Neural Image Caption Generator/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="悯生">
@@ -309,7 +313,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Paper notes-Attention is all you need</h1>
+          <h1 class="post-title" itemprop="name headline">论文笔记-Show and Tell A Neural Image Caption Generator</h1>
         
 
         <div class="post-meta">
@@ -321,7 +325,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-08T13:43:55+08:00">2018-02-08</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-05T11:31:11+08:00">2017-12-05</time>
             
 
             
@@ -349,14 +353,7 @@
                   , 
                 
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Deep-Learning/Paper-Notes/" itemprop="url" rel="index"><span itemprop="name">Paper Notes</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Deep-Learning/Paper-Notes/Attention/" itemprop="url" rel="index"><span itemprop="name">Attention</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Deep-Learning/Image-Caption/" itemprop="url" rel="index"><span itemprop="name">Image Caption</span></a></span>
 
                 
                 
@@ -370,7 +367,7 @@
 
           
           
-             <span id="/2018/02/08/Paper-notes-attention-is-all-you-need/" class="leancloud_visitors" data-flag-title="Paper notes-Attention is all you need">
+             <span id="/2017/12/05/论文笔记-Show and Tell A Neural Image Caption Generator/" class="leancloud_visitors" data-flag-title="论文笔记-Show and Tell A Neural Image Caption Generator">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -401,31 +398,37 @@
       
 
       
-        <p>该论文是Google在2017年的一个<a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">工作</a>，单从论文题目来看能够让很多人神往，在做NLP任务时它没有提RNN，没有提CNN，而且可以获得state-of-the-art效果，最近就对这篇文章内容进行了细致分析，做笔记如下。</p>
+        <h2 id="Image-Caption-介绍"><a href="#Image-Caption-介绍" class="headerlink" title="Image Caption 介绍"></a>Image Caption 介绍</h2><p>图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。</p>
 <a id="more"></a>
-<h2 id="序列模型架构"><a href="#序列模型架构" class="headerlink" title="序列模型架构"></a>序列模型架构</h2><p>对于一个序列分析问题通常采用<strong>encoder-decoder</strong>架构，通过encoder模块将一个输入$(x_1, x_2,…,x_n)$转换为另一个表示序列$(z_1, z_2,…,z_n)$,decoder模块在将这个表示转换为输出序列$(y_1,y_2,…,y_m)$，这是一个典型的Encoder-Decoder架构。这种架构在机器翻译、阅读理解、Caption等多个场景都有广泛的使用。</p>
-<h2 id="序列建模"><a href="#序列建模" class="headerlink" title="序列建模"></a>序列建模</h2><p>什么是序列呢？在NLP中，一句话经分词之后就形成含有多个词的list，可以称作序列；一个用户在一个实际窗的动作，就形成一个动作序列；除此之外生活中很多数据都可以看成一个序列。那我们就需要面对一个问题，如何对序列进行建模。因为序列间有时序信息，很直观的会想到采用<strong>RNN</strong>，它能够学习到局部信息，<strong>缺点</strong>是，1）无法并行化，因为必须等待前一步处理之后才能处理当前步，这导致RNN网络在训练时需要很长时间，2）不能很好学习全局结构信息<br>第二个思路是Fackbook的工作利用<a href="https://arxiv.org/abs/1705.03122" target="_blank" rel="noopener">CNN</a>，可以方便并行，且能够学的全局信息,最后一种方式就是Google<br>论文中提到<strong>Attention</strong>，只利用注意力机制实现序列建模，$y_t=f(x_t,W_1,W_2)$,$W_1$和$W_2$是另外一个序列句子，如果这三个序列是同一个序列的话，就称作是<strong>self-attention</strong>。</p>
-<h2 id="Attention"><a href="#Attention" class="headerlink" title="Attention"></a>Attention</h2><p><img src="http://upload-images.jianshu.io/upload_images/2423131-a7fbbac2f390012d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在这篇论文中，作者给出了具体的attention的形式，结构如上图。</p>
-<script type="math/tex; mode=display">Attention(Q,K,V)=softmax(\frac{QK^T}{\sqrt{d_k}})V</script><p>其中，Q,K,V矩阵大小分别是<script type="math/tex">n \times{d_k}, m \times{d_k},m \times{d_v}</script>，最终形成的结果是<script type="math/tex">n\times{d_v}</script>，即将<script type="math/tex">n\times{d_k}</script>的序列表示成<script type="math/tex">n\times{d_v}</script>的矩阵形式,<script type="math/tex">\sqrt{d_k}</script>是一个缩放因子，文中提到对于dot product在计算结果会很大，经过softmax之后会将元素值推向边界0或1，这而这些区域梯度信息很小不便于训练，所以采用这个数值进行scale，为什么是<script type="math/tex">\sqrt{d_k}</script>，假设<script type="math/tex">q</script>与<script type="math/tex">k</script>都是均值为0，方差为1的随机变量，那么他们的dot product，<script type="math/tex">q\circ{q}=\Sigma_{i=1}^{d_k}q_ik_i</script>,它是均值为0，方差为<script type="math/tex">d_k</script>的一个变量，因此这里采用<script type="math/tex">\sqrt{d_k}</script>。论文中提到，Q,K,V分别是query、key-values矩阵的矩阵形式，那么对于单个query<script type="math/tex">q_t</script>来说，Attention计算如下，</p>
-<script type="math/tex; mode=display">Attention(q_t,K,V)=softmax(q_t,K,V)=\Sigma_{i=1}^{m}\frac{exp(q_t\circ{k_i})}{Z}v_i</script><p>其中Z是整理后的系数，首先计算出$q_t$与$v_i$的相关性，然后加权求和。对于attention的使用方式一般分为两种，一种是让<script type="math/tex">q_t</script>与<script type="math/tex">k_i</script>采用相加(additive attention)然后再通过其他运算比如tanh等，另一种就是上式中<script type="math/tex">q_t</script>与<script type="math/tex">k_i</script>直接相乘的形式(dot-product/multiplicative)。这attention形式论文中称作<strong>scale Dot-Product Attention</strong>。</p>
-<h2 id="Multi-Head-Attention"><a href="#Multi-Head-Attention" class="headerlink" title="Multi-Head Attention"></a>Multi-Head Attention</h2><p>这个是Goolge提出的对attention机制的完善，从字面翻译是多头attention，架构图如下。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-f9816e3d7c6fcc38.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>multi-head attention思想很简单，就是首先对querie，keys，values做个线性映射，然后将上述attention机制重复h次，将最终结果进行concat，就得等到multi-head attention结果。这种思想类似于CNN，通过不同的卷积核来得到更多的feature map。</p>
-<script type="math/tex; mode=display">MultiHead(Q,K,V)=Concat(head_1,...,head_h)W^{O} \\
-head_i = Attention(QW_{i}^{Q},KW_{i}^{K},VW_{i}^{V})</script><p>其中，<script type="math/tex">W_{i}^{Q} \in R^{d_{model}\times{d_k}}, W_{i}^{K} \in R^{d_{model}\times{d_k}}, W_{i}^{V} \in R^{d_{model}\times{d_v}}, W^{O} \in R^{hd_v \times{d_{model}}}</script>,这些都是不同的参数矩阵，需要通过数据学习得到。这里推算下参数shape，</p>
-<script type="math/tex; mode=display">Q_{shape}: n \times d_{model}, W_{shape}^{Q}: d_{model}\times{d_k}, QW_{shape}:n \times d_k \\
-K_{shape}: n \times d_{model}, W_{shape}^{K}: d_{model}\times{d_k}, KW_{shape}:n \times d_k \\
-V_{shape}: n \times d_{model}, W_{shape}^{V}: d_{model}\times{d_v}, VW_{shape}:n \times d_v \\
-Head_i(QW^{Q}, KW^{K}, VW^{V})_{shape}=n \times d_v \\
-concat(head_1,...,head_h)_{shape}:n \times hd_v    \\
-W_{shape}^{O}: hd_v \times d_{model} \\
-MultiHead_{shape}: n \times d_{model}</script><p>其中，n代表输入序列长度，$d<em>{model}$代表模型为维度，在论文中，提到$$d_k=d_v=d</em>{model}/h=64,h=8$$.<br>通过multihead方式不仅能够得到具有注意力结果的表示，同时也含有序列全局信息。</p>
-<h2 id="Self-Attention"><a href="#Self-Attention" class="headerlink" title="Self-Attention"></a>Self-Attention</h2><p>了解了Attention机制之后，那就有个疑问，到底什么是query，key 和value呢？对于这三部分的设计需要根据具体的任务，比如阅读理解中，query可以是文章的词向量序列，而key=value是问题的词向量序列。在这篇文章中，Google提到更多的是self-attention，即$Attention(X,X,X)$，为什么需要self-attention（inner attention）,主要原因如下，</p>
+<p><img src="https://i.imgur.com/j6vF9pP.png" alt="Fig1. 图像描述示例"></p>
+<h2 id="Paper-1：-Show-and-Tell-A-Neural-Image-Caption-Generator"><a href="#Paper-1：-Show-and-Tell-A-Neural-Image-Caption-Generator" class="headerlink" title="Paper 1： Show and Tell: A Neural Image Caption Generator"></a>Paper 1： Show and Tell: A Neural Image Caption Generator</h2><p>本文[1]是Google的工作，介绍了一种end-to-end的方式来完成image caption 任务。借助于语言翻译的经验，翻译是将Source 语言转换到Target语言，类比于此，Image Caption可以看成是从image 到caption的一个翻译过程，因此建立优化目标，</p>
+<p><img src="https://i.imgur.com/4zI761E.png" alt="优化目标"></p>
+<p>其中S={s1, s2, …, }，S代表生成的sentence，有特定vocabulary中的词生成，theta是待优化的参数，I 是输入图像。<br>因此模型优化目的就是在输入特定图像I的情况下，找到一系列词，使得这些词构成一个sentence的概率最大。P(S|I)是所有词的join probability ，根据chain rule得到下式，</p>
+<p><img src="https://i.imgur.com/wsJHwMf.png" alt="语言模型"></p>
+<p>模型总体架构如下图。</p>
+<p><img src="https://i.imgur.com/m89sdjg.png" alt="模型架构"></p>
+<p>在encoder 阶段，利用CNN网络学习出image的vector representation，之后送入decoder结合标注的sentence中的词序列来训练decoder。如下图所示：</p>
+<p><img src="https://i.imgur.com/ebyo64m.png" alt="网络"></p>
+<p>训练细节如下：</p>
 <ul>
-<li>每层计算复杂度降低，</li>
-<li>计算并行化</li>
-<li>长距离依赖<h2 id="Position-Encoding"><a href="#Position-Encoding" class="headerlink" title="Position Encoding"></a>Position Encoding</h2>目前为止，利用attention机制可以得到一个好的表示，但是这个表示并不含有序列中元素的相对或绝对为止，比如对于一篇文章，调换句子为止，或句子中词的位置，会得到相同的表示，因此论文中又提出了position encoding，具体如下，<script type="math/tex; mode=display">PE(pos,2i)=sin(pos/10000^{2i/d_{moddel}}) \\
-PE(pos,2i+1)=cos(pos/10000^{2i/d_{moddel}})</script>其中pos代表的是位置，i代表维度中i个元素值就是pe(i).</li>
+<li>对于标注的sentence，在首尾加上起止符号作为标记</li>
+<li>在encoder阶段，只用CNN network最后一层输出的vector representation作为image特征表示</li>
+<li>decoder采用LSTM，</li>
+<li>encoder阶段输出的image feature 只用来初始化LSTM hidden state，(文中提到，尝试将feature 与每个 time step 的输入St进行结合，发现效果并不好，反而会造成过拟合)</li>
+<li>每个time step 的词St 初始为one-hot表示，通过网络自主学习参数。(文中提到，尝试采用pre-trained word2vec进行初始化，实验结果并没有太大的提升，因此文中最后采用前面所说的方式)</li>
+<li>统计损失，如下图：</li>
 </ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总体来说，Google提出了一种新的思路来完成序列建模任务，但多少还是有些借鉴CNN思想，attention机制逐渐成为各种任务标配，因此掌握attention机制的原理，学习如何根据不同任务设计attention尤为重要。</p>
+<p><img src="https://i.imgur.com/uFZr795.png" alt="Loss"></p>
+<ul>
+<li>采用SGD优化算法， 固定学习率， no momentum</li>
+<li>LSTM memory size 和word embedding size设为512，（因此image feature 也必须转为相同的shape才能用来初始化hidden state）</li>
+</ul>
+<p>Inference 阶段文中提到了两种方式：</p>
+<ul>
+<li>Sampling， 采样，首先根据输入图像I ，LSTM输出一个词的概率p1，(LSTM输入词S的embedding 是随机初始化的结果），然后再计算出下一个词p2,依次往复，直到采样到结束符或者达到指定长度。</li>
+<li>BeamSearch, 每个time step t都选择top k个最好的sentence，然后根据这些在t+1时间步生成k个概率最高的句子，最终选择概率最高的结果返回。</li>
+</ul>
+<p>以上就是整个paper的主要思路，想对还是比较清晰简单。</p>
 
       
     </div>
@@ -475,13 +478,9 @@ PE(pos,2i+1)=cos(pos/10000^{2i/d_{moddel}})</script>其中pos代表的是位置�
       
         <div class="post-tags">
           
-            <a href="/tags/Attention/" rel="tag"><i class="fa fa-tag"></i>Attention</a>
+            <a href="/tags/Image-Caption/" rel="tag"><i class="fa fa-tag"></i>Image Caption</a>
           
-            <a href="/tags/Self-Attention/" rel="tag"><i class="fa fa-tag"></i>Self-Attention</a>
-          
-            <a href="/tags/序列建模/" rel="tag"><i class="fa fa-tag"></i>序列建模</a>
-          
-            <a href="/tags/序列模型并行化/" rel="tag"><i class="fa fa-tag"></i>序列模型并行化</a>
+            <a href="/tags/encoder-decoder/" rel="tag"><i class="fa fa-tag"></i>encoder-decoder</a>
           
         </div>
       
@@ -494,8 +493,8 @@ PE(pos,2i+1)=cos(pos/10000^{2i/d_{moddel}})</script>其中pos代表的是位置�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/30/cs244n-笔记5-lecture4-词窗口分类及NN基础/" rel="next" title="cs244n-笔记5-lecture4-词窗口分类及神经网络基础">
-                <i class="fa fa-chevron-left"></i> cs244n-笔记5-lecture4-词窗口分类及神经网络基础
+              <a href="/2017/11/10/Relation-Extraction-Survey/" rel="next" title="Relation Extraction Survey">
+                <i class="fa fa-chevron-left"></i> Relation Extraction Survey
               </a>
             
           </div>
@@ -504,8 +503,8 @@ PE(pos,2i+1)=cos(pos/10000^{2i/d_{moddel}})</script>其中pos代表的是位置�
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/03/text-semantics/" rel="prev" title="Semantic correlation calculation">
-                Semantic correlation calculation <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/07/Understanding-Residual-Network/" rel="prev" title="Understanding Residual Network">
+                Understanding Residual Network <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -635,11 +634,7 @@ PE(pos,2i+1)=cos(pos/10000^{2i/d_{moddel}})</script>其中pos代表的是位置�
                     
                       
                     
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -789,7 +784,7 @@ PE(pos,2i+1)=cos(pos/10000^{2i/d_{moddel}})</script>其中pos代表的是位置�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序列模型架构"><span class="nav-number">1.</span> <span class="nav-text">序列模型架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#序列建模"><span class="nav-number">2.</span> <span class="nav-text">序列建模</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Attention"><span class="nav-number">3.</span> <span class="nav-text">Attention</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multi-Head-Attention"><span class="nav-number">4.</span> <span class="nav-text">Multi-Head Attention</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Self-Attention"><span class="nav-number">5.</span> <span class="nav-text">Self-Attention</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Position-Encoding"><span class="nav-number">6.</span> <span class="nav-text">Position Encoding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Image-Caption-介绍"><span class="nav-number">1.</span> <span class="nav-text">Image Caption 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Paper-1：-Show-and-Tell-A-Neural-Image-Caption-Generator"><span class="nav-number">2.</span> <span class="nav-text">Paper 1： Show and Tell: A Neural Image Caption Generator</span></a></li></ol></div>
             
 
           </div>
@@ -960,9 +955,9 @@ PE(pos,2i+1)=cos(pos/10000^{2i/d_{moddel}})</script>其中pos代表的是位置�
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://syw2014.github.io/2018/02/08/Paper-notes-attention-is-all-you-need/';
-        this.page.identifier = '2018/02/08/Paper-notes-attention-is-all-you-need/';
-        this.page.title = 'Paper notes-Attention is all you need';
+        this.page.url = 'http://syw2014.github.io/2017/12/05/论文笔记-Show and Tell A Neural Image Caption Generator/';
+        this.page.identifier = '2017/12/05/论文笔记-Show and Tell A Neural Image Caption Generator/';
+        this.page.title = '论文笔记-Show and Tell A Neural Image Caption Generator';
       };
       function loadComments () {
         var d = document, s = d.createElement('script');
