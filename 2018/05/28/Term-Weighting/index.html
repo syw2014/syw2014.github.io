@@ -121,7 +121,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2423131-fa2ee36f476f75bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2423131-d515f127d84901fe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2423131-baba5fbbe66a50fe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-05-28T10:01:41.961Z">
+<meta property="og:updated_time" content="2018-05-28T10:05:13.810Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Term Weighting">
 <meta name="twitter:description" content="Term weighting词权重在NLP任务中有着关键作用，比如提取关键词，选择特征，这些词的权重选择和设计最终会影响结果的好坏，今天就来理一理NLP中词权重设计方式。按照权重范围大致可以分为三类，local weight， global weight， normalization。局部词权重是指这个词在一篇文档中的权重，全局权重是这个词在所有语料库中的权重，归一化因子是用来补偿文档长度不同造成">
@@ -409,9 +409,10 @@
 <li>$L_{ij}$ 表示 term $i$ 在 document $j$中的local weight</li>
 <li>$G_{i}$ 表示 term $i$ 在整个语料库中的权重</li>
 <li>$N_j$ 表示 document $j$的归一化因子</li>
-<li>$f_{ij}$ 表示term $i$在document $j$中的频率<h2 id="Local-Term-weighting"><a href="#Local-Term-weighting" class="headerlink" title="Local Term weighting"></a>Local Term weighting</h2>常用的局部词权重计算公式如下：<br><img src="https://upload-images.jianshu.io/upload_images/2423131-4ab985df9e46259b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/2423131-4aab286f82d31f17.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+<li>$f_{ij}$ 表示term $i$在document $j$中的频率</li>
 </ul>
 </blockquote>
+<h2 id="Local-Term-weighting"><a href="#Local-Term-weighting" class="headerlink" title="Local Term weighting"></a>Local Term weighting</h2><p>常用的局部词权重计算公式如下：<br><img src="https://upload-images.jianshu.io/upload_images/2423131-4ab985df9e46259b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/2423131-4aab286f82d31f17.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <p>下面依次对各个权重计算方式进行介绍。</p>
 <ul>
 <li><strong>BNRY &amp; FREQ</strong><br><img src="https://upload-images.jianshu.io/upload_images/2423131-f34d99f63c554833.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
