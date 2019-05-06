@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>CS244n Lecture Notes2:Word Embedding Part 2 | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="CS244n,cs244n,NLP,DL,word2vec," />
+  
+
+  
+  <meta name="description" content="词向量Part 2关键词：Glove， 词向量内部和外部评价，超参数在语义类推上的影响，人类判断词向量距离间的相关性，词上下文解决歧义，窗口分类首先文章第一部分介绍了Glove训练词向量过程，之后讨论如何从内部及外部去评价词向量。之后讨论作为内部评价的词类比任务及如何利用它调整词向量。然后讨论词向量模型的权重参数和外部评价任务，最后讨论将ANN作为一类模型来实现NLP任务。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2018-01-20
+    </span>
+    
+      <span>
+        | <a href="/categories/CS244n/"><i class="fa fa-bookmark"></i>CS244n</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    CS244n Lecture Notes2:Word Embedding Part 2
+  </h1>
+  
+  <article class="passage-article">
+    <h3 id="与之前方法对比"><a href="#与之前方法对比" class="headerlink" title="与之前方法对比"></a>与之前方法对比</h3><p>目前为止我们有两类方法获得词向量。一类是基于count-based和矩阵分解技术(LSA,HAL)的方式.这种方式可以充分利用全据统计信息，主要用于捕获单词的相似性，但在单词类比任务表现不佳，因为它只是一个次优的空间向量结构。另一种是基于浅层窗口的方式如(Skip-gram,CBOW)，通过利用当前窗口上下文进行预测和学习word embedding，这些模型展示了超越词相似度以为的复杂语言学模式，却不能够充分利用全局共现统计信息。&lt;/br&gt;<br>相比之下，Glove由一个加权的最小二乘模型构成，它基于全局词-词的共现频次进行训练，充分利用全局统计信息。【Glove，把最小二乘作为目标函数，预测在词i上下文中出现的词j的概率】该方法能够生成具有结构意义的词向量，在词类比任务上能够达到最优效果，同时在其他词相似度任务上也比现有方法好。</p>
+<h3 id="共现矩阵"><a href="#共现矩阵" class="headerlink" title="共现矩阵"></a>共现矩阵</h3><p>令X代表词-词共现矩阵，X_ij表示此j在词i上下文中出现的次数（此时，词i的上下文可理解为一个doc），Xi = ∑k Xik 表示任意词k在词i上下文中出现的总次数，那我们有<br><img src="http://upload-images.jianshu.io/upload_images/2423131-b6643b5df21a2e5d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>，表示词j在词i上下文中出现的概率。<br>在实际计算时，构建这样的矩阵需要遍历整个语料库来得到这些统计数据。如果预料很大，这种统计代价很大，但只需要遍历一次即可。</p>
+<h3 id="最小二乘目标函数"><a href="#最小二乘目标函数" class="headerlink" title="最小二乘目标函数"></a>最小二乘目标函数</h3><p>对于skip-gram模型，采用softmax词j在词i上下文中出现的概率，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-468548b583f0bf0e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>训练是以随机在线方式进行，但隐含的的交叉熵可以通过如下公式计算，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-11daf1267b06eba8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png">对于同一个词i和词j可以在整个语料库中出现很多次，更高效的做法将i和j相同的指聚合在一起计算损失，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-1b249f595be1bba2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>，在这个式子中，共现次数X_ij的值来源于词前面所述的共现矩阵。交叉熵一个重要缺点是，它需要分布Q(预测出词j的分布)必须进行合适的归一化，这就需要在整个词典上进行求和，这个计算代价很大。相反，我们使用最小二乘最为目标函数，省去了P和Q中需要的归一化操作，新的目标函数如下。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-4b58b58fd26de0bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这个式子中，<img src="http://upload-images.jianshu.io/upload_images/2423131-a424aa0363eaffce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>，是未归一化的分布。这就引入另一个问题，X_ij词频数通常会很大，这使得归一化很难进行(因为，有的词频很大，有的很小，差距很大)。进一步的改进是采用P和Q的log形式计算误差，如下，<img src="http://upload-images.jianshu.io/upload_images/2423131-c9ddfdba551d3977.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png">，在这个式子中，权重X_i不能保证是最优的，因此我们采用更加一般的形式，它能够更加灵活的依赖于上下文词。<img src="http://upload-images.jianshu.io/upload_images/2423131-fa1a7b16377178fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>GloVe模型对词-词的矩阵中非零元素进行训练，能够有效利用全据统计信息，生成具有意义的子结构向量。在相同语料库、词典、窗口大小、训练时间上，它在词类比任务上由于word2vec。它能更快地取得更好的结果，而且不管速度如何，都能得到最好的结果。</p>
+<h2 id="词向量评价"><a href="#词向量评价" class="headerlink" title="词向量评价"></a>词向量评价</h2><p>目前为止我们能够通过word2vec和GloVe方法获得词在语义空间中的表示，这一节我们会探讨如何去对这些方法进行评价。</p>
+<h3 id="内部评价"><a href="#内部评价" class="headerlink" title="内部评价"></a>内部评价</h3><p>内部评价是指在内部子任务如词类比任务上对词向量进行评价。这些子任务通常简单且计算速度快，能够帮助理解词向量生成过程。内部评价能够返回一个表示词向量好坏的数字，以显示当前词向量在该子任务上的效果。<br>动机：<br>考虑这样一个例子，我们要构建一个问答系统，以词向量作为输入。如图所示。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-991cf1411f4b36bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>一种构建该系统的流程如下。</p>
+<ul>
+<li>1）以词为单位作为系统输入</li>
+<li>2）将词转换为词向量 3)使用词向量作为复杂ML系统的输入 </li>
+<li>4）将输出词向量映射回词 5）把映射后的词作为答案。</li>
+</ul>
+<p>构建一个state-of-the-art的问答系统，我们需要设计最优的词向量，因为这些词向量应用到下游的子系统如DNN中。在实践中，我们需要不断的调整word2vec的超参数(维度、窗口大小)。理想情况下每改变一次word2vec的参数都需要对整个系统重新训练，但从工程角度来说，这种方式并不可行，因为在第三个步骤，通常是一个复杂的拥有几百万参数DNN，需要很长时间进行训练。因此在这种情况，我们需要一种能够直接、快速体现词向量好坏的评价方法，并且词向量和任务最终效果有直接的关系。因此，内部评价需要满足如下条件，</p>
+<ul>
+<li>1）在一个特定的、内部任务上进行评价 </li>
+<li>2）能够快速计算效果 </li>
+<li>3）可以帮助理解子系统 </li>
+<li>4）需要和任务最终效果有正相关性</li>
+</ul>
+<h3 id="外部评价"><a href="#外部评价" class="headerlink" title="外部评价"></a>外部评价</h3><p>外部评价是指词向量在实际任务上的对该任务的影响。这些任务通常复杂度高、计算实际久。鉴于此，前面所说的问答系统，可以认为是一个外部评价。通常来说，如果一个外部任务效果不好，我们并不能知道具体是哪个子任务或环节造成，这一点也说明了需要内部评价来对词向量进行评估。因此外部评价特点如下，</p>
+<ul>
+<li>是否在一个真实的任务上进行 </li>
+<li>计算效率是否很慢 </li>
+<li>不能明确具体出问题的是子系统或其他方面的问题 </li>
+<li>如果替换子系统能够提升性能，那这个改变是好的</li>
+</ul>
+<h3 id="内部评价举例：词向量类比"><a href="#内部评价举例：词向量类比" class="headerlink" title="内部评价举例：词向量类比"></a>内部评价举例：词向量类比</h3><p>典型的词向量内部评价任务是“词向量类比”。在词向量类比任务中，给出一个不完整的类比形式如下，a:b::c:?，意思就是a相对于b就像c相对于谁。之后内部评价系统会找到能够是的如下余弦相似度最小的词向量。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-98a018f1205791b1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这个指标是很直观的。我们希望X_b - X_a = X_d - X_c (就像 queen - King=actress - actor)，那因此得到X_d = X_b - X_a +X_c，因此可以通过最大化这两个向量归一化之后的点积即余弦相似度。<br>在用词向量类比进行内部评价时，需要小心处理如用来进行预训练的语料库的各个方面。例子如下：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-1e9fd7e393091d96.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在许多情况下，美国各地有多个同名的城市/城镇/村庄。因此，许多州都可以作为正确的答案。例如，美国至少有10个地方叫菲尼克斯，因此，亚利桑那州不一定是唯一正确的回应。那现在考虑下面的形式，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-f3f05a3c8924237e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>根据上面的例子，这个形式的结果仅能是在过去的时期内作为capital的城市。因此这里要说明的是我们要时刻关注训练预料是否有效。</p>
+<p>上面两个例子通过词向量在词的语义层面进行测试，也可以通过词向量类比进行语法(syntax)层面进行测试。下面的内部评价能够体现词向量捕获形容词词性的能力。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-42b4f8b355d63f1e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>类似地，下面内部评价测试了单词向量捕捉过去时态的能力<br><img src="http://upload-images.jianshu.io/upload_images/2423131-03316b115d8d15e3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/2423131-6bb3c632bd7284dc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="内部评价参数调优示例：类比评价"><a href="#内部评价参数调优示例：类比评价" class="headerlink" title="内部评价参数调优示例：类比评价"></a>内部评价参数调优示例：类比评价</h3><p>接下来我们将探讨超参数的对内部评价的影响。首先让来看下相同超参数不同词向量方法在词类比任务的情况。在词向量训练时可进行调整的参数有，1） 词向量维度 2）语料库大小 3）语料库来源或类型 4）词窗口大小 5）语境对称性 6）词频率等<br><img src="http://upload-images.jianshu.io/upload_images/2423131-d90c7257630ba063.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>通过观察上面表格，可得到：</p>
+<ul>
+<li>最终效果和选用哪种词向量模型有关<br>这个很好理解，因为不同的模型利用不同的信息，比如贡献慈善，奇异值向量等</li>
+<li>最终效果随语料库的增大而增大<br>这个现象也很好理解，语料库越大模型遇见的共现次数越多，</li>
+<li>最终效果在维度过高和过低的情况下都不好<br>较低的维度不能够捕获语料库中不同的含义，这种情况也可以看做是高偏差high bias的情况，模型复杂度低，表达能力不够。<br>例如，让我们考虑“king”、“queen”、“man”、“woman”这几个词。直观地说，我们需要用两个维度，如“性别”和“领导”编码成2维的词向量。较低维度的词向量是无法捕捉到这四个词之间的语义差异，而更多的可能会捕获语料库中的噪音，会造成泛化能力差，也可以看成是高方差的问题high variance。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-d42f067d95492d7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/2423131-a9b59bdb6737ffbe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+</ul>
+<h3 id="内部评价：相关性评价"><a href="#内部评价：相关性评价" class="headerlink" title="内部评价：相关性评价"></a>内部评价：相关性评价</h3><p>另一种对词向量的评价方式是，让人对两个词向量间的相似度给出一个0-10的评分，然后利用词向量计算这些词的余弦相似度进行比较。下图是在不同数据集上进行测试的结果。图6是不同词向量技术在不同人类评测集上的结果。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-fd5406ef37db5c3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="进阶阅读：处理歧义"><a href="#进阶阅读：处理歧义" class="headerlink" title="进阶阅读：处理歧义"></a>进阶阅读：处理歧义</h3><p>当有了词向量之后，我们会好奇是否可以用它来解决一词多义的情况，比如”run”在不同的场景下既可以是noun也可以是verb。在文章Improving<br>Word Representations Via Global Context And Multiple Word Prototypes (Huang et al, 2012) 叙述了如何来解决这种情况。该方法的本质是：<br>1）固定共现词context窗口大小，通常前后各5各词 2）每个context用所包括词的词向量的加权平均来表示(udf作为权重) 3）对这些context表示用kmeans进行聚类 4）每个词都会被聚集到相应的簇中，同时，用这些词来训练每个簇的表示<br>也就是说，不同含义会随context出现在不同的簇里面。</p>
+<h2 id="外部评价任务"><a href="#外部评价任务" class="headerlink" title="外部评价任务"></a>外部评价任务</h2><p>上一节主要关注内部评价及其对词向量训练的重要，但我们的终极目标是把这些词向量应用于特定的某个具体任务上以提高效果，接下来会讨论外部评价的一些方法。</p>
+<h3 id="问题定义"><a href="#问题定义" class="headerlink" title="问题定义"></a>问题定义</h3><p>大部分NLP任务都可以看成是分类任务，比如给定一个句子，可以判断该句子是positive，negative，neutral的情感分析。同样，比如NER任务，给定一个context和中心词，希望确定这个中心词属于众多类别中的哪一个，如输入句子“Jim bought 300 shares of Acme Corp. in 2006”，输出可以是“[Jim]Person bought 300 shares of [Acme Corp.]Organization in [2006]Time.”<br>    针对这种类似的任务，我们通常会以构建这样的训练集开始，<img src="http://upload-images.jianshu.io/upload_images/2423131-c9ef44d5116a7fd1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>其中x（i）是一个d-维的向量，采用词向量技术获得，y（i）是一个C-维的one-hot编码的向量，它表示我们希望预测的结果(情感倾向，其他词，NER，购买/卖出等决策)。<br>在典型机器学习任务中，我们通常固定输入、输出不变，采用优化方法找到合适的模型权重或参数如gradient descent、L-BFGS、Newton法。但是在NLP应用中，介绍一种当处理外部任务时我们重新训练输入词向量的思想，病讨论为什么及哪种情况下这么做。注：重新训练词向量是针对大语料库的情况，如果时小语料库，重新训练词向量结果不一定好。</p>
+<h3 id="重新训练词向量"><a href="#重新训练词向量" class="headerlink" title="重新训练词向量"></a>重新训练词向量</h3><p>目前为止，在外部任务中使用的词向量初始化值都是在简单的内部评价基础上优化训练得到。在很多场合下，这些预训练的词向量对于外部任务来说都是一个较好的选择，而且通常也会得到较好的结果。但是，在外部任务上对预训练词向量再训练(重新训练)也是可以的，有时可以得到更好的结果。但是重新训练词向量是有风险的。</p>
+<p>如果在外部任务对词向量重新训练，需要保证训练集足够大以涵盖词典中所有的词，word2vec和GloVe是基于具有相同词空间位置得到词的语义。如果在一个涵盖词的小的数据集重新训练词向量，词在词空间位置发生变化，结果会是整个任务效果下降。假设一个预训练的词向量在2维空间中，如图6所示。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-7eea3cd25c2a7ef9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2423131-7c078a1fa857c814.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>可以看到词向量在某些任务上可以准确的分为两类。此时，如果我们在有限的数据集上只对其中的2个词向量重新训练，会得到图7的结果，有一个次被错误分类了，因为此时的界线随着词向量的更新而发生了偏移。因此，如果训练集不是足够大，最好不要重新训练词向量，如果训练集足够大，重新训练可以提升最终任务的效果。</p>
+<h3 id="Softmax-分类和Regularization"><a href="#Softmax-分类和Regularization" class="headerlink" title="Softmax 分类和Regularization"></a>Softmax 分类和Regularization</h3><p>softmax分类的函数形式如下：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-1f1a1c27ad5e8d7a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>它所表达的意思是输入x属于class j的概率。采用cross-entropy loss，得到这个训练样例的loss，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-65901124a59d16c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在这个例子中，y是采用one-hot编码的向量，也即是说该向量中只有y_j处是1（表示x只属于一个类别），其余位置全是零。那我们假定正确类别对应的下标是k，loss函数可以简化如下：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-2109648f76763304.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>现在是一个sample，将它扩充到含有N个样本的数据集上，则总体loss为：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-6aab0d25ac7f4411.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这个式子和上面式子唯一的区别是k(i)是一个函数用来返回样本x(i)所对应的正确类别的下标。<br>    下面我们来估算一下在同时考虑模型权重W和x的词向量的时候需要多少参数。对于一个简单的线性模型，至少需要一个d-维的输入词向量，输出一个含有C个类别的分布，那更新这些权重，我们需要更新C<em>d个参数；如果同时更新具有V个词典中的每一个词的词向量，每个词向量是d-维的，因此需要V</em>d个参数，总的来说对于一个线性模型我们需要C<em>d+V</em>d个参数。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-a2fe70d6907eb54e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>我们知道线性模型是最简单的模型，但它却用这么多的参数，这势必会造成过拟合。为了减少过拟合的风险，我们引入正则化项，根据 Bayesian belief，参数theta在数值应该非常小接近于0.新的loss函数如下：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-102c2a1bc6e2ff12.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>通过调整正则化参数，最小化上述损失函数，减少了参数取为了满足训练集而取较大值得可能性，同时也可以提高模型的泛化能力。正则化思想已经成为复杂模型标配，比如后面会涉及到的NN，它有着更多的参数。</p>
+<h3 id="窗口分类"><a href="#窗口分类" class="headerlink" title="窗口分类"></a>窗口分类</h3><p>截止到目前我们主要探讨了使用词向量进行外部任务上的预测。但事实上，由于自然语言的原因，这很难办到，因为自然语言通常采用相同的词表达不同的含义，我们必须要知道词当前所处的场景才能够区别它的含义。例如，要求你向其他解释“to sanction”的意思，你会立刻意识到你需要它的具体context来区分它是“to permit”还是“to punish”。大部分情况下，我们会把一连串词输入到模型，这个序列是由中心词的词向量和context词向量构成如图8所示。<br><img src="http://upload-images.jianshu.io/upload_images/2423131-68610914d8b66e36.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>context中词的个数通常被称作context Window size，它的大小由具体要解决的任务决定。一般小的窗口大小在语法测试层面会有好的效果，大的窗口在语义层面有好的效果。<br>    为了能在前面讨论的softmax 分类中使用词窗口，我们对x(i)进行修改如下，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-ce7896f636d85ffd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/2423131-a3e73a833541a40c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>那么在求loss对某个词的梯度时，会得到每个词向量的梯度如上图，在具体实现上，这些梯度需要传递到相对应的每个词上用来更新词向量。</p>
+<h3 id="非线性分类器"><a href="#非线性分类器" class="headerlink" title="非线性分类器"></a>非线性分类器</h3><p>下面介绍一下为什么需要非线性分类器比如NN，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-31294ffe0d1b6ff6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/2423131-71f24d2c00e585d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在图9中，线性分类器将很多点都分错了，此时我们用一个非线性分类器，如图10，它将所有点都分对了。虽然这个例子过于简单，但它充分说明了需要非线性分类器的必要性，在下一节中我们将要学习具有Neutal network，它属于非线性分类模型，但它在很多深度学习应用中都有出色的表现。</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#与之前方法对比"><span class="toc-text">与之前方法对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#共现矩阵"><span class="toc-text">共现矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最小二乘目标函数"><span class="toc-text">最小二乘目标函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结论"><span class="toc-text">结论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#词向量评价"><span class="toc-text">词向量评价</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#内部评价"><span class="toc-text">内部评价</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#外部评价"><span class="toc-text">外部评价</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部评价举例：词向量类比"><span class="toc-text">内部评价举例：词向量类比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部评价参数调优示例：类比评价"><span class="toc-text">内部评价参数调优示例：类比评价</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部评价：相关性评价"><span class="toc-text">内部评价：相关性评价</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进阶阅读：处理歧义"><span class="toc-text">进阶阅读：处理歧义</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#外部评价任务"><span class="toc-text">外部评价任务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题定义"><span class="toc-text">问题定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重新训练词向量"><span class="toc-text">重新训练词向量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Softmax-分类和Regularization"><span class="toc-text">Softmax 分类和Regularization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#窗口分类"><span class="toc-text">窗口分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非线性分类器"><span class="toc-text">非线性分类器</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">http://syw2014.github.io/passages/2018-01-20-cs244n-notes2/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/cs244n/"><i class="fa fa-tags"></i>cs244n</a>
+     
+      <a href="/tags/NLP/"><i class="fa fa-tags"></i>NLP</a>
+     
+      <a href="/tags/DL/"><i class="fa fa-tags"></i>DL</a>
+     
+      <a href="/tags/word2vec/"><i class="fa fa-tags"></i>word2vec</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.mskitech.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2018-01-25-kg-concept/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2018-01-13-cs244n-notes3/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>

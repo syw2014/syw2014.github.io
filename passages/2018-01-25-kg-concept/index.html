@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>识图谱构建困惑之模式层 | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Knowledge Graph,Knowledge Graph Construction,Knowledge Graph Schema,Knowledge Graph Concept,Conceptual Construction,模式层," />
+  
+
+  
+  <meta name="description" content="最近在构建垂直领域知识图谱，我们知道知识图谱构建其实分为两个层面，一个是模式层，一个是数据层，那他们分别具体是什么，又是如何构建呢？带着这些疑问各种Google，然后得到确实千篇一律的文章，这些文章大都从宏观层面介绍构建图谱的流程、架构，鲜有介绍具体某个点具体如何去实施，比如模式层如何去构建，如何建立概念体系、如何存储？如何对一个垂域进行NER？不知道是因为技术的保密还是很少有人真正的去从零开始构建一个知识图谱，或者是都是从其他图谱中进行迁移而来，不过知识图谱构建却非易事，技术有所保留也可理解。今天就具体来谈一谈模式层构建的一些事情。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2018-01-25
+    </span>
+    
+      <span>
+        | <a href="/categories/Knowledge-Graph/"><i class="fa fa-bookmark"></i>Knowledge Graph</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    识图谱构建困惑之模式层
+  </h1>
+  
+  <article class="passage-article">
+    <h2 id="从Ontology-到Schema"><a href="#从Ontology-到Schema" class="headerlink" title="从Ontology 到Schema"></a>从Ontology 到Schema</h2><h3 id="Ontology定义"><a href="#Ontology定义" class="headerlink" title="Ontology定义"></a>Ontology定义</h3><p>Ontolgy翻译为本体，它是共享概念模型的明确的形式化规范说明。这其中四个层面的那还有，1）是共享，说明Ontology描述的是群组行为而不是个体特性，2）概念模型(Conceptualization)，概念是指对现实世界中物体的抽象而成的描述，比如歌曲，它是对很多歌比如“黄河大合唱”、“北京欢迎你”等歌的一个抽象描述，3）明确的，是指所使用的概念和概念约束都有具体的定义，4）形式化，是指能被计算机处理[1].综上所述，Ontoloy所研究的本质就是概念及概念间的各种关系。</p>
+<h3 id="知识图谱Schema"><a href="#知识图谱Schema" class="headerlink" title="知识图谱Schema"></a>知识图谱Schema</h3><p>知识图谱中所讨论的模式层即Schema，它其实就是用来描述Ontololy层，描述概念及概念关系、属性的。为什么需要设计模式层(Schema)？因为它规范了知识图谱的领域或描述的对象有哪些，起到管理整个数据库的作用，它的功能有点类似于传统数据库中的schema，可以类比这去分析，但不同点是概念之间存在关系比如父子类关系，互斥关系，同时这些概念可能会有一些基本属性。当发现某个概念对应的实例(实体)时，概念本身的属性可以直接传递到实例上面，而不需要为实体重新定义属性。需要说明的一点是模式层的属性，实例不一定全有，比如“公司”这个概念，会有一个属性“成立时间”，但是具体到某个实例“盛大”可以没有这个属性，但如果“盛大”有“成立日期”这个属性，则直接可以用概念“公司”中的“成立时间”作为属性名。</p>
+<h2 id="模式层构建及存储、使用"><a href="#模式层构建及存储、使用" class="headerlink" title="模式层构建及存储、使用"></a>模式层构建及存储、使用</h2><p>前面解释了模式层相关的一些概念，那么核心问题来了，如何去构建这样的一个模式层。概念层描述Ontology知识，通常比较小，一般是采用自顶向下(top-donw)编辑而成，采用的工具可以是Protege，这是最原始的方式，一般还可以借助现有图谱的schema来构建自己的模式层，比如参考<a href="http://cnschema.org/" target="_blank" rel="noopener">cnSchema</a>和<a href="http://ai.baidu.com/tech/kg/schema" target="_blank" rel="noopener">百度知识图谱Schema</a>，这些都是通用领域的schema，一般公司只需要构建自己领域内的知识图谱，因此具体获取方式会有哦区别。在构建时，我们通常是编辑一部分schema实例化数据，然后对数据进行规约，当发现一些共性后，将其加入到schema层中。如果手工构建模式层，要考虑这几个方面问题，类(概念)层级结构，是设置多级还是只有两级，我们在构建图谱时只采用两级结构，一个根节点，其他的都作为叶子节点；第二个问题是类间的关系定义，是主关系和逆关系，比如“英雄联盟”的运营商是“腾讯”，逆关系是，“被运营”；第三个问题是类域定义，我们场景里面有“游戏”，“影视”，影视下面又有“电影”、“导演”、“演员”等；第四个问题是类属性定义，选取一些公共属性作为类属性。<br>通常来说，schema数据比较小，用来做推理，一般会和数据层分开存储，比如可以存储在MySQL中，在系统启动时加载到内存，并提供查询改写等操作。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>[1] 邓志鸿等 Onlotogy研究综述<br>[2] 小象问答<br>[3] <a href="https://zhuanlan.zhihu.com/p/31923311" target="_blank" rel="noopener">王阳明知乎专栏</a></p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从Ontology-到Schema"><span class="toc-text">从Ontology 到Schema</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Ontology定义"><span class="toc-text">Ontology定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#知识图谱Schema"><span class="toc-text">知识图谱Schema</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模式层构建及存储、使用"><span class="toc-text">模式层构建及存储、使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">http://syw2014.github.io/passages/2018-01-25-kg-concept/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Knowledge-Graph-Construction/"><i class="fa fa-tags"></i>Knowledge Graph Construction</a>
+     
+      <a href="/tags/Knowledge-Graph-Schema/"><i class="fa fa-tags"></i>Knowledge Graph Schema</a>
+     
+      <a href="/tags/Knowledge-Graph-Concept/"><i class="fa fa-tags"></i>Knowledge Graph Concept</a>
+     
+      <a href="/tags/Conceptual-Construction/"><i class="fa fa-tags"></i>Conceptual Construction</a>
+     
+      <a href="/tags/模式层/"><i class="fa fa-tags"></i>模式层</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.mskitech.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2018-01-30-cs244n-note4/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2018-01-20-cs244n-notes2/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>
