@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://syw2014.github.io/passages/2019-05-08-deepfm-implementation/</loc>
+    
+    <lastmod>2019-05-08T11:31:02.635Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://syw2014.github.io/passages/2018-03-29-faiss/</loc>
     
     <lastmod>2019-05-06T13:45:27.553Z</lastmod>

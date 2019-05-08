@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://syw2014.github.io/passages/2019-05-08-deepfm-implementation/</loc>
+    <lastmod>2019-05-08T11:31:02.635Z</lastmod>
+    <data>
+        <display>
+        <title>DeepFM Implementation with Tensorflow</title>
+        <pubTime>2019-05-08T08:22:26.000Z</pubTime>
+        
+        <tag>DeepFM</tag>
+         
+        <tag>DeeFM Tensorflow</tag>
+         
+        <tag>Feature Engineering</tag>
+         
+         
+           
+             
+              <breadCrumb title="Model Implementation" url="http://syw2014.github.io/categories/Model-Implementation/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://syw2014.github.io/passages/2018-03-29-faiss/</loc>
     <lastmod>2019-05-06T13:45:27.553Z</lastmod>
     <data>
