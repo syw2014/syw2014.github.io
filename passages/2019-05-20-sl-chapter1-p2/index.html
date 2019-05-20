@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="统计学习方法笔记,算法,模型,策略," />
+    <meta name="keywords" content="统计学习方法笔记,期望风险,经验风险,损失函数," />
   
 
   
@@ -218,8 +218,10 @@
 <script type="math/tex; mode=display">R_{srm}(f) = \frac{1}{N}\sum_{i=1}^{N}L(y_i, f(x_i)) +\lambda J(f)</script><p>因此结构风险最小化下的最优模型等价于，</p>
 <script type="math/tex; mode=display">min_{f \in \mathit{F}}\frac{1}{N}\sum_{i=1}^{N}L(y_i, f(x_i)) +\lambda J(f)</script><blockquote>
 <p>贝叶斯估计中的最大后验概率(maximum posterior probability estimation, MAP)就是结构化风险的一个例子。当模型是条件概率、损失函数是对数损失函数、模型复杂度有模型先验概率表示，结构风险最小等价于最大后验概率。</p>
-<h2 id="训练误差和测试误差"><a href="#训练误差和测试误差" class="headerlink" title="训练误差和测试误差"></a>训练误差和测试误差</h2></blockquote>
+</blockquote>
 </li>
+</ul>
+<h2 id="训练误差和测试误差"><a href="#训练误差和测试误差" class="headerlink" title="训练误差和测试误差"></a>训练误差和测试误差</h2><ul>
 <li>训练误差<br>训练误差是模型关于训练样本的平均损失<script type="math/tex; mode=display">R_{emp}(\hat{f})=\frac{1}{N}\sum_{i=1}^{N}L(y_i, \hat{f}(x_i))</script></li>
 <li>测试误差<br>模型关于测试集的平均损失，注意训练时采用的损失函数和测试时采用的损失函数不一定完全相同。<script type="math/tex; mode=display">R_{emp}(\hat{f})=\frac{1}{N^\prime}\sum_{i=1}^{N^\prime}L(y_i, \hat{f}(x_i))</script></li>
 </ul>
@@ -251,11 +253,11 @@
   
     <div class="passage-tags">
      
-      <a href="/tags/算法/"><i class="fa fa-tags"></i>算法</a>
+      <a href="/tags/期望风险/"><i class="fa fa-tags"></i>期望风险</a>
      
-      <a href="/tags/模型/"><i class="fa fa-tags"></i>模型</a>
+      <a href="/tags/经验风险/"><i class="fa fa-tags"></i>经验风险</a>
      
-      <a href="/tags/策略/"><i class="fa fa-tags"></i>策略</a>
+      <a href="/tags/损失函数/"><i class="fa fa-tags"></i>损失函数</a>
     
     </div>
   

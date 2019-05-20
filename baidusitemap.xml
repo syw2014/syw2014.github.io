@@ -5,17 +5,17 @@
     
   <url>
     <loc>https://helixn.com/passages/2019-05-20-sl-chapter1-p2/</loc>
-    <lastmod>2019-05-20T13:54:28.163Z</lastmod>
+    <lastmod>2019-05-20T13:56:26.915Z</lastmod>
     <data>
         <display>
         <title>读书笔记：Chapter1 三要素相关概念</title>
         <pubTime>2019-05-20T12:37:48.000Z</pubTime>
         
-        <tag>算法</tag>
+        <tag>期望风险</tag>
          
-        <tag>模型</tag>
+        <tag>经验风险</tag>
          
-        <tag>策略</tag>
+        <tag>损失函数</tag>
          
          
            
@@ -218,9 +218,9 @@
         <title>Spark 开发环境搭建（一）- 虚拟机安装</title>
         <pubTime>2016-07-23T04:05:09.000Z</pubTime>
         
-        <tag>Spark Deployment</tag>
-         
         <tag>Spark环境搭建</tag>
+         
+        <tag>Spark Deployment</tag>
          
          
            
@@ -240,11 +240,11 @@
         <title>Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网</title>
         <pubTime>2016-07-24T05:21:36.000Z</pubTime>
         
-        <tag>虚拟机静态ip，上网</tag>
+        <tag>Spark环境搭建</tag>
          
         <tag>Spark Deployment</tag>
          
-        <tag>Spark环境搭建</tag>
+        <tag>虚拟机静态ip，上网</tag>
          
          
            
