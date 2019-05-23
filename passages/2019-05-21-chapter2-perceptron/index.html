@@ -6,16 +6,16 @@
   <meta name="author" content="悯生" />
   
   
-  <title>归档: 2017/12 | 踏路</title>
+  <title>读书笔记：感知机 | 踏路</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="踏路，悯生" />
+    <meta name="keywords" content="统计学习方法笔记,感知机," />
   
 
   
-  <meta name="description" content="踏路">
+  <meta name="description" content="摘要">
 
   
 
@@ -42,7 +42,7 @@
     welcome: {"enable":true,"interval":10},
     start_time: "2016-02-10",
     passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
-    is_post: false,
+    is_post: true,
     lock: false,
     author: "悯生",
     share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
@@ -168,31 +168,74 @@
 </nav>
 <div id="site-process"></div>
     <main>
-      <div class="timeline">
-  <h2 class="timeline-title">归档: 27篇</h2>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-05-21
+    </span>
+    
+      <span>
+        | <a href="/categories/统计学习方法笔记/"><i class="fa fa-bookmark"></i>统计学习方法笔记</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    读书笔记：感知机
+  </h1>
   
-    
-      <h3 class="timeline-subtitle">2017</h3>
-    
-    <div class="timeline-item">
-      <time>2017-12-11</time>
-      <a target="_self" href="/passages/2017-12-11-neo4j-intro/">Neo4j使用介绍</a>
-    </div>
+  <article class="passage-article">
+    </p>
+<h2 id="宏观层面"><a href="#宏观层面" class="headerlink" title="宏观层面"></a>宏观层面</h2><h3 id="该算法解决什么问题？"><a href="#该算法解决什么问题？" class="headerlink" title="该算法解决什么问题？"></a>该算法解决什么问题？</h3><h3 id="算法基本思想和原理是什么？"><a href="#算法基本思想和原理是什么？" class="headerlink" title="算法基本思想和原理是什么？"></a>算法基本思想和原理是什么？</h3><h3 id="个人理解是什么？"><a href="#个人理解是什么？" class="headerlink" title="个人理解是什么？"></a>个人理解是什么？</h3><h2 id="微观层面："><a href="#微观层面：" class="headerlink" title="微观层面："></a>微观层面：</h2><h3 id="公式详细推导过程是否领会和记忆？"><a href="#公式详细推导过程是否领会和记忆？" class="headerlink" title="公式详细推导过程是否领会和记忆？"></a>公式详细推导过程是否领会和记忆？</h3><h3 id="算法优化的目标是什么？"><a href="#算法优化的目标是什么？" class="headerlink" title="算法优化的目标是什么？"></a>算法优化的目标是什么？</h3><h3 id="优缺点是什么？"><a href="#优缺点是什么？" class="headerlink" title="优缺点是什么？"></a>优缺点是什么？</h3><h2 id="应用层面"><a href="#应用层面" class="headerlink" title="应用层面"></a>应用层面</h2><h3 id="算法的使用场景或任务有哪些？"><a href="#算法的使用场景或任务有哪些？" class="headerlink" title="算法的使用场景或任务有哪些？"></a>算法的使用场景或任务有哪些？</h3><h3 id="具体使用的体验如何？"><a href="#具体使用的体验如何？" class="headerlink" title="具体使用的体验如何？"></a>具体使用的体验如何？</h3>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#宏观层面"><span class="toc-text">宏观层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#该算法解决什么问题？"><span class="toc-text">该算法解决什么问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法基本思想和原理是什么？"><span class="toc-text">算法基本思想和原理是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人理解是什么？"><span class="toc-text">个人理解是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微观层面："><span class="toc-text">微观层面：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#公式详细推导过程是否领会和记忆？"><span class="toc-text">公式详细推导过程是否领会和记忆？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法优化的目标是什么？"><span class="toc-text">算法优化的目标是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点是什么？"><span class="toc-text">优缺点是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用层面"><span class="toc-text">应用层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法的使用场景或任务有哪些？"><span class="toc-text">算法的使用场景或任务有哪些？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#具体使用的体验如何？"><span class="toc-text">具体使用的体验如何？</span></a></li></ol></li></ol>
+  </div>
+</aside>
   
-    
-    <div class="timeline-item">
-      <time>2017-12-07</time>
-      <a target="_self" href="/passages/2017-12-07-resnet/">Understanding Residual Network</a>
-    </div>
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://helixn.com/passages/2019-05-21-chapter2-perceptron/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
   
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/感知机/"><i class="fa fa-tags"></i>感知机</a>
     
-    <div class="timeline-item">
-      <time>2017-12-05</time>
-      <a target="_self" href="/passages/2017-12-05-show-and-tell/">Paper Notes :Show and Tell A Neural Image Caption Generator</a>
     </div>
   
 </div>
+
     </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
     
     <div class="site-footer-wrapper">
   <footer class="site-footer">
@@ -274,16 +317,16 @@
     <a href="javascript:void(0);" data-enable="false">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2019-05-20-sl-chapter1-p2/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
   <div class="bottom-bar-right">
-    <a href="javascript:void(0);" data-enable="false" id="site-toc-show-btn">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
       <i class="fa fa-bars"></i>
     </a>
     
-      <a href="javascript:void(0);" data-enable="false">
+      <a href="#site-comment" data-enable="true">
         <i class="fa fa-commenting"></i>
       </a>
     

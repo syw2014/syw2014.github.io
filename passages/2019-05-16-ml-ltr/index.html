@@ -6,16 +6,16 @@
   <meta name="author" content="悯生" />
   
   
-  <title>Spark 开发环境搭建（一）- 虚拟机安装 | 踏路</title>
+  <title>排序学习(Learning To Rank) | 踏路</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Spark,Spark Deployment,Spark环境搭建," />
+    <meta name="keywords" content="算法笔记,PairWise,PointWise,ListWise," />
   
 
   
-  <meta name="description" content="一、 虚拟机安装及相关配置静态IP并上外网">
+  <meta name="description" content="排序学习是实际任务中比较典型且重要的一种学习任务，广泛存在于信息检索、推荐系统、计算广告、问答系统等场景，本文主要记录从宏观角度去看什么是排序学习，包含哪些方面和内容，评价指标等。">
 
   
 
@@ -172,11 +172,11 @@
   <div class="passage">
   <div class="passage-meta">
     <span>
-      <i class="fa fa-calendar"></i>2016-07-23
+      <i class="fa fa-calendar"></i>2019-05-16
     </span>
     
       <span>
-        | <a href="/categories/Spark/"><i class="fa fa-bookmark"></i>Spark</a>
+        | <a href="/categories/算法笔记/"><i class="fa fa-bookmark"></i>算法笔记</a>
       </span>
     
     
@@ -186,106 +186,43 @@
     
   </div>
   <h1 class="passage-title">
-    Spark 开发环境搭建（一）- 虚拟机安装
+    排序学习(Learning To Rank)
   </h1>
   
   <article class="passage-article">
-    <h3 id="1-环境说明"><a href="#1-环境说明" class="headerlink" title="1. 环境说明"></a>1. 环境说明</h3><pre><code>- 主机：Windows7
-- 工具： virtualBox4.3.24
-- 虚拟机： Centos7
-</code></pre><h3 id="2-安装虚拟机CentOS7"><a href="#2-安装虚拟机CentOS7" class="headerlink" title="2. 安装虚拟机CentOS7"></a>2. 安装虚拟机CentOS7</h3><h4 id="2-1-新建虚拟机"><a href="#2-1-新建虚拟机" class="headerlink" title="2.1 新建虚拟机"></a>2.1 新建虚拟机</h4><p><img src="http://i.imgur.com/F5vvinN.png" alt="1.虚拟机创建.png"></p>
-<p>打开virtual box，点击主界面中的新建，出现上述界面，由于本人选择是的centos7的ISO，所以这里选择Red Hat64，可根据自己的情况替换为其他操作系统，在接下来的过程中一路下一步，知道遇到设置磁盘大小停止，设置系统大小为30G，对于我们测试用的集群系统30G大小已经足够了，而且如果后来不够的话还可以动态添加。</p>
-<h4 id="2-2-虚拟机设置"><a href="#2-2-虚拟机设置" class="headerlink" title="2.2 虚拟机设置"></a>2.2 虚拟机设置</h4><p>点击刚才新建的虚拟机，之后点击virtual box上面的设置，弹出设置主界面，在这一步操作中我们主要设置存储和网络两个部分，</p>
+    </p>
+<h2 id="排序学习思维导图和系统框架"><a href="#排序学习思维导图和系统框架" class="headerlink" title="排序学习思维导图和系统框架"></a>排序学习思维导图和系统框架</h2><p>排序学习系统通用学习框架(摘自参考文献)<br><img src="https://upload-images.jianshu.io/upload_images/2423131-46b7b14399c06a83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>排序学习和其他机器学习任务一样，分为训练环节和预测环节，唯一的不同点就是输入数据格式和普通数据不同。排序学习思维导图如下。<br><img src="https://upload-images.jianshu.io/upload_images/2423131-3757463d95de2422.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="问题定义"><a href="#问题定义" class="headerlink" title="问题定义"></a>问题定义</h2><p>问题类型<br><img src="https://upload-images.jianshu.io/upload_images/2423131-acd0eb34a17e349a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <ul>
-<li>1 . 加载系统ISO文件<br><img src="http://i.imgur.com/s6hCo6C.png" alt="2.加载ISO"></li>
+<li>Pointwise算法<br>是指给定$<query, doc="">$对，如果最终预测目标是一个实数值，就是一个回归问题。如果目标是概率预测，这就是一个分类问题，例如CTR预估.</query,></li>
+<li>Pairwise<br>是指给定$<query, (d1,="" d2)="">$， 即给定两个文档的排序。Pairwise算法的目标是减少逆序的数量，所以是个二分类问题</query,></li>
+<li>Listwise<br>是指给定一个排序列表$<query, list(d)="">$,目标往往是直接优化nDCG、ERR等评价指标.</query,></li>
 </ul>
-<ul>
-<li>2 . 连接外网<br><img src="http://i.imgur.com/HrbcTfl.png" alt="3.外网设置"></li>
+<h2 id="学习方法"><a href="#学习方法" class="headerlink" title="学习方法"></a>学习方法</h2><p><img src="https://upload-images.jianshu.io/upload_images/2423131-52e8bea7dbb353cb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="评价指标"><a href="#评价指标" class="headerlink" title="评价指标"></a>评价指标</h2><ul>
+<li><p>MAP(Mean Aaverage Precision)平均准确率均值，体现的是取不同个数排序结果下的平均准确率，所谓<em>准确率</em>是指前面$k$个中，相关文档的占比.MAP计算公式如下：</p>
+<script type="math/tex; mode=display">AP@K=\frac{\sum_{i=1}^{K}P(i)rel(i)}{K} \\
+P(i) = \frac{前i个文档中相关文档个数}{i} \\
+rel(i) = 1(第i个文档是相关文档) or 0 (第i个文档不相关)</script><p>以上公式计算了一个query时，针对$TopK$的准确率，$K$表示在结果中选取多少个文档。<br>针对于整个数据集的$MAP$,即平均准确率</p>
+<script type="math/tex; mode=display">AMP@Q=\frac{\sum_{q=1}^Q AP_q@K}{Q}</script><p>MAP指标只考虑文档相关与否0和1，不考虑具体相关程度。</p>
+</li>
+<li>CG(Cumulative Gain)累积增益<br>可用于评价基于打分或者评分的排序系统，计算公式如下<script type="math/tex; mode=display">CG = \sum_{i=1}^K rel(i)</script>其中，$K$表示排序内容的个数，$rel(i)$表示第$i$个物品的相关性或者评分。举例来说，给一个用户推荐了五个商品，$I_1, I_2, I_3, I_4, I_5$, 对应的得分分别为$5, 3, 2, 1, 0.5$,累积增益为：<script type="math/tex; mode=display">CG=5+3+2+1+0.5 = 11.5</script>累积增益并没有考虑每个物品具体的位置，只考虑了得分大小</li>
+<li><p>DCG(Discount Cumulative Gain) 折扣累积增益<br>计算公式如下</p>
+<script type="math/tex; mode=display">DCG_K=\sum_{i=1}^K\frac{2^{rel(i)}-1}{log_2{(i+1)}}</script><p>其中，$K$表示列表中元素个数，分子表示相关性的大小，分母表示当前物品位置的惩罚。举例来说，给一个用户推荐了五个商品，$I_1, I_2, I_3, I_4, I_5$, 对应的得分分别为$5, 3, 2, 1, 2$,则折扣累积增益为(列表位置索引从1开始)，</p>
+<script type="math/tex; mode=display">DCG_5=\frac{2^5-1}{log_22} + \frac{2^3-1}{log_23} +\frac{2^2-1}{log_24} + \frac{2^1-1}{log_25} + \frac{2^2-1}{log_26} = 38.5</script></li>
+<li><p>NDCG(Normalized Discount Cumulative Gain)归一化折扣累积增益<br>因为DCG并没有考虑列表中和查询query真正有效的个数，其计算公式如下，给一个用户推荐了五个商品，$I_1, I_2, I_3, I_4, I_5$, 对应的得分分别为$5, 3, 2, 1, 2$(但是这里有疑惑点，推荐列表为什么不是按照实际的得分排序呢?)</p>
+<script type="math/tex; mode=display">NDCG_k = \frac{DCG_K}{IDCG_k}</script><p>$IDCG$是指列表按照真实分数排序状况下的$DCG$，依然用上面的例子，则五个商品的按分数排序是$5, 3, 2, 2, 1$,则对应的$IDCG$为</p>
+<script type="math/tex; mode=display">IDCG_5=\frac{2^5-1}{log_22} + \frac{2^3-1}{log_23} +\frac{2^2-1}{log_24} + \frac{2^2-1}{log_25} + \frac{2^1-1}{log_26} = 38.5</script><p>对应的$NDCG$如下</p>
+<script type="math/tex; mode=display">NDCG_5=\frac{DCG_5}{IDCG_5}</script><p>$NDCG$是0-1的数，越接近于1说明推荐越准确.</p>
+</li>
 </ul>
-<p>virtualBox新建完虚拟机之后，默认的网络连接方式为<strong>NAT</strong>，所以不需要做其他更改即可上网。</p>
-<ul>
-<li>3 . 设置静态IP<br><img src="http://i.imgur.com/X4Qr4dn.png" alt="4.添加第二网卡"></li>
-</ul>
-<p>集群内机器之间需要相互访问，因此需要为每台机器分配固定的IP，对于virtual box工具，目前发现只能通过两块网卡完成即能上网又具有独立静态IP（其他方式本人也曾尝试但未成功），因此添加第二个网卡来配置虚拟机的固定IP，具体设置如上图。</p>
-<h4 id="2-3-Centos7安装过程中的设置"><a href="#2-3-Centos7安装过程中的设置" class="headerlink" title="2.3 Centos7安装过程中的设置"></a>2.3 Centos7安装过程中的设置</h4><p>经过以上步骤已基本完成了虚拟机的初步设置，但在Centos7安装过程中还需要对系统进行必要的设置，</p>
-<ul>
-<li>1 . 系统安装<br><img src="http://i.imgur.com/aVsrInm.png" alt="5 系统安装"></li>
-</ul>
-<p>选择第一个进行安装</p>
-<ul>
-<li>2 . 语言选择<br><img src="http://i.imgur.com/7nbgPZS.png" alt="6. 语言选择"></li>
-</ul>
-<p>根据个人习惯选择语言种类，本人选择简体中文</p>
-<ul>
-<li>3 . 系统配置<br><img src="http://i.imgur.com/jzuK2tC.png" alt="7.系统配置"></li>
-</ul>
-<p>这个步骤中，主要设置下面四个，前面也可以设置，软件选择是选择系统安装哪些东西，安装位置是对磁盘分区进行设置，网络设置是否启用。</p>
-<ul>
-<li>4 . 软件选择<br><img src="http://i.imgur.com/ouy1Gos.png" alt="8.软件选择"></li>
-</ul>
-<p>软件选择，我们不需要界面等，所以这里选择最小安装，然后下一步。</p>
-<ul>
-<li>5 . 分区设置<br><img src="http://i.imgur.com/79dXeLK.png" alt="9.分区设置"></li>
-</ul>
-<p>采用如下的分区策略，</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>分区</th>
-<th style="text-align:center">说明</th>
-<th style="text-align:right">30G硬盘</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>/</td>
-<td style="text-align:center">Linux 系统根目录，大小5G以上</td>
-<td style="text-align:right">8G</td>
-</tr>
-<tr>
-<td>/swap</td>
-<td style="text-align:center">交换分区，物理内存的1~2倍</td>
-<td style="text-align:right">2G</td>
-</tr>
-<tr>
-<td>/boot</td>
-<td style="text-align:center">用于存放系统启动相关程序，大小100M以上即可</td>
-<td style="text-align:right">500M</td>
-</tr>
-<tr>
-<td>/usr</td>
-<td style="text-align:center">存放系统应用程序，大小3G以上</td>
-<td style="text-align:right">5G</td>
-</tr>
-<tr>
-<td>/var</td>
-<td style="text-align:center">存放经常变化数据和日志</td>
-<td style="text-align:right">2G</td>
-</tr>
-<tr>
-<td>/home</td>
-<td style="text-align:center">存放普通用户数据，宿主目录，剩余空间</td>
-<td style="text-align:right">剩余空间</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><img src="http://i.imgur.com/aobchiM.png" alt="10.磁盘分区"></p>
-<p>一般情况下，根据上述分区方式满足即可满足开发需要，但需要根据个人需要进行修改。</p>
-<ul>
-<li>6 . 网络设置<br><img src="http://i.imgur.com/NO1unZJ.png" alt="11.网络设置"></li>
-</ul>
-<p>默认情况下，第二块网卡是未开启的，这里将右侧的开启按钮打开，则在进入到系统后，通过ifconfig命令可以查看到该网卡</p>
-<ul>
-<li>7 . 用户设置<br><img src="http://i.imgur.com/g3mna4E.png" alt="12.设置root密码"></li>
-</ul>
-<p><img src="http://i.imgur.com/L8NgQd8.png" alt="13.创建用户"></p>
-<p>设置root密码和用户，我这里设置的用户为，Hadoop，且为管理员权限，便于后续的使用(在公司内安装最好不要分配管理员权限).</p>
-<p>经过以上步骤就centos系统的各个方面设置完毕，点击安装系统即可，接下来我们会对网络进行设置配置静态IP。</p>
-<blockquote>
-<p>转载请注明出处：<a href="http://www.jianshu.com/p/e84d0973099f" target="_blank" rel="noopener">http://www.jianshu.com/p/e84d0973099f</a></p>
-</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对于排序问题，主要弄情况$pointwise, pairwise, listwize$和相应的评价指标既可，对于算法的选择可根据业务论文进行对比。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li><a href="http://www.aas.net.cn/CN/abstract/abstract19321.shtml" target="_blank" rel="noopener">排序学习研究进展和展望</a></li>
+<li><a href="http://sofasofa.io/forum_main_post.php?postid=1002561" target="_blank" rel="noopener">排序指标</a></li>
+<li><a href="https://tech.meituan.com/2018/12/20/head-in-l2r.html" target="_blank" rel="noopener">深入浅出排序学习</a></li>
+</ol>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -293,7 +230,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-环境说明"><span class="toc-text">1. 环境说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-安装虚拟机CentOS7"><span class="toc-text">2. 安装虚拟机CentOS7</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-新建虚拟机"><span class="toc-text">2.1 新建虚拟机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-虚拟机设置"><span class="toc-text">2.2 虚拟机设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-Centos7安装过程中的设置"><span class="toc-text">2.3 Centos7安装过程中的设置</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#排序学习思维导图和系统框架"><span class="toc-text">排序学习思维导图和系统框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题定义"><span class="toc-text">问题定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#学习方法"><span class="toc-text">学习方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#评价指标"><span class="toc-text">评价指标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
   </div>
 </aside>
   
@@ -302,7 +239,7 @@
       
         <div>
           原文链接: 
-          <a href="" target="_blank">https://helixn.com/passages/2016-07-23-spark-deployment/</a>
+          <a href="" target="_blank">https://helixn.com/passages/2019-05-16-ml-ltr/</a>
         </div>
       
       <div>
@@ -313,9 +250,11 @@
   
     <div class="passage-tags">
      
-      <a href="/tags/Spark-Deployment/"><i class="fa fa-tags"></i>Spark Deployment</a>
+      <a href="/tags/PairWise/"><i class="fa fa-tags"></i>PairWise</a>
      
-      <a href="/tags/Spark环境搭建/"><i class="fa fa-tags"></i>Spark环境搭建</a>
+      <a href="/tags/PointWise/"><i class="fa fa-tags"></i>PointWise</a>
+     
+      <a href="/tags/ListWise/"><i class="fa fa-tags"></i>ListWise</a>
     
     </div>
   
@@ -410,10 +349,10 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="/passages/2016-07-24-spark-deployment/" data-enable="true">
+    <a href="/passages/2019-05-20-sl-chapter1-p2/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/passages/2016-06-05-hello-world/" data-enable="true">
+    <a href="/passages/2019-05-14-sl-chapter1-p1/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
