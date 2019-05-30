@@ -15,7 +15,7 @@
   
 
   
-  <meta name="description" content="摘要">
+  <meta name="description" content="感知器是机器学习中最基本的模型，也是神经网络的基础，简单但很重要，需要归零心态重新认识，尤其是对其对偶形式的理解，有助于对SVM和核函数的理解。">
 
   
 
@@ -225,6 +225,7 @@ b \leftarrow{b} + \eta{y_i}</script><p>$\eta$为学习率。</p>
 <script type="math/tex; mode=display">\alpha_i \leftarrow{\alpha_i}+\eta \\
 b \leftarrow{b} + \eta{y_i}</script><p>(4) 转至(2),直到训练集中没有错误分类。</p>
 </blockquote>
+<p>对偶中出现了$<x_j,x_i>$内积的形式，这其实就是一种核函数运算，可以事先计算出来并以矩阵的形式存储，这个矩阵称作<strong>Gram</strong>矩阵。</x_j,x_i></p>
 <p>关于感知器对偶形式的深入讨论，可以参考文献<a href="https://www.zhihu.com/question/26526858" target="_blank" rel="noopener">1</a></p>
 <h3 id="优缺点是什么？"><a href="#优缺点是什么？" class="headerlink" title="优缺点是什么？"></a>优缺点是什么？</h3><p>优点：</p>
 <ul>
