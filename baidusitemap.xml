@@ -4,6 +4,48 @@
 
     
   <url>
+    <loc>https://helixn.com/passages/2019-05-21-chapter2-perceptron/</loc>
+    <lastmod>2019-05-30T14:15:46.744Z</lastmod>
+    <data>
+        <display>
+        <title>读书笔记：感知机</title>
+        <pubTime>2019-05-21T00:27:31.000Z</pubTime>
+        
+        <tag>感知机</tag>
+         
+         
+           
+             
+              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-05-24-financial/</loc>
+    <lastmod>2019-05-27T12:45:46.685Z</lastmod>
+    <data>
+        <display>
+        <title>理财，到底是在说什么？</title>
+        <pubTime>2019-05-24T11:12:52.000Z</pubTime>
+        
+        <tag>理财</tag>
+         
+        <tag>理生活</tag>
+         
+         
+           
+             
+              <breadCrumb title="Life" url="https://helixn.com/categories/Life/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://helixn.com/passages/2019-05-16-ml-ltr/</loc>
     <lastmod>2019-05-23T13:25:53.865Z</lastmod>
     <data>
@@ -21,26 +63,6 @@
            
              
               <breadCrumb title="算法笔记" url="https://helixn.com/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://helixn.com/passages/2019-05-21-chapter2-perceptron/</loc>
-    <lastmod>2019-05-21T00:32:17.338Z</lastmod>
-    <data>
-        <display>
-        <title>读书笔记：感知机</title>
-        <pubTime>2019-05-21T00:27:31.000Z</pubTime>
-        
-        <tag>感知机</tag>
-         
-         
-           
-             
-              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
           
         </display>
     </data>
@@ -262,9 +284,9 @@
         <title>Spark 开发环境搭建（一）- 虚拟机安装</title>
         <pubTime>2016-07-23T04:05:09.000Z</pubTime>
         
-        <tag>Spark Deployment</tag>
-         
         <tag>Spark环境搭建</tag>
+         
+        <tag>Spark Deployment</tag>
          
          
            
@@ -284,11 +306,11 @@
         <title>Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网</title>
         <pubTime>2016-07-24T05:21:36.000Z</pubTime>
         
-        <tag>虚拟机静态ip，上网</tag>
+        <tag>Spark环境搭建</tag>
          
         <tag>Spark Deployment</tag>
          
-        <tag>Spark环境搭建</tag>
+        <tag>虚拟机静态ip，上网</tag>
          
          
            

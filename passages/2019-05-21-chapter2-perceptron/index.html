@@ -191,7 +191,55 @@
   
   <article class="passage-article">
     </p>
-<h2 id="宏观层面"><a href="#宏观层面" class="headerlink" title="宏观层面"></a>宏观层面</h2><h3 id="该算法解决什么问题？"><a href="#该算法解决什么问题？" class="headerlink" title="该算法解决什么问题？"></a>该算法解决什么问题？</h3><h3 id="算法基本思想和原理是什么？"><a href="#算法基本思想和原理是什么？" class="headerlink" title="算法基本思想和原理是什么？"></a>算法基本思想和原理是什么？</h3><h3 id="个人理解是什么？"><a href="#个人理解是什么？" class="headerlink" title="个人理解是什么？"></a>个人理解是什么？</h3><h2 id="微观层面："><a href="#微观层面：" class="headerlink" title="微观层面："></a>微观层面：</h2><h3 id="公式详细推导过程是否领会和记忆？"><a href="#公式详细推导过程是否领会和记忆？" class="headerlink" title="公式详细推导过程是否领会和记忆？"></a>公式详细推导过程是否领会和记忆？</h3><h3 id="算法优化的目标是什么？"><a href="#算法优化的目标是什么？" class="headerlink" title="算法优化的目标是什么？"></a>算法优化的目标是什么？</h3><h3 id="优缺点是什么？"><a href="#优缺点是什么？" class="headerlink" title="优缺点是什么？"></a>优缺点是什么？</h3><h2 id="应用层面"><a href="#应用层面" class="headerlink" title="应用层面"></a>应用层面</h2><h3 id="算法的使用场景或任务有哪些？"><a href="#算法的使用场景或任务有哪些？" class="headerlink" title="算法的使用场景或任务有哪些？"></a>算法的使用场景或任务有哪些？</h3><h3 id="具体使用的体验如何？"><a href="#具体使用的体验如何？" class="headerlink" title="具体使用的体验如何？"></a>具体使用的体验如何？</h3>
+<h2 id="宏观层面"><a href="#宏观层面" class="headerlink" title="宏观层面"></a>宏观层面</h2><p>感知机(Perceptron)是有监督的、二分类模型，属于判别模型因为直接利用决策函数$y=f(x)$进行判断，不涉及联合概率分布学习。它对+1和-1两个类别进行判断。</p>
+<h3 id="该算法解决什么问题？"><a href="#该算法解决什么问题？" class="headerlink" title="该算法解决什么问题？"></a>该算法解决什么问题？</h3><p>感知机主要用于解决线性可分数据集的分类问题。线性可分数据集是指能够找到一个超平面，完全正确的将数据集分割在该超平面的两侧。</p>
+<h3 id="算法基本思想和原理是什么？"><a href="#算法基本思想和原理是什么？" class="headerlink" title="算法基本思想和原理是什么？"></a>算法基本思想和原理是什么？</h3><p>感知机根据输入的实数特征向量，通过特征加权和来判断最终结果。</p>
+<script type="math/tex; mode=display">f(x) = sign(\sum_i^nWX_i + b)</script><p>这里，$X$是特征向量，可能是m维，$sign$是指示函数，</p>
+<script type="math/tex; mode=display">sign(g)=\{_{-1, g < 0}^{+1, g >=0}</script><h3 id="个人理解是什么？"><a href="#个人理解是什么？" class="headerlink" title="个人理解是什么？"></a>个人理解是什么？</h3><p>感知器是模拟人类神经元的形式而设计的算法，它是人工神经网络(ANN)的基础，只不过这里的激活函数比较特殊为<em>指示函数</em>。</p>
+<h2 id="微观层面："><a href="#微观层面：" class="headerlink" title="微观层面："></a>微观层面：</h2><h3 id="公式详细推导过程是否领会和记忆？"><a href="#公式详细推导过程是否领会和记忆？" class="headerlink" title="公式详细推导过程是否领会和记忆？"></a>公式详细推导过程是否领会和记忆？</h3><p>根据书中定义，感知器的函数形式如下：</p>
+<script type="math/tex; mode=display">f(x) = sign(w\cdot x + b)</script><p>这里，$w,x$均是向量。<br>为了能够对该算法进行训练学习，需要设计目标函数，且目标函数需是参数$w,b$的函数，因此这里选择错误分类点到平面的距离总和。点超平面的距离距离为：</p>
+<script type="math/tex; mode=display">d = \frac{1}{||w||_2}|w\cdot x + b|</script><p>所谓误分类点，对于正例来说，错误分类时它在平面下方$f(x)<0$，距离为$-d$，对于负例，错误分类时它在平面上方$f(x)>0$，距离为$+d$，总结而言即预测结果$f(x_i)$和真实值$y_i$异号，距离为$-y_i(w\cdot x_i + b) &gt; 0$.</0$，距离为$-d$，对于负例，错误分类时它在平面上方$f(x)></p>
+<p>记录书中的<strong>算法原始形式</strong></p>
+<blockquote>
+<p>输入：选了数据集$T={(x_1, y_1),(x_1, y_1),\cdots, (x_N, y_N) }$,其中，$x$为实向量，$y={-1, +1}, i=1,2,3,\cdots,N$, 学习率为$\eta$;<br>输出:$w,b$,感知器模型$f(x)=sign(w\cdot x+b)$<br>(1) 选取初始值$w_0, b_0$<br>(2) 在训练集中选取样本$(x_i, y_i)$<br>(3) 如果分类错误，即$y_i(w\cdot x_i + b) \leq 0$,</p>
+<script type="math/tex; mode=display">w \leftarrow{w}+\eta{y_ix_i} \\
+b \leftarrow{b} + \eta{y_i}</script><p>(4) 转至(2),直到训练集中没有错误分类。</p>
+</blockquote>
+<h3 id="算法优化目标"><a href="#算法优化目标" class="headerlink" title="算法优化目标"></a>算法优化目标</h3><p>对于一个具有$M$个点的数据集，所有错误分类点的总距离和如下，</p>
+<script type="math/tex; mode=display">-\frac{1}{||w||_2}\sum_{i=1}^{M}y_i(w\cdot x_i + b)</script><p>由于$||w_2||$为具体数值，因此可以进行舍去，则得到感知器模型的损失函数,</p>
+<script type="math/tex; mode=display">L(w,b)=-\sum_{i=1}^{M}y_i(w\cdot x_i + b)</script><p>优化的目标是使得<strong>损失函数最小</strong>，而优化的方式是采用GD下降算法，让loss沿着梯度下降的方向进行减少。损失函数对其中的参数求偏导得到梯度，</p>
+<script type="math/tex; mode=display">\frac{\partial{L(w,b)}}{\partial{w}}=-\sum_{i=1}^My_ix_i \\
+\frac{\partial{L(w,b)}}{\partial{b}}=-\sum_{i=1}^{M}y_i</script><p>对于一个特定点$(x_i, y_i)$，对$w,b$进行更新公式为，</p>
+<script type="math/tex; mode=display">w \leftarrow{w}+\eta{y_ix_i} \\
+b \leftarrow{b} + \eta{y_i}</script><p>$\eta$为学习率。</p>
+<p>这个学习过程，直观的理解为，当一个点被错误分类时，即它位于分类超平的另一侧，通过调整$w,b$使超平面向这个点所在的一侧进行移动，减少该误分类点到平面的距离。(SVM中也存在这个过程，不断的移动超平面，但是移动有个限度，即最大分类间隔)</p>
+<h3 id="对偶形式"><a href="#对偶形式" class="headerlink" title="对偶形式"></a>对偶形式</h3><p>书中提到了感知器算法的对偶形式，该方式支持向量机及其对偶形式相对应，这里做个记录。<br>对偶形式的思想是将参数和变量进行互换，将$w,b$表示为$x_i, y_i$的线性组合形式，通过求解其系数，等到$w,b$。根据之前的更新规则，设$w,b$修改了$n$次，则对于$(x_i, y_i)$的增量为</p>
+<script type="math/tex; mode=display">\Delta w = n_i\eta{y_ix_i} \\
+\Delta b =n_i\eta{y_i}</script><p>令$\alpha_i=ni_i\eta_i$,则增量表示</p>
+<script type="math/tex; mode=display">\Delta w = \alpha_i{y_ix_i} \\
+\Delta b = \alpha_i{y_i}</script><p>则最后学习到的$w,b$为：</p>
+<script type="math/tex; mode=display">w = \sum_{i=1}^{N}\alpha_i{y_ix_i} \\
+ b = \sum_{i=1}^{N}\alpha_i{y_i}</script><p>$\alpha_i \geq 0, 当\eta=1$时，表示第$i$个实例点由于误分类而进行修改的次数，更新次数越多，意味着它距离超平面越近，越难被正确分类，对学习结果影响越大。(<em>试想，什么样的点会被频繁更新，为什么频繁更新，因为经常被分错，什么情况下的点会经常被分错，就是超平面一动就被分错，说明什么，这个点离平面很近，平面一动就跑到了对侧，这种点在SVM中被称作支撑向量！</em>)<br>上述的过程，其实是在说，对于每个参数的更新，可以通过考虑增量的形式来进行转换。<br><strong>感知器学习算法对偶形式</strong></p>
+<blockquote>
+<p>输入：选了数据集$T={(x<em>1, y_1),(x_1, y_1),\cdots, (x_N, y_N) }$,其中，$x$为实向量，$y={-1, +1}, i=1,2,3,\cdots,N$, 学习率为$0 &lt; \eta \leq 1$;<br>输出:$\alpha,b$,感知器模型$f(x)=sign(\sum</em>{j=1}^N\alpha<em>jy_jx_j\cdot x+b), \alpha = (\alpha_1, \alpha_2, \cdots, \alpha_N)^T$,<br>(1) 选取初始值$\alpha \leftarrow 0, b \leftarrow 0$<br>(2) 在训练集中选取样本$(x_i, y_i)$<br>(3) 如果分类错误，即$y_i(\sum</em>{j=1}^N\alpha_jy_jx_j\cdot x_i + b) \leq 0$,(对$\alpha_i,b$求偏导，前者剩余)</p>
+<script type="math/tex; mode=display">\alpha_i \leftarrow{\alpha_i}+\eta \\
+b \leftarrow{b} + \eta{y_i}</script><p>(4) 转至(2),直到训练集中没有错误分类。</p>
+</blockquote>
+<p>关于感知器对偶形式的深入讨论，可以参考文献<a href="https://www.zhihu.com/question/26526858" target="_blank" rel="noopener">1</a></p>
+<h3 id="优缺点是什么？"><a href="#优缺点是什么？" class="headerlink" title="优缺点是什么？"></a>优缺点是什么？</h3><p>优点：</p>
+<ul>
+<li>模型简单</li>
+<li>训练速度快</li>
+<li>对线性可分数据集可以快速构建baseline</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>只能处理线性可分问题，对于非线性或线性不可分则不好(线性不可分，可以采用多层，或NN)</li>
+</ul>
+<h2 id="应用层面"><a href="#应用层面" class="headerlink" title="应用层面"></a>应用层面</h2><h3 id="算法的使用场景或任务有哪些？"><a href="#算法的使用场景或任务有哪些？" class="headerlink" title="算法的使用场景或任务有哪些？"></a>算法的使用场景或任务有哪些？</h3><p>感知器常用于简单分类场景，实际工作中暂时未使用过。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li><a href="https://www.zhihu.com/question/26526858" target="_blank" rel="noopener">感知器对偶形式讨论</a></li>
+</ol>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -199,7 +247,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#宏观层面"><span class="toc-text">宏观层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#该算法解决什么问题？"><span class="toc-text">该算法解决什么问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法基本思想和原理是什么？"><span class="toc-text">算法基本思想和原理是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人理解是什么？"><span class="toc-text">个人理解是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微观层面："><span class="toc-text">微观层面：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#公式详细推导过程是否领会和记忆？"><span class="toc-text">公式详细推导过程是否领会和记忆？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法优化的目标是什么？"><span class="toc-text">算法优化的目标是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点是什么？"><span class="toc-text">优缺点是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用层面"><span class="toc-text">应用层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法的使用场景或任务有哪些？"><span class="toc-text">算法的使用场景或任务有哪些？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#具体使用的体验如何？"><span class="toc-text">具体使用的体验如何？</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#宏观层面"><span class="toc-text">宏观层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#该算法解决什么问题？"><span class="toc-text">该算法解决什么问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法基本思想和原理是什么？"><span class="toc-text">算法基本思想和原理是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人理解是什么？"><span class="toc-text">个人理解是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微观层面："><span class="toc-text">微观层面：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#公式详细推导过程是否领会和记忆？"><span class="toc-text">公式详细推导过程是否领会和记忆？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法优化目标"><span class="toc-text">算法优化目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对偶形式"><span class="toc-text">对偶形式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点是什么？"><span class="toc-text">优缺点是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用层面"><span class="toc-text">应用层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法的使用场景或任务有哪些？"><span class="toc-text">算法的使用场景或任务有哪些？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
   </div>
 </aside>
   
@@ -314,7 +362,7 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2019-05-24-financial/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
     <a href="/passages/2019-05-20-sl-chapter1-p2/" data-enable="true">
