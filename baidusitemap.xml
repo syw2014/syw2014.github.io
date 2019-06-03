@@ -5,7 +5,7 @@
     
   <url>
     <loc>https://helixn.com/passages/2019-05-21-chapter2-perceptron/</loc>
-    <lastmod>2019-05-31T00:42:17.241Z</lastmod>
+    <lastmod>2019-06-03T01:07:21.359Z</lastmod>
     <data>
         <display>
         <title>读书笔记：感知机</title>
@@ -284,9 +284,9 @@
         <title>Spark 开发环境搭建（一）- 虚拟机安装</title>
         <pubTime>2016-07-23T04:05:09.000Z</pubTime>
         
-        <tag>Spark环境搭建</tag>
-         
         <tag>Spark Deployment</tag>
+         
+        <tag>Spark环境搭建</tag>
          
          
            
@@ -306,11 +306,11 @@
         <title>Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网</title>
         <pubTime>2016-07-24T05:21:36.000Z</pubTime>
         
-        <tag>Spark环境搭建</tag>
+        <tag>虚拟机静态ip，上网</tag>
          
         <tag>Spark Deployment</tag>
          
-        <tag>虚拟机静态ip，上网</tag>
+        <tag>Spark环境搭建</tag>
          
          
            
