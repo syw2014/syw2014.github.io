@@ -238,6 +238,18 @@ b \leftarrow{b} + \eta{y_i}</script><p>(4) 转至(2),直到训练集中没有错
 <li>只能处理线性可分问题，对于非线性或线性不可分则不好(线性不可分，可以采用多层，或NN)</li>
 </ul>
 <h2 id="应用层面"><a href="#应用层面" class="headerlink" title="应用层面"></a>应用层面</h2><h3 id="算法的使用场景或任务有哪些？"><a href="#算法的使用场景或任务有哪些？" class="headerlink" title="算法的使用场景或任务有哪些？"></a>算法的使用场景或任务有哪些？</h3><p>感知器常用于简单分类场景，实际工作中暂时未使用过。</p>
+<h2 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h2><ol>
+<li>感知机损失函数为什么不定义为误分类点总数？<blockquote>
+<p>如果损失函数定义为误分类点的总数，则损失函数不是参数$w, b$的连续可导函数，不容易进行优化，因此将误差函数定义为错误分类点到超平面的距离。</p>
+</blockquote>
+</li>
+<li>感知器为什么不能表示异或？</li>
+<li>样本集线性可分的充分必要条件是正实例点集所构成的凸壳和负实例点集构成的凸壳不相交。</li>
+<li>感知机学习结果是否唯一？<blockquote>
+<p>感知机学习结果不唯一，它即依赖于初始值选择，也依赖于更新时选择样本的顺序，因此如果希望得到唯一超平面，需要添加约束条件。</p>
+</blockquote>
+</li>
+</ol>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
 <li><a href="https://www.zhihu.com/question/26526858" target="_blank" rel="noopener">感知器对偶形式讨论</a></li>
 </ol>
@@ -248,7 +260,7 @@ b \leftarrow{b} + \eta{y_i}</script><p>(4) 转至(2),直到训练集中没有错
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#宏观层面"><span class="toc-text">宏观层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#该算法解决什么问题？"><span class="toc-text">该算法解决什么问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法基本思想和原理是什么？"><span class="toc-text">算法基本思想和原理是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人理解是什么？"><span class="toc-text">个人理解是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微观层面："><span class="toc-text">微观层面：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#公式详细推导过程是否领会和记忆？"><span class="toc-text">公式详细推导过程是否领会和记忆？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法优化目标"><span class="toc-text">算法优化目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对偶形式"><span class="toc-text">对偶形式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点是什么？"><span class="toc-text">优缺点是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用层面"><span class="toc-text">应用层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法的使用场景或任务有哪些？"><span class="toc-text">算法的使用场景或任务有哪些？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#宏观层面"><span class="toc-text">宏观层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#该算法解决什么问题？"><span class="toc-text">该算法解决什么问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法基本思想和原理是什么？"><span class="toc-text">算法基本思想和原理是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人理解是什么？"><span class="toc-text">个人理解是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微观层面："><span class="toc-text">微观层面：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#公式详细推导过程是否领会和记忆？"><span class="toc-text">公式详细推导过程是否领会和记忆？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法优化目标"><span class="toc-text">算法优化目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对偶形式"><span class="toc-text">对偶形式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点是什么？"><span class="toc-text">优缺点是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用层面"><span class="toc-text">应用层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法的使用场景或任务有哪些？"><span class="toc-text">算法的使用场景或任务有哪些？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题思考"><span class="toc-text">问题思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
   </div>
 </aside>
   
