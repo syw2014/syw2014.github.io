@@ -224,13 +224,13 @@
 <li><p>k近邻分类算法</p>
 <blockquote>
 <p>输入：训练集</p>
-<script type="math/tex; mode=display">T={(x_1, y_1),(x_2, y_2),\cdots,(x_N, y_N)}</script><p>其中，$x_i$为输入特征向量，维度为$d$, 类别$y = {c_1, c_2,\cdots, c_M}$，<br>输出：给定待预测样本$x$，输出其对应类别<br>步骤：<br>(1) 根据给定的度量方式，在训练集$T$中，寻找k个最近点集$N_k(x)$<br>(2) 在点集合中统计各个类别出现的次数，选择具有最多次数的类别$c$作为预测结果$y$返回，即</p>
+<script type="math/tex; mode=display">T={(x_1, y_1),(x_2, y_2),\cdots,(x_N, y_N)}</script><p>其中，$x_i$为输入特征向量，维度为$d$, 类别$y = \{c_1, c_2,\cdots, c_M\}$，<br>输出：给定待预测样本$x$，输出其对应类别<br>步骤：<br>(1) 根据给定的度量方式，在训练集$T$中，寻找k个最近点集$N_k(x)$<br>(2) 在点集合中统计各个类别出现的次数，选择具有最多次数的类别$c$作为预测结果$y$返回，即</p>
 <script type="math/tex; mode=display">y=argmax\sum_{x_i\in N_k}I(y_i=c_j)</script></blockquote>
 </li>
 <li><p>k近邻回归算法</p>
 <blockquote>
 <p>输入：训练集</p>
-<script type="math/tex; mode=display">T={(x_1, y_1),(x_2, y_2),\cdots,(x_N, y_N)}</script><p>其中，$x_i$为输入特征向量，维度为$d$, 类别$y = {c_1, c_2,\cdots, c_M}$，<br>输出：给定待预测样本$x$，输出其对应类别<br>步骤：<br>(1) 根据给定的度量方式，在训练集$T$中，寻找k个最近点集$N_k(x)$<br>(2) 在点集合中计算样本y的均值，作为预测结果$y$返回，即</p>
+<script type="math/tex; mode=display">T={(x_1, y_1),(x_2, y_2),\cdots,(x_N, y_N)}</script><p>其中，$x_i$为输入特征向量，维度为$d$, 类别$y = \{c_1, c_2,\cdots, c_M\}$，<br>输出：给定待预测样本$x$，输出其对应类别<br>步骤：<br>(1) 根据给定的度量方式，在训练集$T$中，寻找k个最近点集$N_k(x)$<br>(2) 在点集合中计算样本y的均值，作为预测结果$y$返回，即</p>
 <script type="math/tex; mode=display">y=\frac{1}{k}\sum_{x_i\in N_k}y_i</script></blockquote>
 </li>
 </ul>
@@ -240,7 +240,7 @@
 <li>kd tree的构造等价不断的用垂直于坐标轴的超平面将k维空间切分</li>
 </ul>
 <h3 id="kd-tree-构造"><a href="#kd-tree-构造" class="headerlink" title="kd tree 构造"></a>kd tree 构造</h3><blockquote>
-<p>输入：k维空间数据集$T={x_1, x_2, \cdots, x_N}$,其中$x_i=(x_1^{(1)}, x_1^{(2)}, \cdots, x_1^{(k)})$<br>输出： kd tree<br>(1) 开始构造跟节点<br>  选择$x_1^{(1)}$所在坐标轴的中位数$x_1^{(1*)}$为切分点划分超平面，生成深度为1的左、右子节点</p>
+<p>输入：k维空间数据集$T=\{x_1, x_2, \cdots, x_N\}$,其中$x_i=(x_1^{(1)}, x_1^{(2)}, \cdots, x_1^{(k)})$<br>输出： kd tree<br>(1) 开始构造跟节点<br>  选择$x_1^{(1)}$所在坐标轴的中位数$x_1^{(1*)}$为切分点划分超平面，生成深度为1的左、右子节点</p>
 <pre><code>- 左子节点对应于$x_i^{(1)} &lt; x_1^{(1*)}$的区域
 - 右子节点对应于$x_i^{(1)} &gt; x_1^{(1*)}$的区域
 </code></pre><p>  (2) 重复，对于深度为j的节点，选择$x^{(l)}$为切分坐标轴， $l=j (mod k) + 1$,以该坐标中位数作为切分点，切分之后树的深度变为j+1。这里之所以不用$l=j+1$来选择坐标轴，是因为树的深度j可能超过空间维度k，这样就轮转坐标轴进行切分。<br>  (3) 递归直到左右两个子区域没有实例存在时停止。<br>  <strong>备注</strong>：这种按照中坐标位数为切分点，构造出来的树为平衡二叉树，但搜索时的效率未必是最优的。</p>

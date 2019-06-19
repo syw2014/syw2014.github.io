@@ -201,7 +201,7 @@
 <script type="math/tex; mode=display">d = \frac{1}{||w||_2}|w\cdot x + b|</script><p>所谓误分类点，对于正例来说，错误分类时它在平面下方$f(x)<0$，距离为$-d$，对于负例，错误分类时它在平面上方$f(x)>0$，距离为$+d$，总结而言即预测结果$f(x_i)$和真实值$y_i$异号，距离为$-y_i(w\cdot x_i + b) &gt; 0$.</0$，距离为$-d$，对于负例，错误分类时它在平面上方$f(x)></p>
 <p>记录书中的<strong>算法原始形式</strong></p>
 <blockquote>
-<p>输入：选了数据集$T={(x_1, y_1),(x_1, y_1),\cdots, (x_N, y_N) }$,其中，$x$为实向量，$y={-1, +1}, i=1,2,3,\cdots,N$, 学习率为$\eta$;<br>输出:$w,b$,感知器模型$f(x)=sign(w\cdot x+b)$<br>(1) 选取初始值$w_0, b_0$<br>(2) 在训练集中选取样本$(x_i, y_i)$<br>(3) 如果分类错误，即$y_i(w\cdot x_i + b) \leq 0$,</p>
+<p>输入：选了数据集$T=\{(x_1, y_1),(x_1, y_1),\cdots, (x_N, y_N) \}$,其中，$x$为实向量，$y={-1, +1}, i=1,2,3,\cdots,N$, 学习率为$\eta$;<br>输出:$w,b$,感知器模型$f(x)=sign(w\cdot x+b)$<br>(1) 选取初始值$w_0, b_0$<br>(2) 在训练集中选取样本$(x_i, y_i)$<br>(3) 如果分类错误，即$y_i(w\cdot x_i + b) \leq 0$,</p>
 <script type="math/tex; mode=display">w \leftarrow{w}+\eta{y_ix_i} \\
 b \leftarrow{b} + \eta{y_i}</script><p>(4) 转至(2),直到训练集中没有错误分类。</p>
 </blockquote>
@@ -221,7 +221,7 @@ b \leftarrow{b} + \eta{y_i}</script><p>$\eta$为学习率。</p>
 <script type="math/tex; mode=display">w = \sum_{i=1}^{N}\alpha_i{y_ix_i} \\
  b = \sum_{i=1}^{N}\alpha_i{y_i}</script><p>$\alpha_i \geq 0, 当\eta=1$时，表示第$i$个实例点由于误分类而进行修改的次数，更新次数越多，意味着它距离超平面越近，越难被正确分类，对学习结果影响越大。(<em>试想，什么样的点会被频繁更新，为什么频繁更新，因为经常被分错，什么情况下的点会经常被分错，就是超平面一动就被分错，说明什么，这个点离平面很近，平面一动就跑到了对侧，这种点在SVM中被称作支撑向量！</em>)<br>上述的过程，其实是在说，对于每个参数的更新，可以通过考虑增量的形式来进行转换。<br><strong>感知器学习算法对偶形式</strong></p>
 <blockquote>
-<p>输入：选了数据集$T={(x_1, y_1),(x_1, y_1),\cdots, (x_N, y_N) }$,其中，x为实向量，$y={-1, +1}, i=1,2,3,\cdots,N$, 学习率为$0 &lt; \eta \leq 1$;<br>输出:$\alpha ,b$,感知器模型$f(x)=sign(\sum_{j=1}^N\alpha_jy_jx_j\cdot x+b), \alpha = (\alpha_1, \alpha_2, \cdots, \alpha_N)^T$,<br>(1) 选取初始值$\alpha \leftarrow{0}, b \leftarrow 0 $<br>(2) 在训练集中选取样本$(x_i, y_i)$<br>(3) 如果分类错误，即$y_i(\sum_{j=1}^N\alpha_j y_jx_j\cdot x_i + b) \leq 0$,(对$\alpha_i,b$求偏导，前者剩余)</p>
+<p>输入：选了数据集$T=\{(x_1, y_1),(x_1, y_1),\cdots, (x_N, y_N) \}$,其中，x为实向量，$y={-1, +1}, i=1,2,3,\cdots,N$, 学习率为$0 &lt; \eta \leq 1$;<br>输出:$\alpha ,b$,感知器模型$f(x)=sign(\sum_{j=1}^N\alpha_jy_jx_j\cdot x+b), \alpha = (\alpha_1, \alpha_2, \cdots, \alpha_N)^T$,<br>(1) 选取初始值$\alpha \leftarrow{0}, b \leftarrow 0 $<br>(2) 在训练集中选取样本$(x_i, y_i)$<br>(3) 如果分类错误，即$y_i(\sum_{j=1}^N\alpha_j y_jx_j\cdot x_i + b) \leq 0$,(对$\alpha_i,b$求偏导，前者剩余)</p>
 <script type="math/tex; mode=display">\alpha_i \leftarrow{\alpha_i}+\eta \\
 b \leftarrow{b} + \eta{y_i}</script><p>(4) 转至(2),直到训练集中没有错误分类。</p>
 </blockquote>

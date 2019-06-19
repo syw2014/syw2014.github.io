@@ -192,18 +192,20 @@
   <article class="passage-article">
     <h2 id="宏观层面"><a href="#宏观层面" class="headerlink" title="宏观层面"></a>宏观层面</h2><p>从宏观层面看，朴素贝叶斯（Naive Bayes）是<em>生成模型</em>、<em>参数模型</em>，是基于贝叶斯学习的分类模型，它根据训练集学习输入输出的联合概率分布即$P(X,Y)$, 结合贝叶斯定理，找到后验概率最大的输出。首先明确几个概念。</p>
 <ul>
-<li>全概率公式</li>
-<li>贝叶斯定理</li>
+<li>全概率公式<br>全概率表示达到某种结果或现象，有多种方式或原因，问达到的概率是多少或是造成这种结果的概率是多少。抽象化描述为，对一个完备事件组$A_1,A_2,\cdots, A_n$, 对于任意一个事件B发生，若如下公式成立，<script type="math/tex; mode=display">P(B) = P(B|A_1)P(A_1)\cdots P(B|A_n)P(A_n)=\sum_{i=1}^{n}P(B|A_i)P(A_i)</script>则成为全概率公式。</li>
+<li>贝叶斯定理<br>首先解释下贝叶斯定理，然后通过例子来进行说明。贝叶斯定理体现的是这么一个含义，这里用事件A和事件B来进行表示，贝叶斯定理公式为：<script type="math/tex; mode=display">P(A|B)=P(A)\frac{P(B|A)}{P(B)}</script><blockquote>
+<p>新信息B出现后A的概率=A本身的概率*新信息带来的调整</p>
+</blockquote>
+</li>
 <li>后验概率</li>
 <li>先验概率</li>
-<li>条件概率<br>当给定条件发生变化后，会导致事件发生的可能性改变。比如，你背后站着一个人，让你猜是女人的概率是多大，你肯定猜50%，但如果告诉你这个人有长头发，那你猜这个人是女人的概率是90%，这种$P(女人|长头发)$表示的就是条件“长头发”下是女人的概率，即是条件概率.</li>
+<li>条件概率<br>当给定条件发生变化后，会导致事件发生的可能性改变。比如，你背后站着一个人，让你猜是女人的概率是多大，你肯定猜50%，但如果告诉你这个人有长头发，那你猜这个人是女人的概率是90%，这种$P(女人|长头发)$表示的是在条件“长头发”下是女人的概率，即是条件概率.</li>
 </ul>
 <h3 id="该算法解决什么问题？"><a href="#该算法解决什么问题？" class="headerlink" title="该算法解决什么问题？"></a>该算法解决什么问题？</h3><h3 id="算法基本思想和原理是什么？"><a href="#算法基本思想和原理是什么？" class="headerlink" title="算法基本思想和原理是什么？"></a>算法基本思想和原理是什么？</h3><h3 id="个人理解是什么？"><a href="#个人理解是什么？" class="headerlink" title="个人理解是什么？"></a>个人理解是什么？</h3><h2 id="微观层面"><a href="#微观层面" class="headerlink" title="微观层面"></a>微观层面</h2><h3 id="公式详细推导过程是否领会和记忆？"><a href="#公式详细推导过程是否领会和记忆？" class="headerlink" title="公式详细推导过程是否领会和记忆？"></a>公式详细推导过程是否领会和记忆？</h3><h3 id="算法优化目标"><a href="#算法优化目标" class="headerlink" title="算法优化目标"></a>算法优化目标</h3><h3 id="优缺点是什么？"><a href="#优缺点是什么？" class="headerlink" title="优缺点是什么？"></a>优缺点是什么？</h3><p>优点：</p>
 <p>缺点：</p>
 <h2 id="应用层面"><a href="#应用层面" class="headerlink" title="应用层面"></a>应用层面</h2><h3 id="算法的使用场景或任务有哪些？"><a href="#算法的使用场景或任务有哪些？" class="headerlink" title="算法的使用场景或任务有哪些？"></a>算法的使用场景或任务有哪些？</h3><h2 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h2><ol>
 <li>朴素贝叶斯和贝叶斯估计有什么联系？</li>
 <li>贝叶斯定理是什么？</li>
-<li></li>
 </ol>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
 <li><a href="https://blog.csdn.net/Hearthougan/article/details/75174210" target="_blank" rel="noopener">全概率公式和贝叶斯</a></li>
