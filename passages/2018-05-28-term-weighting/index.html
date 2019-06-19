@@ -212,7 +212,7 @@
 <li><strong>LOGA &amp; LOGN </strong><br><img src="https://upload-images.jianshu.io/upload_images/2423131-a41465e2c25439f0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
 </ul>
 <blockquote>
-<p>其中，$a<em>j$ 表示出现在文档$j$中词的平均词频,<br>$f</em>{ij}$ 表示term $i$在document $j$中的频率</p>
+<p>其中，$a_j$ 表示出现在文档$j$中词的平均词频,<br>$f_{ij}$ 表示term $i$在document $j$中的频率</p>
 </blockquote>
 <p>在这个里是使用log算法对词频进行处理，基于的原则是，一篇文档中一个出现10次的词并不一定比出现一次的词对文章的重要度大，因此采用log进行平滑.LOGN 使用了归一化技术，因此在相同频率情况下，LOGN计算出的权重会低于LOGA计算出的权重，在不使用global weight的时候，采用归一化权重是比较重要的。</p>
 <ul>
@@ -225,7 +225,7 @@
 <li><strong>ATFC &amp; LOGG</strong><br><img src="https://upload-images.jianshu.io/upload_images/2423131-24520d238d7e48fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/2423131-9d2205b4c548298c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
 </ul>
 <blockquote>
-<p>$L<em>{ij}$ 表示local weight， $f</em>{ij}$ 表示term $i$在文档$j$中的词频，</p>
+<p>$L_{ij}$ 表示local weight， $f_{ij}$ 表示term $i$在文档$j$中的词频，</p>
 </blockquote>
 <p>这里采用log的形式相对比直接用频率效果好，这种情况下计算出的权重可能会大于1.</p>
 <h2 id="Global-Weighting"><a href="#Global-Weighting" class="headerlink" title="Global Weighting"></a>Global Weighting</h2><p>全局权重尝试去给每个词分配不同的权重，很多计算方式依据的准则是考虑长尾性，一个词出现的频率越少越具有区分性。计算方法如下图：<br><img src="https://upload-images.jianshu.io/upload_images/2423131-dd259440b3096434.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/2423131-bc44eb16a361cb8e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
@@ -256,7 +256,7 @@
 <li><strong>COSN</strong><br><img src="https://upload-images.jianshu.io/upload_images/2423131-8a19d73ee76d26a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
 </ul>
 <blockquote>
-<p>其中， $m$ 表示文档中词的个数，$G<em>i$表示term $i$的全局权重，$L</em>{ij}$表示term $i$在文档$j$中的权重。</p>
+<p>其中， $m$ 表示文档中词的个数，$G_i$表示term $i$的全局权重，$L_{ij}$表示term $i$在文档$j$中的权重。</p>
 </blockquote>
 <p>在向量空间模型中，COSN归一化是最常用的方式，这种方式强制把文档向量的模变成1，这样就可以用来计算文档之间的夹角。这种方式会使得长文档中的每个词的权重变的很低，短文档中词权重相对较高，这种计算对短文档有利。</p>
 <ul>

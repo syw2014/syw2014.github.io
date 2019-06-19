@@ -204,7 +204,7 @@ V_{shape}: n \times d_{model}, W_{shape}^{V}: d_{model}\times{d_v}, VW_{shape}:n
 Head_i(QW^{Q}, KW^{K}, VW^{V})_{shape}=n \times d_v \\
 concat(head_1,...,head_h)_{shape}:n \times hd_v    \\
 W_{shape}^{O}: hd_v \times d_{model} \\
-MultiHead_{shape}: n \times d_{model}</script><p>其中，n代表输入序列长度，$d<em>{model}$代表模型为维度，在论文中，提到$$d_k=d_v=d</em>{model}/h=64,h=8$$.<br>通过multihead方式不仅能够得到具有注意力结果的表示，同时也含有序列全局信息。</p>
+MultiHead_{shape}: n \times d_{model}</script><p>其中，n代表输入序列长度，$d_{model}$代表模型为维度，在论文中，提到<script type="math/tex">d_k=d_v=d_{model}/h=64,h=8</script>.<br>通过multihead方式不仅能够得到具有注意力结果的表示，同时也含有序列全局信息。</p>
 <h2 id="Self-Attention"><a href="#Self-Attention" class="headerlink" title="Self-Attention"></a>Self-Attention</h2><p>了解了Attention机制之后，那就有个疑问，到底什么是query，key 和value呢？对于这三部分的设计需要根据具体的任务，比如阅读理解中，query可以是文章的词向量序列，而key=value是问题的词向量序列。在这篇文章中，Google提到更多的是self-attention，即$Attention(X,X,X)$，为什么需要self-attention（inner attention）,主要原因如下，</p>
 <ul>
 <li>每层计算复杂度降低，</li>

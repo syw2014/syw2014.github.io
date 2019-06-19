@@ -198,7 +198,7 @@
 </ul>
 <h2 id="Introduce-fundamental-concepts"><a href="#Introduce-fundamental-concepts" class="headerlink" title="Introduce fundamental concepts"></a>Introduce fundamental concepts</h2><ul>
 <li>Domain-Specific Knowledge Base<br>将知识库定义为$DSKB={C,E,P,R}$，其中C表示概念集合(concepts)比如这里是影视知识库，那么概念可以是演员、电影、制片人等；E是概念下面的实体；P是描述概念和实体的属性结合比如演员名字、电影上映时间等；R是一个三元组集合，每个元素都是一个三元组，描述的是两个实体间的关系或实体和概念间的关系。文章中提到的影视知识库数据来源于百度百科、豆瓣，包括23个concept，91个properties，多余70w个实体，1000w个三元组。</li>
-<li><p>Mentions and Linked Entites<br>这里的mention都是一些可能被链接到实体上的文本短语，这些短语都是有小于5个字的词组成。作如下内容定义，$M={m<em>1,m_2,..,m</em>{|M|}}$ 表示mention的集合，$E(m)={e<em>1, e_2,…,e</em>{E{(m)}}}$ 表示候选mention m可能链接的候选实体集合；$e_m \in E(m)$ 表示m真是链接的实体.</p>
+<li><p>Mentions and Linked Entites<br>这里的mention都是一些可能被链接到实体上的文本短语，这些短语都是有小于5个字的词组成。作如下内容定义，$M={m_1,m_2,..,m_{|M|}}$ 表示mention的集合，$E(m)={e_1, e_2,…,e_{E{(m)}}}$ 表示候选mention m可能链接的候选实体集合；$e_m \in E(m)$ 表示m真是链接的实体.</p>
 </li>
 <li><p>Fake Named Entity<br>定义<script type="math/tex">M_F = {m_{f1}, m_{f2},...,m_{|M_F|}} \subseteq M</script>，表示没有对应实体链接的mentions，<script type="math/tex">M_T = {m_{t1}, m_{t2},...,m_{|M_T|}} \subseteq M</script>，表示可以链接到实体的mention集合。</p>
 </li>

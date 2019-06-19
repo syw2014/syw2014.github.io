@@ -199,7 +199,7 @@
 <ul>
 <li>$S$ 是有限状态(state)集合，每个时刻都有个状态$s_t$</li>
 <li>$A$ 有限动作(action)集合，每个时刻都会选择一种动作$a_t$</li>
-<li>$P$ 状态转移概率(transition probability)函数，表示一个状态$s<em>{t}, a</em>{t}$转移到下一个时刻状态$s_{t+1}^{\prime}$的概率，<script type="math/tex; mode=display">P(s^{\prime}|s, a) = P(s_{t+1}=s^{\prime}|s_t=s, a_t=a)</script></li>
+<li>$P$ 状态转移概率(transition probability)函数，表示一个状态$s_{t}, a_{t}$转移到下一个时刻状态$s_{t+1}^{\prime}$的概率，<script type="math/tex; mode=display">P(s^{\prime}|s, a) = P(s_{t+1}=s^{\prime}|s_t=s, a_t=a)</script></li>
 <li>$r$ 奖励函数(reward function), 表示的是在状态$s$和动作$a$的情况下的奖励(期望)$r(s,a)=E(r_{t+1}|s_t=s, a_t=a)$</li>
 <li>$\gamma$ 是衰减系统(discount factor)（为什么会有衰减系数，随着时间的推移，前面时刻的奖励影响力会减小），$\gamma \in [0, 1]$</li>
 <li>策略$\pi$定义为给定状态下动作的函数$a=f(s)$ 或条件概率分布$P(a|s)$(某个状态选择何种动作),一旦策略给定，那么系统和环境产生的行为就已确定</li>

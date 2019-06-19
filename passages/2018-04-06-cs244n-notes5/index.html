@@ -236,8 +236,8 @@ W_{i}^{(2)}\frac{\partial a_{i}^{(2)}}{\partial W_{ij}^{(1)}}=W_{i}^{(2)}\frac{\
 </ul>
 <p><strong>Bias Updates</strong>:对于bias的更新和其他参数一样，对于第k层第i个神经元的bias误差是<script type="math/tex">\delta_{i}^{(k)}</script>。例如更新<script type="math/tex">b_{1}^{(1)}</script>，它的梯度为<script type="math/tex">f^{\prime}(z_{1}^{(2)})W_{1}^{(2)}</script><br><strong>Generalized steps to propagate <script type="math/tex">\delta^{(k)} to \delta^{(k-1)}</script></strong>,<br>示例如图，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-e194d5729d9015e3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="http://upload-images.jianshu.io/upload_images/2423131-31474e1bb7f8cc74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <ul>
-<li>记$\delta<em>{i}^{(k)}$为第k层第i神经元输入$z</em>{i}^{(k)}$的误差，如图上图</li>
-<li>通过将误差<script type="math/tex">\delta_{i}^{(k)}</script> 乘以路径上的权重<script type="math/tex">W_{ij}^{(k-1)}</script>传播到<script type="math/tex">a_{j}^{(k-1)}</script>,因此在$a<em>{j}^{(k-1)}$的误差为$$delta</em>{i}^{(k)}W_{ij}^{(k-1)}$$</li>
+<li>记$\delta_{i}^{(k)}$为第k层第i神经元输入$z_{i}^{(k)}$的误差，如图上图</li>
+<li>通过将误差<script type="math/tex">\delta_{i}^{(k)}</script> 乘以路径上的权重<script type="math/tex">W_{ij}^{(k-1)}</script>传播到<script type="math/tex">a_{j}^{(k-1)}</script>,因此在$a_{j}^{(k-1)}$的误差为<script type="math/tex">delta_{i}^{(k)}W_{ij}^{(k-1)}</script></li>
 <li>因为<script type="math/tex">a_{j}^{(k-1)}</script>可能与下一层的多个神经元相连如上图8所示，它也接收第k层中其他节点m的误差，因此<script type="math/tex">a_{j}^{(k-1)}</script>接收到的误差为<script type="math/tex">delta_{i}^{(k)}W_{ij}^{(k-1)}+delta_{m}^{(k)}W_{mj}^{(k-1)}</script>,更进一步的，记作<script type="math/tex">\Sigma_{i}\delta_{i}^{(k)}W_{ij}^{(k-1)}</script></li>
 <li>现在得到了<script type="math/tex">a_{j}^{(k-1)}</script>的误差，然后通过乘以神经元的local gradient <script type="math/tex">f\prime{(z_{j}^{(k-1)})}</script>继续向前传递</li>
 <li>误差传递到了<script type="math/tex">z_{j}^{(k-1)}</script>,记作<script type="math/tex">\delta_{j}^{(k-1)}=f\prime(z_{j}^{(k-1)})\Sigma_{i}\delta_{i}^{(k)}W_{ij}^{(k-1)}</script></li>

@@ -246,10 +246,10 @@
 </code></pre><p>  (2) 重复，对于深度为j的节点，选择$x^{(l)}$为切分坐标轴， $l=j (mod k) + 1$,以该坐标中位数作为切分点，切分之后树的深度变为j+1。这里之所以不用$l=j+1$来选择坐标轴，是因为树的深度j可能超过空间维度k，这样就轮转坐标轴进行切分。<br>  (3) 递归直到左右两个子区域没有实例存在时停止。<br>  <strong>备注</strong>：这种按照中坐标位数为切分点，构造出来的树为平衡二叉树，但搜索时的效率未必是最优的。</p>
 </blockquote>
 <h3 id="kd-tree-搜索"><a href="#kd-tree-搜索" class="headerlink" title="kd tree 搜索"></a>kd tree 搜索</h3><blockquote>
-<p>输入：已构造的kd tree， 目标点$x$<br>输出：$x$的最近邻点(k近邻类似)<br>(1) 初始化，当前最近点$x<em>{nst}=null $, 最近点距离$d</em>{nst}= +\infty$<br>(2) 在kd树中找到包含目标点的叶子节点，<br>从根节点出发，递归向下访问kdtree，执行二叉树搜索</p>
+<p>输入：已构造的kd tree， 目标点$x$<br>输出：$x$的最近邻点(k近邻类似)<br>(1) 初始化，当前最近点$x_{nst}=null $, 最近点距离$d_{nst}= +\infty$<br>(2) 在kd树中找到包含目标点的叶子节点，<br>从根节点出发，递归向下访问kdtree，执行二叉树搜索</p>
 <pre><code>- 目标点x当前维度的坐标小于切分点坐标，则移动到左子节点
 - 目标点x当前维度的坐标大于切分点坐标，则移动到右子节点
-</code></pre><p>  (这里访问节点时是按照切分维度进行比较，因此需要记录下切分维度？)<br>  在访问过程中记录下访问各节点的顺序，存放在先进后出$Queue$中，便于后面的回退。<br>  (3) 递归向上回退，结束条件$Queue$为空<br>    (a) 从$Queue$中弹出一个节点，记作$x<em>q$,计算$x \rightarrow x_q$的距离，记作$d_q$<br>    (b) 如果$d_q &lt; d</em>{nst}$, 则更新最近点和最近距离</p>
+</code></pre><p>  (这里访问节点时是按照切分维度进行比较，因此需要记录下切分维度？)<br>  在访问过程中记录下访问各节点的顺序，存放在先进后出$Queue$中，便于后面的回退。<br>  (3) 递归向上回退，结束条件$Queue$为空<br>    (a) 从$Queue$中弹出一个节点，记作$x_q$,计算$x \rightarrow x_q$的距离，记作$d_q$<br>    (b) 如果$d_q &lt; d_{nst}$, 则更新最近点和最近距离</p>
 <pre><code>$$x_{nst}=x_q, d_{nst}=d_q$$
 (c) 如果$x_q$ 为节点(超平面上的点)，则考察以$x$为球心，$d_{nst}$为半径的超球体是否与$x_q$所在超平面相交，如果相交
 - 若$Queue$中已经访问过$x_q$的左子树，则继续二叉搜索$x_q$右子树
@@ -397,7 +397,7 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2019-06-12-naive-bayes/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
     <a href="/passages/2019-05-24-financial/" data-enable="true">
