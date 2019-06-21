@@ -4,30 +4,8 @@
 
     
   <url>
-    <loc>https://helixn.com/passages/2019-06-12-naive-bayes/</loc>
-    <lastmod>2019-06-19T13:19:27.708Z</lastmod>
-    <data>
-        <display>
-        <title>读书笔记：朴素贝叶斯</title>
-        <pubTime>2019-06-12T12:05:06.000Z</pubTime>
-        
-        <tag>朴素贝叶斯</tag>
-         
-        <tag>Naive Bayes</tag>
-         
-         
-           
-             
-              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://helixn.com/passages/2019-05-08-deepfm-implementation/</loc>
-    <lastmod>2019-06-19T12:28:47.585Z</lastmod>
+    <lastmod>2019-06-21T06:54:45.898Z</lastmod>
     <data>
         <display>
         <title>DeepFM Implementation with Tensorflow</title>
@@ -43,6 +21,28 @@
            
              
               <breadCrumb title="Projects" url="https://helixn.com/categories/Projects/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-06-12-naive-bayes/</loc>
+    <lastmod>2019-06-20T03:43:11.030Z</lastmod>
+    <data>
+        <display>
+        <title>读书笔记：朴素贝叶斯</title>
+        <pubTime>2019-06-12T12:05:06.000Z</pubTime>
+        
+        <tag>朴素贝叶斯</tag>
+         
+        <tag>Naive Bayes</tag>
+         
+         
+           
+             
+              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
           
         </display>
     </data>
@@ -328,9 +328,9 @@
         <title>Spark 开发环境搭建（一）- 虚拟机安装</title>
         <pubTime>2016-07-23T04:05:09.000Z</pubTime>
         
-        <tag>Spark Deployment</tag>
-         
         <tag>Spark环境搭建</tag>
+         
+        <tag>Spark Deployment</tag>
          
          
            
@@ -350,11 +350,11 @@
         <title>Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网</title>
         <pubTime>2016-07-24T05:21:36.000Z</pubTime>
         
-        <tag>虚拟机静态ip，上网</tag>
+        <tag>Spark环境搭建</tag>
          
         <tag>Spark Deployment</tag>
          
-        <tag>Spark环境搭建</tag>
+        <tag>虚拟机静态ip，上网</tag>
          
          
            
@@ -696,9 +696,9 @@
         <title>论文笔记 - A STRUCTURED SELF-ATTENTIVE SENTENCE EMBEDDING</title>
         <pubTime>2018-11-06T10:46:17.000Z</pubTime>
         
-        <tag>Attention</tag>
-         
         <tag>Sentence Embeding</tag>
+         
+        <tag>Attention</tag>
          
         <tag>Sentiment Analysis</tag>
          
