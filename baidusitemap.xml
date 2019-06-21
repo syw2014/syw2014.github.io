@@ -5,7 +5,7 @@
     
   <url>
     <loc>https://helixn.com/passages/2019-05-08-deepfm-implementation/</loc>
-    <lastmod>2019-06-21T06:54:45.898Z</lastmod>
+    <lastmod>2019-06-21T06:55:40.488Z</lastmod>
     <data>
         <display>
         <title>DeepFM Implementation with Tensorflow</title>
@@ -328,9 +328,9 @@
         <title>Spark 开发环境搭建（一）- 虚拟机安装</title>
         <pubTime>2016-07-23T04:05:09.000Z</pubTime>
         
-        <tag>Spark环境搭建</tag>
-         
         <tag>Spark Deployment</tag>
+         
+        <tag>Spark环境搭建</tag>
          
          
            
@@ -350,11 +350,11 @@
         <title>Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网</title>
         <pubTime>2016-07-24T05:21:36.000Z</pubTime>
         
-        <tag>Spark环境搭建</tag>
+        <tag>虚拟机静态ip，上网</tag>
          
         <tag>Spark Deployment</tag>
          
-        <tag>虚拟机静态ip，上网</tag>
+        <tag>Spark环境搭建</tag>
          
          
            
@@ -696,9 +696,9 @@
         <title>论文笔记 - A STRUCTURED SELF-ATTENTIVE SENTENCE EMBEDDING</title>
         <pubTime>2018-11-06T10:46:17.000Z</pubTime>
         
-        <tag>Sentence Embeding</tag>
-         
         <tag>Attention</tag>
+         
+        <tag>Sentence Embeding</tag>
          
         <tag>Sentiment Analysis</tag>
          
