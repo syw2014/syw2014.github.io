@@ -204,8 +204,41 @@
 <li>先验概率<br>先验概率是根据已知知识、经验而的概率这里指$P(Y)$</li>
 <li>条件概率<br>当给定条件发生变化后，会导致事件发生的可能性改变。比如，你背后站着一个人，让你猜是女人的概率是多大，你肯定猜50%，但如果告诉你这个人有长头发，那你猜这个人是女人的概率是90%，这种$P(女人|长头发)$表示的是在条件“长头发”下是女人的概率，即是条件概率.在当前分类场景下条件概率指$P(X|Y)$，在样本属于类别$Y$的情况下含有特征$X$的概率.</li>
 </ul>
-<h3 id="该算法解决什么问题？"><a href="#该算法解决什么问题？" class="headerlink" title="该算法解决什么问题？"></a>该算法解决什么问题？</h3><h3 id="算法基本思想和原理是什么？"><a href="#算法基本思想和原理是什么？" class="headerlink" title="算法基本思想和原理是什么？"></a>算法基本思想和原理是什么？</h3><h3 id="个人理解是什么？"><a href="#个人理解是什么？" class="headerlink" title="个人理解是什么？"></a>个人理解是什么？</h3><h2 id="微观层面"><a href="#微观层面" class="headerlink" title="微观层面"></a>微观层面</h2><h3 id="公式详细推导过程是否领会和记忆？"><a href="#公式详细推导过程是否领会和记忆？" class="headerlink" title="公式详细推导过程是否领会和记忆？"></a>公式详细推导过程是否领会和记忆？</h3><h3 id="算法优化目标"><a href="#算法优化目标" class="headerlink" title="算法优化目标"></a>算法优化目标</h3><h3 id="优缺点是什么？"><a href="#优缺点是什么？" class="headerlink" title="优缺点是什么？"></a>优缺点是什么？</h3><p>优点：</p>
+<h2 id="微观层面"><a href="#微观层面" class="headerlink" title="微观层面"></a>微观层面</h2><h3 id="公式详细推导过程"><a href="#公式详细推导过程" class="headerlink" title="公式详细推导过程"></a>公式详细推导过程</h3><p>算法过程。</p>
+<blockquote>
+<p>输入： 具有独立同分布的训练集$T=\{(x_1, y_1), (x_2, y_2), \cdots, (x_n, y_n)\}$，其中样本个数为$N$, 类别个数为$K$.给定样本$X$<br>输出：样本$X$对应的类别$Y$<br>(1) 根据训练集$T$学习类别$Y$的先验概率分布$P(Y=c_k), k=1,2,\cdots,K$,实现时为统计各个类别的个数，即</p>
+<script type="math/tex; mode=display">P(Y=c_k)=\frac{1}{N}\sum_i^nI(y_i=c_k), k=1,2,\cdots,k</script><p>其中$I$表示指示函数，若里面的内容相当则为1，不相等则为0<br>(2) 计算类别$Y$的条件概率分布$P(X=x|Y=c_k), k=1,2, \cdots, K$, 其中$x$代表的是样本中出现的特征，根据概率分布知识可以得到特征和类别的联合概率分布$P(X,Y)=P(X|Y)P(Y)$；根据朴素贝叶斯的假设，在类别确定的条件下，用于分类的特征都是相互独立的(朴素一词的来源)，因此条件概率分布可以做如下转换，</p>
+<script type="math/tex; mode=display">P(X=x|Y=c_k)=P(X^{(1)}=x_1,\cdots ,X^{(n)}=x_n|Y=c_k)\\
+=\prod_{j=1}^{n}P(X^{(i)}=x_j|Y=c_k)</script><p>在实际实现时，只需要统计每个类别下特征出现次数即可，如下：</p>
+<script type="math/tex; mode=display">P(X=x_j|Y=c_k)=\frac{\sum_i^nI(X^{(i)}=x_j,y=c_k)}{\sum_i^nI(y_i=c_k)}</script><p>(3) 根据学习到的模型即先验分布和条件分布，计算在输入特征向量$X$下的后验概率$P(Y=c_k|X=x)$,根据贝叶斯定理，</p>
+<script type="math/tex; mode=display">P(Y=c_k|X=x)=P(Y=c_k)\frac{P(X=x|Y=c_k)}{P(X=x)} \\
+= P(Y=c_k)\frac{P(X=x|Y=c_k)}{\sum_kP(X=x|Y=c_k)P(Y=c_k)} \\
+=P(Y=c_k)\frac{\prod_{j=1}^{n}P(X=x_j|Y=c_k)}{\sum_{k}{P(Y=c_k)}\prod_{j=1}P(X=x_j|Y=c_k)}</script><p>以上是朴素贝叶斯的基本公式，对于NB分类器，我们选择使得概率值最大的那一个<br>(4) 朴素贝叶斯分类器</p>
+<script type="math/tex; mode=display">y=f(x)={argmax}_{c_k}P(Y=c_k)\frac{\prod_{j=1}^{n}P(X=x_j|Y=c_k)}{\sum_{k}{P(Y=c_k)}\prod_{j=1}P(X=x_j|Y=c_k)}</script><p>上式中，对于所有的类别$c_k$分母值都是固定的，因此可以将上式进行简化，</p>
+<script type="math/tex; mode=display">y={argmax}_{ck}P(Y=c_k)\prod_{j=1}^nP(X=x_j|Y=c_k)</script><p>(5) 上式中的条件概率$P(X=x_j|Y=c_k)$在训练过程都可以进行统计得到，因此可以得到样本$x$的类别$\hat{y}$</p>
+</blockquote>
+<h3 id="贝叶斯估计"><a href="#贝叶斯估计" class="headerlink" title="贝叶斯估计"></a>贝叶斯估计</h3><ol>
+<li><p>在估计条件概率分布$P(x_i|y=c_k)$的过程中，可能会出现$y=c_k$次数为零的情况，这是因为数据集里数据太少的原因，而真实情况$c_k$的样本个数并不为0，因此需要采用其他方法进行处理。</p>
+</li>
+<li><p>假第$j$个特征$x_j$可能的取值为$\{a_{j,1},a_{j,2}, \cdots, a_{j,s_j} \}$,贝叶斯估计是假设特征在取每个特征值的时候都有一个先验计数$\lambda$，如下，</p>
+<script type="math/tex; mode=display">P_{\lambda}(X=x_j|Y=c_k)=\frac{\sum_i^nI(X^{(i)}=x_j,y=c_k) + \lambda}{\sum_i^nI(y_i=c_k) + s_j\lambda}</script></li>
+</ol>
+<p>等价于特征$x_j$在各个可能的取值上增加了一个正数$\lambda$,如果$c_k$的样本数为0，则先验概率分布的值为$\frac{1}{s_j}$，为等可能的。</p>
+<ol>
+<li>采用贝叶斯估计后，类别的先验概率分布调整为<script type="math/tex; mode=display">P_{\lambda}(Y=c_k)=\frac{\sum_i^nI(y_i=c_k)+\lambda}{N+K\lambda}</script>其中，当$\lambda=0$为极大似然估计；当$\lambda=1$时为拉普拉斯平滑；当$c_k$样本个数为0时，该类别先验为$\frac{\lambda}{N+K\lambda}$.</li>
+</ol>
+<h3 id="算法优化目标"><a href="#算法优化目标" class="headerlink" title="算法优化目标"></a>算法优化目标</h3><p>由以上的算法的原理过程可知，NB算法其实在做的是后验概率最大化，即$y={argmax}_{ck}P(Y=c_k)\prod_{j=1}^nP(X=x_j|Y=c_k)$<br>后验概率最大化等价于期望风险最小化。朴素贝叶斯算法对先验概率和条件概率的学习即使估计的过程，算法中采用极大似然估计。</p>
+<h3 id="优缺点是什么？"><a href="#优缺点是什么？" class="headerlink" title="优缺点是什么？"></a>优缺点是什么？</h3><p>优点：</p>
+<ol>
+<li>算法简单、直观、可以快速获得baseline效果</li>
+<li>可以进行增量学习</li>
+</ol>
 <p>缺点：</p>
+<ol>
+<li>特征间相互独立，对于非独立特征效果不好</li>
+<li>需要做特征筛选</li>
+<li>相对其他模型，准确率一般</li>
+</ol>
 <h2 id="应用层面"><a href="#应用层面" class="headerlink" title="应用层面"></a>应用层面</h2><h3 id="算法的使用场景或任务有哪些？"><a href="#算法的使用场景或任务有哪些？" class="headerlink" title="算法的使用场景或任务有哪些？"></a>算法的使用场景或任务有哪些？</h3><h2 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h2><ol>
 <li>朴素贝叶斯和贝叶斯估计有什么联系？</li>
 <li>贝叶斯定理是什么？</li>
@@ -213,6 +246,7 @@
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
 <li><a href="https://blog.csdn.net/Hearthougan/article/details/75174210" target="_blank" rel="noopener">全概率公式和贝叶斯</a></li>
 <li><a href="https://www.zhihu.com/question/19725590" target="_blank" rel="noopener">贝叶斯定理</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/41069540" target="_blank" rel="noopener">贝叶斯相关知识</a></li>
 </ol>
   </article>
   <aside class="table-content" id="site-toc">
@@ -221,7 +255,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#宏观层面"><span class="toc-text">宏观层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#该算法解决什么问题？"><span class="toc-text">该算法解决什么问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法基本思想和原理是什么？"><span class="toc-text">算法基本思想和原理是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人理解是什么？"><span class="toc-text">个人理解是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微观层面"><span class="toc-text">微观层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#公式详细推导过程是否领会和记忆？"><span class="toc-text">公式详细推导过程是否领会和记忆？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法优化目标"><span class="toc-text">算法优化目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点是什么？"><span class="toc-text">优缺点是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用层面"><span class="toc-text">应用层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法的使用场景或任务有哪些？"><span class="toc-text">算法的使用场景或任务有哪些？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题思考"><span class="toc-text">问题思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#宏观层面"><span class="toc-text">宏观层面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微观层面"><span class="toc-text">微观层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#公式详细推导过程"><span class="toc-text">公式详细推导过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#贝叶斯估计"><span class="toc-text">贝叶斯估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法优化目标"><span class="toc-text">算法优化目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点是什么？"><span class="toc-text">优缺点是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用层面"><span class="toc-text">应用层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法的使用场景或任务有哪些？"><span class="toc-text">算法的使用场景或任务有哪些？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题思考"><span class="toc-text">问题思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
   </div>
 </aside>
   
