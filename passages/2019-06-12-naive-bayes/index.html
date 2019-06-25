@@ -227,7 +227,13 @@
 <ol>
 <li>采用贝叶斯估计后，类别的先验概率分布调整为<script type="math/tex; mode=display">P_{\lambda}(Y=c_k)=\frac{\sum_i^nI(y_i=c_k)+\lambda}{N+K\lambda}</script>其中，当$\lambda=0$为极大似然估计；当$\lambda=1$时为拉普拉斯平滑；当$c_k$样本个数为0时，该类别先验为$\frac{\lambda}{N+K\lambda}$.</li>
 </ol>
-<h3 id="算法优化目标"><a href="#算法优化目标" class="headerlink" title="算法优化目标"></a>算法优化目标</h3><p>由以上的算法的原理过程可知，NB算法其实在做的是后验概率最大化，即$y={argmax}_{ck}P(Y=c_k)\prod_{j=1}^nP(X=x_j|Y=c_k)$<br>后验概率最大化等价于期望风险最小化。朴素贝叶斯算法对先验概率和条件概率的学习即使估计的过程，算法中采用极大似然估计。</p>
+<h3 id="期望最小化"><a href="#期望最小化" class="headerlink" title="期望最小化"></a>期望最小化</h3><p>由以上的算法的原理过程可知，NB算法其实在做的是后验概率最大化，即$y={argmax}_{ck}P(Y=c_k)\prod_{j=1}^nP(X=x_j|Y=c_k)$<br>后验概率最大化等价于期望风险最小化。朴素贝叶斯算法对先验概率和条件概率的学习即使估计的过程，算法中采用极大似然估计。分析过程如下，假设选择的是0-1损失函数，</p>
+<script type="math/tex; mode=display">L(Y, f(X))=1,Y\neq{f(X)} or  0,Y=f(X)</script><p>其中$f(X)$为分类决策函数，此时的期望风险为$R_{exp}(f)=E[L(Y,f(X))]$,该期望风险是对联合分布$P(X,Y)$取的，因此,</p>
+<script type="math/tex; mode=display">R_{exp}(f)=Ex\sum_{k=1}^K[L(c_k, f(X))]P(c_k|X=x)</script><p>想要对上式求最小化，只需要对累积和中的每个元素求最小化，即在$X=x$求最小值</p>
+<script type="math/tex; mode=display">f(x)={argmin}_{y\in Y}\sum_{k=1}^{K}L(c_k,y)P(c_k|X=x) \\
+= {argmin}_{y \in Y}\sum_{k=1}^{K}P(y\neq c_k) \\
+={argmin}_{y \in Y}(1-P(y=c_k|X=x)) \\
+={argmax}_{y \in Y}P(y=c_k|X=x)</script><p>因此后验概率最大化就等价于期望风险最小化。</p>
 <h3 id="优缺点是什么？"><a href="#优缺点是什么？" class="headerlink" title="优缺点是什么？"></a>优缺点是什么？</h3><p>优点：</p>
 <ol>
 <li>算法简单、直观、可以快速获得baseline效果</li>
@@ -239,7 +245,8 @@
 <li>需要做特征筛选</li>
 <li>相对其他模型，准确率一般</li>
 </ol>
-<h2 id="应用层面"><a href="#应用层面" class="headerlink" title="应用层面"></a>应用层面</h2><h3 id="算法的使用场景或任务有哪些？"><a href="#算法的使用场景或任务有哪些？" class="headerlink" title="算法的使用场景或任务有哪些？"></a>算法的使用场景或任务有哪些？</h3><h2 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h2><ol>
+<h2 id="应用层面"><a href="#应用层面" class="headerlink" title="应用层面"></a>应用层面</h2><h3 id="算法的使用场景或任务有哪些？"><a href="#算法的使用场景或任务有哪些？" class="headerlink" title="算法的使用场景或任务有哪些？"></a>算法的使用场景或任务有哪些？</h3><p>在做网页分类时采用这种贝叶斯算法，baseline准确率在75-80%之间，很难再网上提升，原因是类目体系间特征重合度很高，而且朴素贝叶斯假设太强，但实际往往特征间是有一定相关性的。所以采用朴素贝叶斯算法需要在特征工程层面做很大的功夫。</p>
+<h2 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h2><ol>
 <li>朴素贝叶斯和贝叶斯估计有什么联系？</li>
 <li>贝叶斯定理是什么？</li>
 </ol>
@@ -255,7 +262,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#宏观层面"><span class="toc-text">宏观层面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微观层面"><span class="toc-text">微观层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#公式详细推导过程"><span class="toc-text">公式详细推导过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#贝叶斯估计"><span class="toc-text">贝叶斯估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法优化目标"><span class="toc-text">算法优化目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点是什么？"><span class="toc-text">优缺点是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用层面"><span class="toc-text">应用层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法的使用场景或任务有哪些？"><span class="toc-text">算法的使用场景或任务有哪些？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题思考"><span class="toc-text">问题思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#宏观层面"><span class="toc-text">宏观层面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微观层面"><span class="toc-text">微观层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#公式详细推导过程"><span class="toc-text">公式详细推导过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#贝叶斯估计"><span class="toc-text">贝叶斯估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#期望最小化"><span class="toc-text">期望最小化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点是什么？"><span class="toc-text">优缺点是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用层面"><span class="toc-text">应用层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法的使用场景或任务有哪些？"><span class="toc-text">算法的使用场景或任务有哪些？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题思考"><span class="toc-text">问题思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
   </div>
 </aside>
   
