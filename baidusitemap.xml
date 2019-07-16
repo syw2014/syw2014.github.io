@@ -4,8 +4,52 @@
 
     
   <url>
+    <loc>https://helixn.com/passages/2019-07-09-concept-minning/</loc>
+    <lastmod>2019-07-16T09:33:20.462Z</lastmod>
+    <data>
+        <display>
+        <title>Paper Notes A User-Centered Concept Mining System for Query and Document Understanding at Tencent</title>
+        <pubTime>2019-07-09T09:05:48.000Z</pubTime>
+        
+        <tag>Concept Mining</tag>
+         
+        <tag>概念挖掘</tag>
+         
+         
+           
+             
+              <breadCrumb title="Paper Notes" url="https://helixn.com/categories/Paper-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-07-01-decision-tree/</loc>
+    <lastmod>2019-07-01T12:46:43.013Z</lastmod>
+    <data>
+        <display>
+        <title>读书笔记：决策树</title>
+        <pubTime>2019-07-01T11:39:36.000Z</pubTime>
+        
+        <tag>决策树</tag>
+         
+        <tag>树模型</tag>
+         
+         
+           
+             
+              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://helixn.com/passages/2019-06-12-naive-bayes/</loc>
-    <lastmod>2019-06-25T01:20:53.504Z</lastmod>
+    <lastmod>2019-06-25T12:17:24.080Z</lastmod>
     <data>
         <display>
         <title>读书笔记：朴素贝叶斯</title>
@@ -328,9 +372,9 @@
         <title>Spark 开发环境搭建（一）- 虚拟机安装</title>
         <pubTime>2016-07-23T04:05:09.000Z</pubTime>
         
-        <tag>Spark Deployment</tag>
-         
         <tag>Spark环境搭建</tag>
+         
+        <tag>Spark Deployment</tag>
          
          
            
@@ -350,11 +394,11 @@
         <title>Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网</title>
         <pubTime>2016-07-24T05:21:36.000Z</pubTime>
         
-        <tag>虚拟机静态ip，上网</tag>
+        <tag>Spark环境搭建</tag>
          
         <tag>Spark Deployment</tag>
          
-        <tag>Spark环境搭建</tag>
+        <tag>虚拟机静态ip，上网</tag>
          
          
            

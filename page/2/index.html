@@ -175,6 +175,109 @@
         <div class="home-article-inner" data-cover="false">
           <div class="passage-meta">
             <span>
+              <i class="fa fa-calendar"></i>2019-05-08
+            </span>
+            
+              <span>
+                | <a href="/categories/Projects/"><i class="fa fa-bookmark"></i>Projects</a>
+              </span>
+            
+            
+              <span>
+                | <i class="fa fa-unlock-alt"></i>UNLOCK
+              </span>
+            
+          </div>
+          <h1 class="home-article-title">
+            <a href="/passages/2019-05-08-deepfm-implementation/">DeepFM Implementation with Tensorflow</a>
+          </h1>
+          <div class="home-article-content passage-article">
+            
+              <p>基于Tensorflow和tf.data.dataset api实现DeepFM 模型，并在公开数据和自由数据集上测试其性能，并提高其实际使用性能，主要路线如下:</p>
+<ul>
+<li>[x] 论文解读，分析具体模型逻辑和主要特点</li>
+<li>[x] 准备测试数据集</li>
+<li>[x] 特征工程，进行中</li>
+<li>[x] 制作模型所需数据集</li>
+<li>[ ] 模型搭建</li>
+<li>[ ] 模型测试及参数调整</li>
+<li>[ ] 结果分析</li>
+</ul>
+            
+          </div>
+          <a class="home-article-read" href="/passages/2019-05-08-deepfm-implementation/">
+            README MORE >>>
+          </a>
+          
+            <div class="passage-tags">
+             
+              <a href="/tags/DeepFM/"><i class="fa fa-tags"></i>DeepFM</a>
+             
+              <a href="/tags/DeeFM-代码剖析和实现/"><i class="fa fa-tags"></i>DeeFM 代码剖析和实现</a>
+             
+              <a href="/tags/Feature-Engineering/"><i class="fa fa-tags"></i>Feature Engineering</a>
+            
+            </div>
+          
+        </div>
+        
+      </div>
+    </div>
+  
+    <div class="home-article-wrapper clearfix">
+      <div class="home-article" data-cover="false">
+        <div class="home-article-inner" data-cover="false">
+          <div class="passage-meta">
+            <span>
+              <i class="fa fa-calendar"></i>2018-11-06
+            </span>
+            
+              <span>
+                | <a href="/categories/Paper-Notes/"><i class="fa fa-bookmark"></i>Paper Notes</a>
+              </span>
+            
+            
+              <span>
+                | <i class="fa fa-unlock-alt"></i>UNLOCK
+              </span>
+            
+          </div>
+          <h1 class="home-article-title">
+            <a href="/passages/2018-11-06-paper-notes-se/">论文笔记 - A STRUCTURED SELF-ATTENTIVE SENTENCE EMBEDDING</a>
+          </h1>
+          <div class="home-article-content passage-article">
+            
+              <h2 id="论文特点"><a href="#论文特点" class="headerlink" title="论文特点"></a>论文特点</h2><ul>
+<li>和传统句子编码不同，传统方法对句子编码后是一个<strong><em>d</em></strong> 的Vector，而该论文方法是将句子编码为一个 <strong><em>r x d</em></strong> 的Matrix，原因是作者认为一个vector的表示只能突出句子中相关words 和phrase的表示，而实际情况一个句子的语义含义会<strong><em>r</em></strong> 部分构成，因此作者将一个句子的编码表示成一个matrix</li>
+<li>Attenion， 句子被表示成矩阵，那么此时的attention 权重<strong><em>A</em></strong>也是一个<strong><em>r x n</em></strong>，</li>
+<li>penalization term， 表示的惩罚机制.作者认为经过attention机制之后的表示会存在冗余表示的情况，因此需要一个惩罚机制对attention 权重处理来保证最终表示的多样性。</li>
+</ul>
+            
+          </div>
+          <a class="home-article-read" href="/passages/2018-11-06-paper-notes-se/">
+            README MORE >>>
+          </a>
+          
+            <div class="passage-tags">
+             
+              <a href="/tags/Attention/"><i class="fa fa-tags"></i>Attention</a>
+             
+              <a href="/tags/Sentence-Embeding/"><i class="fa fa-tags"></i>Sentence Embeding</a>
+             
+              <a href="/tags/Sentiment-Analysis/"><i class="fa fa-tags"></i>Sentiment Analysis</a>
+            
+            </div>
+          
+        </div>
+        
+      </div>
+    </div>
+  
+    <div class="home-article-wrapper clearfix">
+      <div class="home-article" data-cover="false">
+        <div class="home-article-inner" data-cover="false">
+          <div class="passage-meta">
+            <span>
               <i class="fa fa-calendar"></i>2018-05-30
             </span>
             
@@ -536,102 +639,6 @@
               <a href="/tags/maximum-margin-loss/"><i class="fa fa-tags"></i>maximum margin loss</a>
              
               <a href="/tags/softmax-and-cross-entropy-error/"><i class="fa fa-tags"></i>softmax and cross entropy error</a>
-            
-            </div>
-          
-        </div>
-        
-      </div>
-    </div>
-  
-    <div class="home-article-wrapper clearfix">
-      <div class="home-article" data-cover="false">
-        <div class="home-article-inner" data-cover="false">
-          <div class="passage-meta">
-            <span>
-              <i class="fa fa-calendar"></i>2018-01-25
-            </span>
-            
-              <span>
-                | <a href="/categories/Knowledge-Graph/"><i class="fa fa-bookmark"></i>Knowledge Graph</a>
-              </span>
-            
-            
-              <span>
-                | <i class="fa fa-unlock-alt"></i>UNLOCK
-              </span>
-            
-          </div>
-          <h1 class="home-article-title">
-            <a href="/passages/2018-01-25-kg-concept/">识图谱构建困惑之模式层</a>
-          </h1>
-          <div class="home-article-content passage-article">
-            
-              <p>最近在构建垂直领域知识图谱，我们知道知识图谱构建其实分为两个层面，一个是模式层，一个是数据层，那他们分别具体是什么，又是如何构建呢？带着这些疑问各种Google，然后得到确实千篇一律的文章，这些文章大都从宏观层面介绍构建图谱的流程、架构，鲜有介绍具体某个点具体如何去实施，比如模式层如何去构建，如何建立概念体系、如何存储？如何对一个垂域进行NER？不知道是因为技术的保密还是很少有人真正的去从零开始构建一个知识图谱，或者是都是从其他图谱中进行迁移而来，不过知识图谱构建却非易事，技术有所保留也可理解。今天就具体来谈一谈模式层构建的一些事情。</p>
-            
-          </div>
-          <a class="home-article-read" href="/passages/2018-01-25-kg-concept/">
-            README MORE >>>
-          </a>
-          
-            <div class="passage-tags">
-             
-              <a href="/tags/Knowledge-Graph-Construction/"><i class="fa fa-tags"></i>Knowledge Graph Construction</a>
-             
-              <a href="/tags/Knowledge-Graph-Schema/"><i class="fa fa-tags"></i>Knowledge Graph Schema</a>
-             
-              <a href="/tags/Knowledge-Graph-Concept/"><i class="fa fa-tags"></i>Knowledge Graph Concept</a>
-             
-              <a href="/tags/Conceptual-Construction/"><i class="fa fa-tags"></i>Conceptual Construction</a>
-             
-              <a href="/tags/模式层/"><i class="fa fa-tags"></i>模式层</a>
-            
-            </div>
-          
-        </div>
-        
-      </div>
-    </div>
-  
-    <div class="home-article-wrapper clearfix">
-      <div class="home-article" data-cover="false">
-        <div class="home-article-inner" data-cover="false">
-          <div class="passage-meta">
-            <span>
-              <i class="fa fa-calendar"></i>2018-01-20
-            </span>
-            
-              <span>
-                | <a href="/categories/CS244n/"><i class="fa fa-bookmark"></i>CS244n</a>
-              </span>
-            
-            
-              <span>
-                | <i class="fa fa-unlock-alt"></i>UNLOCK
-              </span>
-            
-          </div>
-          <h1 class="home-article-title">
-            <a href="/passages/2018-01-20-cs244n-notes2/">CS244n Lecture Notes2:Word Embedding Part 2</a>
-          </h1>
-          <div class="home-article-content passage-article">
-            
-              <h2 id="词向量Part-2"><a href="#词向量Part-2" class="headerlink" title="词向量Part 2"></a>词向量Part 2</h2><p>关键词：Glove， 词向量内部和外部评价，超参数在语义类推上的影响，人类判断词向量距离间的相关性，词上下文解决歧义，窗口分类<br>首先文章第一部分介绍了Glove训练词向量过程，之后讨论如何从内部及外部去评价词向量。之后讨论作为内部评价的词类比任务及如何利用它调整词向量。然后讨论词向量模型的权重参数和外部评价任务，最后讨论将ANN作为一类模型来实现NLP任务。</p>
-            
-          </div>
-          <a class="home-article-read" href="/passages/2018-01-20-cs244n-notes2/">
-            README MORE >>>
-          </a>
-          
-            <div class="passage-tags">
-             
-              <a href="/tags/cs244n/"><i class="fa fa-tags"></i>cs244n</a>
-             
-              <a href="/tags/NLP/"><i class="fa fa-tags"></i>NLP</a>
-             
-              <a href="/tags/DL/"><i class="fa fa-tags"></i>DL</a>
-             
-              <a href="/tags/word2vec/"><i class="fa fa-tags"></i>word2vec</a>
             
             </div>
           

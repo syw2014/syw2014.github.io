@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>Paper Notes A User-Centered Concept Mining System for Query and Document Understanding at Tencent | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Paper Notes,Concept Mining,概念挖掘," />
+  
+
+  
+  <meta name="description" content="本文主要从用户角度出发，构建以用户为中的概念图谱，从而理解用户真实意图，论文中提到该种方式在搜索改写和个性化推荐任务上都有明显的效果提升。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/categories/Projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/Projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-07-09
+    </span>
+    
+      <span>
+        | <a href="/categories/Paper-Notes/"><i class="fa fa-bookmark"></i>Paper Notes</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Paper Notes A User-Centered Concept Mining System for Query and Document Understanding at Tencent
+  </h1>
+  
+  <article class="passage-article">
+    <h2 id="主要工作"><a href="#主要工作" class="headerlink" title="主要工作"></a>主要工作</h2><p>基于用户搜索query和对应的点击log，构建出三层的概念图谱，基于图谱对文档进行tagging，从而避免普通打标签粒度过细或过粗的情况。<br><img src="https://i.loli.net/2019/07/16/5d2d96f2ef67075689.png" alt="2.png"></p>
+<h2 id="user-centered-concept-mining"><a href="#user-centered-concept-mining" class="headerlink" title="user-centered concept mining"></a>user-centered concept mining</h2><p>目标构建用户为中心的concept概念图谱</p>
+<blockquote>
+<p>从给定的query和query对应的点击内容当中，寻找一个word/phrase能够表示query和点击内容含义。形式化定义$q={w_1^qw_2^q\cdots w_{|q|}^q}$表示query，由词序列构成，query集合为$Q$,文档$t={w_1^tw_2^t\cdots w_{|t|}^t}$，同样有词序列构成，目标是提取概念短语$c={w_1^cw_2^c\cdots w_{|q|}^c}$,能够从语义层面表示query和点击title。</p>
+</blockquote>
+<p>作者提出了三种方式来提取概念，整体框架图如下<br><img src="https://i.loli.net/2019/07/16/5d2d7de25891617428.png" alt="1.png"></p>
+<ul>
+<li><p><strong>Bootstrapping by Pattern-Concept Duality</strong><br>bootstrapping思想就“自助法”，结合当前的场景主要有两个，一是人工定义一些pattern，根据这些pattern可以从query集合中提出很多度concept，而是根据这些提取出concept的query集合又可以学习和总结出新的pattern，这样往复进行。为了保证提取出pattern的质量，需要对已经筛选出的pattern进行过滤，原则是一个pattern对应越多的query，则其价值或意义越低。定义$p$表示新生成的pattern，$n_s$表示基于规则$p$选出的且已经存在于种子集中的concept个数，$n_e$表示从query集合中提取出新concept的数量，筛选规则为1)$\alpha &lt; \frac{n_s}{n_e} &lt; \beta$ and 2) $n_s &gt; \delta$，其中$\alpha=0.6,\beta=0.8,\delta=0.2$，如果pattern提取的结果满足以上规则则保留。此种方式的缺点，提取的concept数量有限</p>
+</li>
+<li><p><strong>Concept minning by query-title alignment</strong><br>采用query和title对齐方式提取concept，原理是如果一个concept出现在query中，那么很大概率它也会出现在与这个query相关的已点击title中，比如query “香港最后一部僵尸电影”，“香港高校僵尸电影”和query “香港僵尸电影”。具体步骤如下：<br>1) 给定query q，选择出对应点击的title集合$T^q=\{t_1^q,t_2^q,\cdots,t_{|T^q|^q}\}$，点击次数N&gt;5,D=30天<br>2) 对于q 和每个$t \in T^q$，枚举他们中的Ngram<br>3) 通过步骤2选择出query中从位置i开始长度为n的文本块$g_{in}^q=w_i^qw_{i+1}^q\cdots w_{i+n-1}^q$,从标题t中选择出位置从j开始长度为m的文本款$g_{jm}^t=w_j^tw_{j+1}^\cdots w_{j+m-1}^t，$如果文本块$g_{jm}^t$按照相同的顺序包含$g_{in}^q$中所有的词 或者$w_i^q=w_j^t,w_{i+n-1}^q=w_{j+m-1}^t$则把$g_{jm}^t$选为候选concept。<br>4) 文中没有提到候选的步骤，但是这种方式会提取出无意义的文本块，因此后面会添加一个分类器，来判断该候选是否适合作为concept</p>
+</li>
+<li><p><strong>Supervised sequence labeling</strong><br>前两种方式都是无监督方式，对这个问题可以采用序列标注方式进行处理，将concept看成需要标注的对象，类似于NER /POS这种方式。</p>
+</li>
+<li><p><strong>A Discriminator ofr quality control</strong><br>通过以上方式提取出concept之后，需要对这些概念进行筛选，并不是所有的概念都需要保留，因此需要建立一个分类器来决定是否需要保留这些概念，通过对每个concept构建特征例如是否在query中出现，被搜索次数，被点击次数，之后采用GBDT和LR进行二分类，保留的称作positive，未保留的成为negative，这些样本手工创建，训练分类器。</p>
+</li>
+</ul>
+<h2 id="Concept-Tagging"><a href="#Concept-Tagging" class="headerlink" title="Concept Tagging"></a>Concept Tagging</h2><p>通过已构建的概念体系，可以对document进行tagging，标注上没有显式出现的concept，整个问题可以描述如下，</p>
+<blockquote>
+<p>给定文档$d$,概念集合$C=\{c_1, c_2,\cdots, c_{|C|}\}$，需要解决的是从概念集合中寻找出与文档$d$相关的概念集合$C^{d}=\{c_1^{d}, c_2^{d}, \cdots, c_{|c^d|}^d\}$</p>
+</blockquote>
+<p>论文中采用两种方式是进行提取概念，一种基于<em>probablility inference</em> 和<em>matching based</em>两种方式，对给文档进行tagging的流程如图所示，<br><img src="https://i.loli.net/2019/07/16/5d2d26ab89f0677687.png" alt="12.png"><br>总体来说，文档concept的tagging过程，首先对文档提取<strong>key instance extraction</strong>,这里<em>instance</em> 从概念关系图谱中可以看到instance指代的是一些实体，之后对于能够与概念图谱中的概念建立<em>isA</em>的则直接利用<em>matching</em>选择候选concept，对于无法直接建立<em>isA</em>关系的concept则利用<em>probability inference</em>方式来选择候选实体，最终在对候选实体集合进行排序。</p>
+<ul>
+<li><strong>Key instance extraction</strong><br>首先基于词的TF、POS、NER等特征信息利用<em>GBRank</em>算法，对文档中的词进行排序；然后将每个词基于词向量表示成词向量，根据GBRank的排序结果选择TopK=10构建一个无向图有权图，权重为词向量间的cosine 距离；之后在利用<em>TextRank</em>算法对这些词进行排序，最后基于排序结果保留score大于$\delta_{w}=0.5$的关键词。这种结合RBRank，word vector和TextRank相结合的方式，提取出的关键词与文档主题具有更高的相关性和逻辑性。</li>
+<li><p><strong>Concept tagging by probabilistic inference</strong><br>基于概率推理的概念concept tagging处理步骤如下：</p>
+<script type="math/tex; mode=display">p(c|d)=\sum_{i=1}^{|E^d|}p(c|e_{i}^{d})p(e_{i}^{d}|d)</script><p>其中，$p(c|d)$表示给定文档$d$属于概念$c$的概率,$E^d$表示已从文档中提取出的instance集合，$p(e_i^{d}|d)$表示给定文档$d$含有关键词或instance概率，论文中解释为 <em>the document frequence of instance $e_i^d  \in E^d$</em>。（其实这里有点想不通，问什么是文档频率，这个文档是指文档d，我更倾向于将它理解为词频）$p(c|e_i^d)$表示给定关键词或instance属于概念$c$的概率，总体来看，一个文档属于某个概念的概率主要有两方面的因素构成，一方面是该文档含有该关键词的概率即关键词在文档中的重要性，另一方面是关键词属于概念的概率即关键词对概念的贡献度，二者结合起来推断文档所对应的概念。</p>
+<p>这里会另外一种情况，提取出的instance和概念$c$直接不存在<em>isA</em>的关系，此时利用关键词上下文的词来进行处理，</p>
+<script type="math/tex; mode=display">p(c|e_i^d)=\sum_{j=1}^{X_{E^d}}p(c|x_j)p(x_j|e_i^d)</script><p>其中，$p(x_j|e_i^d)$表示上下文词$x_j$和$e_i^d$贡献的概率，文中定义上下文词和instance出现在同一个句子中则视为贡献，$X_{E^d}$为从文档d中提取出的共现词的集合，$p(c|x_j)$表示共现词是概念$c$子串的概率，定义如下</p>
+<script type="math/tex; mode=display">p(c|x_j)=\left\{
+\begin{aligned}
+\frac{1}{|C^{X_j}|},x_j is substring of c \\
+0, otherwise
+\end{aligned}
+\right.</script><p>其中$C^{X_j}$表示含有词$x_j$为子串的概念集合<br>这样一来，对于没有建立isA关系的概念，通过上下文词来寻找概念。<br>文中举了一个例子，对于“丰田RAV4”可能没有直接与概念图谱里面建立关系，但是可以找到与他共现的词“省油”，“耐用”关键词，通过这些可以找到概念“省油的汽车”和“耐用的手机”，从而可以计算出该文档对应的概念。</p>
+</li>
+<li><strong>Concept tagging by matching</strong><br>首先来说明concept和instance这种isA的关系是如何建立和发现的，一方面给定一个concept，可以收集到很多具有相同修饰语的用户queries和点击titles，然后从这些queries/titles中提取instances,然后利用公式$p(c|e)=\sum_{j=1}^{X_{E^d}}p(c|x_j)p(x_|e_i^d)$来找到后续的instance，例如文中的例子，通过概念“省油的汽车”，可以检索到很多query/titles类似“省油的丰田RAV4”，从而可以从中提取instance“丰田RAV4”；<br>对于匹配的方式，首先利用instance提取的方式，已经提取出$E^d=\{e_1^d, e_2^d,\cdots, e_{E^d}^d\}$集合，通过匹配找到概念集合$C=\{c_1^d, c_2^d, \cdots, c_{|C_d|}^d\}$<br>对于每个概念c利用点击量topN=5的titles来扩充每个概念的表示，然后将文档$d$和概念$c$都采用TF-IDF表示成向量，计算二者的cosine相似度，只保留大于$\delta_u=0.58$，对于这种方式，概念和关键词对，和每个概念扩充后的表示都可以事先计算好，来提高计算效率。</li>
+</ul>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h3 id="Query-rewriting-for-Searching"><a href="#Query-rewriting-for-Searching" class="headerlink" title="Query rewriting for Searching"></a>Query rewriting for Searching</h3><p>对用户输入的query进行改写，具体是如果query能够与概念图谱中的某个概念$c$建立isA联系，则将概念c对应的instance依次与query进行拼接，组成新的query-&gt; “q e”进行检索，结果显示此种方式能有效提高检索结果的相关性。</p>
+<h3 id="Recommendation"><a href="#Recommendation" class="headerlink" title="Recommendation"></a>Recommendation</h3><p>在建立了概念图谱之后，用户和内容都可以具有topic，concept， instance标签，通过这些做召回和CTR,结果显示在点击率和停留时间上都有明显提升。从另一方面，也说明概念更能够理解内容和用户潜在感兴趣的东西。</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#主要工作"><span class="toc-text">主要工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#user-centered-concept-mining"><span class="toc-text">user-centered concept mining</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Concept-Tagging"><span class="toc-text">Concept Tagging</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用"><span class="toc-text">应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Query-rewriting-for-Searching"><span class="toc-text">Query rewriting for Searching</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Recommendation"><span class="toc-text">Recommendation</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://helixn.com/passages/2019-07-09-concept-minning/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Concept-Mining/"><i class="fa fa-tags"></i>Concept Mining</a>
+     
+      <a href="/tags/概念挖掘/"><i class="fa fa-tags"></i>概念挖掘</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://helixn.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第30<span id="site-count"></span>位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2016-2019
+      Created by <a href="https://www.helixn.com/" target="_blank">JerryShi</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2019-07-01-decision-tree/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>
