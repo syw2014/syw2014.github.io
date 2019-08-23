@@ -15,7 +15,7 @@
   
 
   
-  <meta name="description" content="简介">
+  <meta name="description" content="支持向量机(support vector machine) 机器学习领域最火的算法，乃至深度学习大火的今天，对该算法的学习也是有助于自己对算法世界的了解。">
 
   
 
@@ -190,22 +190,56 @@
   </h1>
   
   <article class="passage-article">
-    </p>
-<h2 id="思考问题"><a href="#思考问题" class="headerlink" title="思考问题"></a>思考问题</h2><ul>
+    <h1 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h1><p>总结来说，SVM是一个二分类算法，它是定义在特征空间上的间隔最大分类模型，采用不同的技巧可以处理线性可分数据、部分线性可分数据和线性不可分数据。</p>
+<h2 id="主要研究内容"><a href="#主要研究内容" class="headerlink" title="主要研究内容"></a>主要研究内容</h2><p>根据处理数据对象的情况可以分为如下三类，由简至繁</p>
+<ul>
+<li><strong>线性可分支持向量机</strong><br>  对于线性可分数据集，通过硬间隔最大化，学习出一个分类器，也称作<em>硬间隔支持向量机</em></li>
+<li><p><strong>线性支持向量机</strong><br>  对于近似线性可分数据集，通过软间隔最大话，学习出一个线性分类器，也称作<em>软间隔支持向量机</em></p>
+</li>
+<li><p><strong>非线性支持向量机</strong><br>  对于线性不可分数据，通过核技巧和软间隔最大化，学习出非线性支持向量机。</p>
+</li>
+</ul>
+<p>模型从简单到复杂，简单线性模型是复杂模型的特例，下文会集中算法的具体原理进行介绍。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li>线性可分，是指对于一个数据集，如果能够找到一个超平面能将该数据严格分开，即一部分数据在超平面一侧，另一部分在超平面另外一侧，则称该数据线性可分。</li>
+</ul>
+<h2 id="线性可分支持向量机"><a href="#线性可分支持向量机" class="headerlink" title="线性可分支持向量机"></a>线性可分支持向量机</h2><p>基本情况介绍。<br>给定一个特征空间上的数据集 $T=\{(x_1, y_1), (x_2, y_2), \cdots, (x_N, y_N)\}$, 其中$x_i \in R^{n}, y_i  \in y=\{-1, +1\}, i=1,2,\cdots, N$.$x_i$和$y_i$分别为第$i$个样本的特征向量和类别标记，当$y_i=-1$，表示为负例，当$y_i=+1$，表示正例。存在超平面$\boldsymbol{wx}+b=0$ 能将数据集分开，$(\boldsymbol{w}, b)$为超平面的法向量和截距，相应的决策函数为$f(x)=sign(\boldsymbol{wx}+b)$，符号大于0为正例，小于0为负例。</p>
+<h3 id="函数间隔"><a href="#函数间隔" class="headerlink" title="函数间隔"></a>函数间隔</h3><p>如何评价一个分隔超平面的分类确信度？通过点到超平面的距离可以体现</p>
+<blockquote>
+<p>如果一个点到超平面的距离越大，说明点离超平面的距离越远，也就说明超平面的分类确信度越高，反之，如果点到直线的距离越小，超平面越容易将该点分错，分类确信度越低。</p>
+</blockquote>
+<p>了解这个基本思想之后，点到超平面的距离可以表示为，$|\boldsymbol{wx}+b|$，即分类的确信度，那该点是否正确分类，可以看$\boldsymbol{wx}+b$的符号是否和$y$的符号一致，若一致则表示分类正确，若不一致则分类错误，因此用$y_i(\boldsymbol{wx}+b)$ 来表示分类正确性和可信度，也即是<strong>函数间隔</strong>的概念。</p>
+<p>超平面$(\boldsymbol{w},b)$与样本点$(x_i, y_i)$的函数间隔为</p>
+<script type="math/tex; mode=display">\hat{\gamma}=y_i(w\cdot x+b)</script><p>超平面关于数据集$T$的函数间隔定义为，数据集中所有点与超平面的函数间隔中最小的那一个，记作</p>
+<script type="math/tex; mode=display">\hat{\gamma}=\min \limits_{i=1,\cdots,N}\hat{\gamma}_i</script><h3 id="几何间隔"><a href="#几何间隔" class="headerlink" title="几何间隔"></a>几何间隔</h3><p>对于函数间隔分析，同比例放大或缩小$w,b$，超平面不发生变化，但是函数间隔值却会之随之放大或缩小，因此为了能保持函数间隔保持确定，可以对函数间隔施加某种约束，可以是归一化约束，即$||w||_2=1$,即是权重向量的2范数，那么添加约束后的函数间隔被称作<strong>几何间隔</strong>。</p>
+<p>超平面$(\boldsymbol{w},b)$关于点$(x_i, y_i)$几何间隔为，</p>
+<script type="math/tex; mode=display">\gamma = \frac{1}{||w||_2}y_i(w\cdot x_i +b)</script><p>超平面关于数据集$T$的几何间隔定义为，样本集中所有点与超平面的几何间隔中最小的那一个，记作</p>
+<script type="math/tex; mode=display">\gamma=\min \limits_{i=1,\cdots,N}\gamma_i</script><p>则<strong>函数间隔</strong>和<strong>几何间隔</strong>的关系如下，</p>
+<script type="math/tex; mode=display">\gamma_i = \frac{\hat{\gamma_i}}{||w||_2}</script><p>如果$||w||=1$则函数间隔和几何间隔相当，参数$w,b$成比例的改变，几何间隔保持不变，函数间隔同比例变化。</p>
+<h3 id="硬间隔对大化"><a href="#硬间隔对大化" class="headerlink" title="硬间隔对大化"></a>硬间隔对大化</h3><p>目标函数的确定。</p>
+<blockquote>
+<p>支持向量机学习的基本想法，求解能够正确划分数据集，并且几何间隔最大的分隔超平面</p>
+</blockquote>
+<p>换句话说，我们要寻找一个超平面能够把数据集分开，且分隔确信度很高，这个确信度就是用<em>几何间隔</em>来体现，前面讨论中提到，距离越远，分类确信度越高，因此我们要找一分隔超平面，对数据集$T$的<strong>几何间隔最大</strong>，超平面对数据集的几何间隔是指所有几何间隔中最小的那个，从而我们可以定义出如下的约束问题，</p>
+<script type="math/tex; mode=display">\max \limits_{w,b} \gamma</script><script type="math/tex; mode=display">s.t. \quad y_i(\frac{w}{||w||_2}\cdot x + \frac{b}{||w||_2}) \geq \gamma ,\quad i=1,2,\cdots,N</script><h2 id="思考问题"><a href="#思考问题" class="headerlink" title="思考问题"></a>思考问题</h2><ul>
 <li><ol>
-<li>什么是核函数</li>
+<li>什么是核函数？</li>
 </ol>
 </li>
 <li><ol>
-<li>高斯核函数映射到无穷维是怎么回事</li>
+<li>高斯核函数映射到无穷维是怎么回事？</li>
 </ol>
 </li>
 <li><ol>
-<li>如何理解SVM损失函数</li>
+<li>如何理解SVM损失函数？</li>
 </ol>
 </li>
 <li><ol>
-<li>使用高斯核函数，参数$C$和$\delta$对分类器的影响</li>
+<li>使用高斯核函数，参数$C$和$\delta$对分类器的影响？</li>
+</ol>
+</li>
+<li><ol>
+<li>SVM 和感知机有和区别联系？</li>
 </ol>
 </li>
 </ul>
@@ -216,7 +250,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#思考问题"><span class="toc-text">思考问题</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#支持向量机"><span class="toc-text">支持向量机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#主要研究内容"><span class="toc-text">主要研究内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本概念"><span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线性可分支持向量机"><span class="toc-text">线性可分支持向量机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#函数间隔"><span class="toc-text">函数间隔</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#几何间隔"><span class="toc-text">几何间隔</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#硬间隔对大化"><span class="toc-text">硬间隔对大化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#思考问题"><span class="toc-text">思考问题</span></a></li></ol></li></ol>
   </div>
 </aside>
   
