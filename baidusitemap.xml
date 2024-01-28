@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-08-21-svm/</loc>
+    <lastmod>2019-08-25T08:33:14.583Z</lastmod>
+    <data>
+        <display>
+        <title>读书笔记：SVM</title>
+        <pubTime>2019-08-21T00:34:32.000Z</pubTime>
+        
+        <tag>svm</tag>
+         
+        <tag>支持向量机</tag>
+         
+         
+           
+             
+              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-07-09-concept-minning/</loc>
+    <lastmod>2019-07-16T09:33:20.462Z</lastmod>
+    <data>
+        <display>
+        <title>Paper Notes A User-Centered Concept Mining System for Query and Document Understanding at Tencent</title>
+        <pubTime>2019-07-09T09:05:48.000Z</pubTime>
+        
+        <tag>Concept Mining</tag>
+         
+        <tag>概念挖掘</tag>
+         
+         
+           
+             
+              <breadCrumb title="Paper Notes" url="https://helixn.com/categories/Paper-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-07-01-decision-tree/</loc>
+    <lastmod>2019-07-01T12:46:43.013Z</lastmod>
+    <data>
+        <display>
+        <title>读书笔记：决策树</title>
+        <pubTime>2019-07-01T11:39:36.000Z</pubTime>
+        
+        <tag>决策树</tag>
+         
+        <tag>树模型</tag>
+         
+         
+           
+             
+              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-06-12-naive-bayes/</loc>
+    <lastmod>2019-06-25T12:17:24.080Z</lastmod>
+    <data>
+        <display>
+        <title>读书笔记：朴素贝叶斯</title>
+        <pubTime>2019-06-12T12:05:06.000Z</pubTime>
+        
+        <tag>朴素贝叶斯</tag>
+         
+        <tag>Naive Bayes</tag>
+         
+         
+           
+             
+              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-05-08-deepfm-implementation/</loc>
+    <lastmod>2019-06-21T06:55:40.488Z</lastmod>
+    <data>
+        <display>
+        <title>DeepFM Implementation with Tensorflow</title>
+        <pubTime>2019-05-08T08:22:26.000Z</pubTime>
+        
+        <tag>DeepFM</tag>
+         
+        <tag>DeeFM 代码剖析和实现</tag>
+         
+        <tag>Feature Engineering</tag>
+         
+         
+           
+             
+              <breadCrumb title="Projects" url="https://helixn.com/categories/Projects/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-06-04-knn/</loc>
+    <lastmod>2019-06-07T04:22:50.909Z</lastmod>
+    <data>
+        <display>
+        <title>读书笔记：k近邻</title>
+        <pubTime>2019-06-04T12:07:22.000Z</pubTime>
+        
+        <tag>k近邻</tag>
+         
+        <tag>knn</tag>
+         
+         
+           
+             
+              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-05-21-chapter2-perceptron/</loc>
+    <lastmod>2019-06-04T12:04:31.155Z</lastmod>
+    <data>
+        <display>
+        <title>读书笔记：感知机</title>
+        <pubTime>2019-05-21T00:27:31.000Z</pubTime>
+        
+        <tag>感知机</tag>
+         
+         
+           
+             
+              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-05-24-financial/</loc>
+    <lastmod>2019-05-27T12:45:46.685Z</lastmod>
+    <data>
+        <display>
+        <title>理财，到底是在说什么？</title>
+        <pubTime>2019-05-24T11:12:52.000Z</pubTime>
+        
+        <tag>理财</tag>
+         
+        <tag>理生活</tag>
+         
+         
+           
+             
+              <breadCrumb title="Life" url="https://helixn.com/categories/Life/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-05-16-ml-ltr/</loc>
+    <lastmod>2019-05-23T13:25:53.865Z</lastmod>
+    <data>
+        <display>
+        <title>排序学习(Learning To Rank)</title>
+        <pubTime>2019-05-16T02:06:27.000Z</pubTime>
+        
+        <tag>PairWise</tag>
+         
+        <tag>PointWise</tag>
+         
+        <tag>ListWise</tag>
+         
+         
+           
+             
+              <breadCrumb title="算法笔记" url="https://helixn.com/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-05-20-sl-chapter1-p2/</loc>
+    <lastmod>2019-05-20T13:56:26.915Z</lastmod>
+    <data>
+        <display>
+        <title>读书笔记：Chapter1 三要素相关概念</title>
+        <pubTime>2019-05-20T12:37:48.000Z</pubTime>
+        
+        <tag>期望风险</tag>
+         
+        <tag>经验风险</tag>
+         
+        <tag>损失函数</tag>
+         
+         
+           
+             
+              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-05-14-sl-chapter1-p1/</loc>
+    <lastmod>2019-05-20T12:35:19.948Z</lastmod>
+    <data>
+        <display>
+        <title>读书笔记：Chapter1 机器学习分类</title>
+        <pubTime>2019-05-14T13:56:13.000Z</pubTime>
+        
+        <tag>机器学习分类</tag>
+         
+         
+           
+             
+              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2019-05-13-notes-ml-start/</loc>
+    <lastmod>2019-05-14T02:00:56.242Z</lastmod>
+    <data>
+        <display>
+        <title>《统计学习方法》读书笔记开篇</title>
+        <pubTime>2019-05-13T00:30:12.000Z</pubTime>
+        
+        <tag>统计学习方法</tag>
+         
+        <tag>机器学习</tag>
+         
+         
+           
+             
+              <breadCrumb title="统计学习方法笔记" url="https://helixn.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-03-29-faiss/</loc>
+    <lastmod>2019-05-06T13:45:27.553Z</lastmod>
+    <data>
+        <display>
+        <title>Fun with Faiss</title>
+        <pubTime>2018-03-29T02:28:16.000Z</pubTime>
+        
+        <tag>Faiss</tag>
+         
+        <tag>Similarity Search</tag>
+         
+        <tag>Vector Cluster</tag>
+         
+         
+           
+             
+              <breadCrumb title="Vector Search" url="https://helixn.com/categories/Vector-Search/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-01-25-kg-concept/</loc>
+    <lastmod>2019-05-06T13:41:31.813Z</lastmod>
+    <data>
+        <display>
+        <title>识图谱构建困惑之模式层</title>
+        <pubTime>2018-01-25T08:42:05.000Z</pubTime>
+        
+        <tag>Knowledge Graph Construction</tag>
+         
+        <tag>Knowledge Graph Schema</tag>
+         
+        <tag>Knowledge Graph Concept</tag>
+         
+        <tag>Conceptual Construction</tag>
+         
+        <tag>模式层</tag>
+         
+         
+           
+             
+              <breadCrumb title="Knowledge Graph" url="https://helixn.com/categories/Knowledge-Graph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2016-06-05-hello-world/</loc>
+    <lastmod>2019-05-06T13:03:13.675Z</lastmod>
+    <data>
+        <display>
+        <title>纪元</title>
+        <pubTime>2016-06-05T04:19:18.000Z</pubTime>
+        
+        <tag>网站介绍</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2016-07-24-leetcode-268/</loc>
+    <lastmod>2019-05-06T13:02:49.886Z</lastmod>
+    <data>
+        <display>
+        <title>Leetcode [268] --Missing Number</title>
+        <pubTime>2016-07-24T12:08:07.000Z</pubTime>
+        
+        <tag>算法</tag>
+         
+        <tag>leetcode</tag>
+         
+        <tag>算法面试</tag>
+         
+         
+           
+             
+              <breadCrumb title="Algorithm &amp; Data Structure" url="https://helixn.com/categories/Algorithm-Data-Structure/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2017-12-11-neo4j-intro/</loc>
+    <lastmod>2019-05-06T13:02:07.706Z</lastmod>
+    <data>
+        <display>
+        <title>Neo4j使用介绍</title>
+        <pubTime>2017-12-11T08:19:42.000Z</pubTime>
+        
+        <tag>Neo4j</tag>
+         
+        <tag>Cypher</tag>
+         
+        <tag>Graph Database</tag>
+         
+         
+           
+             
+              <breadCrumb title="Knowledge Graph" url="https://helixn.com/categories/Knowledge-Graph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2016-07-23-spark-deployment/</loc>
+    <lastmod>2019-05-06T12:58:35.469Z</lastmod>
+    <data>
+        <display>
+        <title>Spark 开发环境搭建（一）- 虚拟机安装</title>
+        <pubTime>2016-07-23T04:05:09.000Z</pubTime>
+        
+        <tag>Spark环境搭建</tag>
+         
+        <tag>Spark Deployment</tag>
+         
+         
+           
+             
+              <breadCrumb title="Spark" url="https://helixn.com/categories/Spark/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2016-07-24-spark-deployment/</loc>
+    <lastmod>2019-05-06T12:57:10.624Z</lastmod>
+    <data>
+        <display>
+        <title>Spark 开发环境搭建（二）-virtual box 虚拟机配置静态IP 和上网</title>
+        <pubTime>2016-07-24T05:21:36.000Z</pubTime>
+        
+        <tag>Spark环境搭建</tag>
+         
+        <tag>Spark Deployment</tag>
+         
+        <tag>虚拟机静态ip，上网</tag>
+         
+         
+           
+             
+              <breadCrumb title="Spark" url="https://helixn.com/categories/Spark/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2017-11-10-kg-relation-extraction/</loc>
+    <lastmod>2019-05-06T12:53:46.296Z</lastmod>
+    <data>
+        <display>
+        <title>Relation Extraction Survey</title>
+        <pubTime>2017-11-10T08:19:19.000Z</pubTime>
+        
+        <tag>Knowledge Graph</tag>
+         
+        <tag>IE</tag>
+         
+        <tag>Relation Extraction</tag>
+         
+         
+           
+             
+              <breadCrumb title="Knowledge Graph" url="https://helixn.com/categories/Knowledge-Graph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-02-08-paper-notes-attention/</loc>
+    <lastmod>2019-05-06T12:51:49.095Z</lastmod>
+    <data>
+        <display>
+        <title>Paper Notes:Attention is all you need</title>
+        <pubTime>2018-02-08T05:43:55.000Z</pubTime>
+        
+        <tag>Attention</tag>
+         
+        <tag>Self-Attention</tag>
+         
+        <tag>序列建模</tag>
+         
+        <tag>序列模型并行化</tag>
+         
+         
+           
+             
+              <breadCrumb title="Paper Notes" url="https://helixn.com/categories/Paper-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-03-08-paper-notes-entity-linking/</loc>
+    <lastmod>2019-05-06T12:50:25.502Z</lastmod>
+    <data>
+        <display>
+        <title>Paper Notes:Domain Specific Entity Linking via Fake Named Entity Detection</title>
+        <pubTime>2018-03-08T08:24:11.000Z</pubTime>
+        
+        <tag>Entity Linking</tag>
+         
+        <tag>Entity Detection</tag>
+         
+         
+           
+             
+              <breadCrumb title="Paper Notes" url="https://helixn.com/categories/Paper-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2017-12-07-resnet/</loc>
+    <lastmod>2019-05-06T12:49:16.830Z</lastmod>
+    <data>
+        <display>
+        <title>Understanding Residual Network</title>
+        <pubTime>2017-12-07T01:11:58.000Z</pubTime>
+        
+        <tag>ResNet</tag>
+         
+        <tag>Skip/Shortcut Connection</tag>
+         
+        <tag>Residual Network</tag>
+         
+         
+           
+             
+              <breadCrumb title="DL Model Analysis" url="https://helixn.com/categories/DL-Model-Analysis/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-03-03-text-semantics/</loc>
+    <lastmod>2019-05-06T12:47:09.287Z</lastmod>
+    <data>
+        <display>
+        <title>Semantic correlation calculation</title>
+        <pubTime>2018-03-03T04:41:20.000Z</pubTime>
+        
+        <tag>Semantic Analysis</tag>
+         
+        <tag>SMT</tag>
+         
+        <tag>语义相关性计算</tag>
+         
+         
+           
+             
+              <breadCrumb title="Document Semantic" url="https://helixn.com/categories/Document-Semantic/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2017-12-05-show-and-tell/</loc>
+    <lastmod>2019-05-06T12:45:03.651Z</lastmod>
+    <data>
+        <display>
+        <title>Paper Notes :Show and Tell A Neural Image Caption Generator</title>
+        <pubTime>2017-12-05T03:31:11.000Z</pubTime>
+        
+        <tag>Image Caption</tag>
+         
+        <tag>encoder-decoder</tag>
+         
+         
+           
+             
+              <breadCrumb title="Paper Notes" url="https://helixn.com/categories/Paper-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-01-13-cs244n-notes3/</loc>
+    <lastmod>2019-05-06T12:43:04.767Z</lastmod>
+    <data>
+        <display>
+        <title>CS244n lecture3 Notes:高级词向量</title>
+        <pubTime>2018-01-13T09:46:51.000Z</pubTime>
+        
+        <tag>cs244n</tag>
+         
+        <tag>NLP</tag>
+         
+        <tag>DL</tag>
+         
+        <tag>word2vec</tag>
+         
+         
+           
+             
+              <breadCrumb title="CS244n" url="https://helixn.com/categories/CS244n/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-01-08-cs244n-notes1/</loc>
+    <lastmod>2019-05-06T12:42:50.374Z</lastmod>
+    <data>
+        <display>
+        <title>CS244n Lecture Notes1:Word Embedding Part 1</title>
+        <pubTime>2018-01-08T13:41:37.000Z</pubTime>
+        
+        <tag>cs244n</tag>
+         
+        <tag>NLP</tag>
+         
+        <tag>DL</tag>
+         
+        <tag>word2vec</tag>
+         
+         
+           
+             
+              <breadCrumb title="CS244n" url="https://helixn.com/categories/CS244n/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-01-20-cs244n-notes2/</loc>
+    <lastmod>2019-05-06T12:42:34.367Z</lastmod>
+    <data>
+        <display>
+        <title>CS244n Lecture Notes2:Word Embedding Part 2</title>
+        <pubTime>2018-01-20T12:15:47.000Z</pubTime>
+        
+        <tag>cs244n</tag>
+         
+        <tag>NLP</tag>
+         
+        <tag>DL</tag>
+         
+        <tag>word2vec</tag>
+         
+         
+           
+             
+              <breadCrumb title="CS244n" url="https://helixn.com/categories/CS244n/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-04-06-cs244n-notes5/</loc>
+    <lastmod>2019-05-06T12:41:57.847Z</lastmod>
+    <data>
+        <display>
+        <title>CS244n Lecture Notes3</title>
+        <pubTime>2018-04-06T05:48:13.000Z</pubTime>
+        
+        <tag>前向计算</tag>
+         
+        <tag>反向计算</tag>
+         
+        <tag>AdaGrad</tag>
+         
+        <tag>NN Tips and Tricks</tag>
+         
+         
+           
+             
+              <breadCrumb title="CS244n" url="https://helixn.com/categories/CS244n/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-01-30-cs244n-note4/</loc>
+    <lastmod>2019-05-06T12:40:53.353Z</lastmod>
+    <data>
+        <display>
+        <title>CS244n Lecture4 Notes:词窗口分类及神经网络基础</title>
+        <pubTime>2018-01-30T01:12:03.000Z</pubTime>
+        
+        <tag>word vector training</tag>
+         
+        <tag>window classification</tag>
+         
+        <tag>neutral network</tag>
+         
+        <tag>maximum margin loss</tag>
+         
+        <tag>softmax and cross entropy error</tag>
+         
+         
+           
+             
+              <breadCrumb title="CS244n" url="https://helixn.com/categories/CS244n/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-05-28-term-weighting/</loc>
+    <lastmod>2019-05-06T12:34:26.580Z</lastmod>
+    <data>
+        <display>
+        <title>Term Weighting</title>
+        <pubTime>2018-05-28T09:33:37.000Z</pubTime>
+        
+        <tag>Term Weighting</tag>
+         
+        <tag>Word Local Weight</tag>
+         
+        <tag>Word Global Weight</tag>
+         
+        <tag>Keywords Extraction</tag>
+         
+         
+           
+             
+              <breadCrumb title="Text Minning" url="https://helixn.com/categories/Text-Minning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-05-30-paper-notes-dssm/</loc>
+    <lastmod>2019-05-06T12:29:25.058Z</lastmod>
+    <data>
+        <display>
+        <title>DSSM 分析</title>
+        <pubTime>2018-05-30T11:52:19.000Z</pubTime>
+        
+        <tag>文本相似度</tag>
+         
+        <tag>dssm</tag>
+         
+         
+           
+             
+              <breadCrumb title="Document Similarity" url="https://helixn.com/categories/Document-Similarity/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://helixn.com/passages/2018-11-06-paper-notes-se/</loc>
+    <lastmod>2019-05-06T12:26:19.788Z</lastmod>
+    <data>
+        <display>
+        <title>论文笔记 - A STRUCTURED SELF-ATTENTIVE SENTENCE EMBEDDING</title>
+        <pubTime>2018-11-06T10:46:17.000Z</pubTime>
+        
+        <tag>Attention</tag>
+         
+        <tag>Sentence Embeding</tag>
+         
+        <tag>Sentiment Analysis</tag>
+         
+         
+           
+             
+              <breadCrumb title="Paper Notes" url="https://helixn.com/categories/Paper-Notes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+    
+    
+    
+    
+    
+</urlset>

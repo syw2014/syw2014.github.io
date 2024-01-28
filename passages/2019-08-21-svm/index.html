@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>读书笔记：SVM | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="统计学习方法笔记,svm,支持向量机," />
+  
+
+  
+  <meta name="description" content="支持向量机(support vector machine) 机器学习领域最火的算法，乃至深度学习大火的今天，对该算法的学习也是有助于自己对算法世界的了解。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/categories/Projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/Projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-08-21
+    </span>
+    
+      <span>
+        | <a href="/categories/统计学习方法笔记/"><i class="fa fa-bookmark"></i>统计学习方法笔记</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    读书笔记：SVM
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h1><p>总结来说，SVM是一个二分类算法，它是定义在特征空间上的间隔最大分类模型，采用不同的技巧可以处理线性可分数据、部分线性可分数据和线性不可分数据。</p>
+<h2 id="主要研究内容"><a href="#主要研究内容" class="headerlink" title="主要研究内容"></a>主要研究内容</h2><p>根据处理数据对象的情况可以分为如下三类，由简至繁</p>
+<ul>
+<li><strong>线性可分支持向量机</strong><br>  对于线性可分数据集，通过硬间隔最大化，学习出一个分类器，也称作<em>硬间隔支持向量机</em></li>
+<li><p><strong>线性支持向量机</strong><br>  对于近似线性可分数据集，通过软间隔最大话，学习出一个线性分类器，也称作<em>软间隔支持向量机</em></p>
+</li>
+<li><p><strong>非线性支持向量机</strong><br>  对于线性不可分数据，通过核技巧和软间隔最大化，学习出非线性支持向量机。</p>
+</li>
+</ul>
+<p>模型从简单到复杂，简单线性模型是复杂模型的特例，下文会集中算法的具体原理进行介绍。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li>线性可分，是指对于一个数据集，如果能够找到一个超平面能将该数据严格分开，即一部分数据在超平面一侧，另一部分在超平面另外一侧，则称该数据线性可分。</li>
+</ul>
+<h2 id="线性可分支持向量机"><a href="#线性可分支持向量机" class="headerlink" title="线性可分支持向量机"></a>线性可分支持向量机</h2><p>基本情况介绍。<br>给定一个特征空间上的数据集 $T=\{(x_1, y_1), (x_2, y_2), \cdots, (x_N, y_N)\}$, 其中$x_i \in R^{n}, y_i  \in y=\{-1, +1\}, i=1,2,\cdots, N$.$x_i$和$y_i$分别为第$i$个样本的特征向量和类别标记，当$y_i=-1$，表示为负例，当$y_i=+1$，表示正例。存在超平面$\boldsymbol{wx}+b=0$ 能将数据集分开，$(\boldsymbol{w}, b)$为超平面的法向量和截距，相应的决策函数为$f(x)=sign(\boldsymbol{wx}+b)$，符号大于0为正例，小于0为负例。</p>
+<h3 id="函数间隔"><a href="#函数间隔" class="headerlink" title="函数间隔"></a>函数间隔</h3><p>如何评价一个分隔超平面的分类确信度？通过点到超平面的距离可以体现</p>
+<blockquote>
+<p>如果一个点到超平面的距离越大，说明点离超平面的距离越远，也就说明超平面的分类确信度越高，反之，如果点到直线的距离越小，超平面越容易将该点分错，分类确信度越低。</p>
+</blockquote>
+<p>了解这个基本思想之后，点到超平面的距离可以表示为，$|\boldsymbol{wx}+b|$，即分类的确信度，那该点是否正确分类，可以看$\boldsymbol{wx}+b$的符号是否和$y$的符号一致，若一致则表示分类正确，若不一致则分类错误，因此用$y_i(\boldsymbol{wx}+b)$ 来表示分类正确性和可信度，也即是<strong>函数间隔</strong>的概念。</p>
+<p>超平面$(\boldsymbol{w},b)$与样本点$(x_i, y_i)$的函数间隔为</p>
+<script type="math/tex; mode=display">\hat{\gamma}=y_i(w\cdot x+b)</script><p>超平面关于数据集$T$的函数间隔定义为，数据集中所有点与超平面的函数间隔中最小的那一个，记作</p>
+<script type="math/tex; mode=display">\hat{\gamma}=\min \limits_{i=1,\cdots,N}\hat{\gamma}_i</script><h3 id="几何间隔"><a href="#几何间隔" class="headerlink" title="几何间隔"></a>几何间隔</h3><p>对于函数间隔分析，同比例放大或缩小$w,b$，超平面不发生变化，但是函数间隔值却会之随之放大或缩小，因此为了能保持函数间隔保持确定，可以对函数间隔施加某种约束，可以是归一化约束，即$||w||_2=1$,即是权重向量的2范数，那么添加约束后的函数间隔被称作<strong>几何间隔</strong>。</p>
+<p>超平面$(\boldsymbol{w},b)$关于点$(x_i, y_i)$几何间隔为，</p>
+<script type="math/tex; mode=display">\gamma = \frac{1}{||w||}y_i(w\cdot x_i +b)</script><p>超平面关于数据集$T$的几何间隔定义为，样本集中所有点与超平面的几何间隔中最小的那一个，记作</p>
+<script type="math/tex; mode=display">\gamma=\min \limits_{i=1,\cdots,N}\gamma_i</script><p>则<strong>函数间隔</strong>和<strong>几何间隔</strong>的关系如下，</p>
+<script type="math/tex; mode=display">\gamma_i = \frac{\hat{\gamma_i}}{||w||}</script><p>如果$||w||=1$则函数间隔和几何间隔相当，参数$w,b$成比例的改变，几何间隔保持不变，函数间隔同比例变化。</p>
+<h3 id="硬间隔对大化"><a href="#硬间隔对大化" class="headerlink" title="硬间隔对大化"></a>硬间隔对大化</h3><p>目标函数的确定。</p>
+<blockquote>
+<p>支持向量机学习的基本想法，求解能够正确划分数据集，并且几何间隔最大的分隔超平面</p>
+</blockquote>
+<p>换句话说，我们要寻找一个超平面能够把数据集分开，且分隔确信度很高，这个确信度就是用<em>几何间隔</em>来体现，前面讨论中提到，距离越远，分类确信度越高，因此我们要找一分隔超平面，对数据集$T$的<strong>几何间隔最大</strong>，超平面对数据集的几何间隔是指所有几何间隔中最小的那个，从而我们可以定义出如下的约束问题，</p>
+<script type="math/tex; mode=display">\max \limits_{w,b} \gamma \\
+s.t. \quad y_i(\frac{w}{||w||}\cdot x + \frac{b}{||w||}) \geq \gamma ,\quad i=1,2,\cdots,N</script><p>换句话说我们要找一个分隔超平面对数据集的几何间隔至少是$\gamma$,根据函数间隔和几何间隔的关系将上式进行改写，</p>
+<script type="math/tex; mode=display">\max \limits_{w,b} \frac{\hat{\gamma}}{||w||} \\
+s.t. \quad y_i(w\cdot x + b ) \geq \hat{\gamma}, i=1,2\cdots, N</script><p>由于函数间隔$\hat{\gamma}$取值不影响优化问题的解，因此这里取$\hat{\gamma}=1$,将其代入上式，最大化$\gamma=\frac{1}{||w||}$,等价于最小化$\frac{1}{2}||w||^2$， 因此最终的约束问题可以描述如下，</p>
+<script type="math/tex; mode=display">\min \limits_{w,b} \frac{1}{2}||w||^2 \\
+s.t. \quad y_i(w\cdot x +b ) - 1 \geq 0, i=1,2,\cdots, N</script><p>因此可以得到线性可分支持向量机算法,</p>
+<blockquote>
+<p>输入：线性可分训练集$T=\{(x_1, y_1),(x_2, y_2),\cdots,(x_N, y_N)\}$, 其中$x_i$表示特征向量，$y_i \in \{-1, +1\}，,i=1,2,\cdots,N$,表示样本属于负例或正例<br>输出：最大间隔分离超平面和分类决策函数<br>(1) 构造约束优化问题</p>
+<pre><code>$$\min \limits_{w,b}\frac{1}{2}||w||^2 \\
+s.t. \quad y_i(w \cdot x + b ) -1 \geq 0, i=1,2,\cdots,N$$  
+求解最佳参数$w^{*}, b^*$
+</code></pre><p>(2) 根据最佳参数得到分割超平面</p>
+<pre><code>$$w^* \cdot x + b = 0$$
+</code></pre><p>(3) 分类决策函数</p>
+<pre><code>$$f(x)=sign(w^*\cdot x +b)$$
+</code></pre></blockquote>
+<h3 id="对偶问题"><a href="#对偶问题" class="headerlink" title="对偶问题"></a>对偶问题</h3><p>对于带有约束条件的优化问题通常采用拉格朗日法进行求解，因此也采用此方式，通过求解对偶问题最优解得到原始问题的解。线性SVM的拉格朗日函数如下，</p>
+<script type="math/tex; mode=display">L(w,b,\alpha) = \frac{1}{2}||w||^2-\sum_{i=1}^{N}\alpha_i (y_i(w\cdot x_i +b) - 1) \\
+= \frac{1}{2}||w||^2-\sum_{i=1}^{N}\alpha_i y_i(w\cdot x_i +b) + \sum_{i=1}^{N}\alpha_i</script><p>先来分析原始问题的情况，约束问题可知，原问题是极小极大问题，所谓“极小”是指求得分割超平面关于数据集的几何距离最小，“极大”是指选取出来的分隔超平面能以最大的确信度分隔数据集。根据拉格朗日对偶性，原始问题的对偶问题是<strong>极大极小</strong>为<script type="math/tex">\max \limits_{\alpha} \min \limits_{w,b}L(w,b,\alpha)</script><br>从而求解问题先求极小部分再求极大。<br>(1) 求$\min \limits_{w,b}L(w,b,\alpha)$,对参数$w,b$求偏导为0。</p>
+<script type="math/tex; mode=display">\nabla_wL(w,b,\alpha)=w - \sum_{i=1}^{N}\alpha_i y_ix_i=0 \\
+\nabla_bL(w,b,\alpha)=-\sum_{i=1}^{N}\alpha_i=0</script><p>得到，</p>
+<script type="math/tex; mode=display">w=\sum_{i=1}^{N}\alpha_i y_ix_i \\
+\sum_{i=1}^{N}\alpha_i=0</script><p>将上面结果代入拉格朗日求解，</p>
+<script type="math/tex; mode=display">\min \limits_{w,b}L(w,b,\alpha) = -\frac{1}{2}\sum_{i=1}^{N}\sum_{j=1}^{N}\alpha_i \alpha_jy_iy_j(x_i\cdot x_j) + \sum_{i=1}^{N}\alpha_i</script><p>(2) 求$\min \limits_{w,b}L(w,b,\alpha)$,对参数$\alpha$的极大，</p>
+<script type="math/tex; mode=display">\max \limits_{\alpha}  -\frac{1}{2}\sum_{i=1}^{N}\sum_{j=1}^{N}\alpha_i \alpha_jy_iy_j(x_i\cdot x_j) + \sum_{i=1}^{N}\alpha_i    \\
+s.t. \quad \sum_{i=0}^{N}\alpha_i y_i=0 \\
+\alpha_i \geq 0 , i = 1,2,\cdots, N</script><p>上式将负号去掉即可转换为求极小值问题，</p>
+<script type="math/tex; mode=display">\min \limits_{\alpha}  \frac{1}{2}\sum_{i=1}^{N}\sum_{j=1}^{N}\alpha_i \alpha_jy_iy_j(x_i\cdot x_j) - \sum_{i=1}^{N}\alpha_i    \\
+s.t. \quad \sum_{i=0}^{N}\alpha_i y_i=0 \\
+\alpha_i \geq 0 , i = 1,2,\cdots, N</script><p>设$\alpha^{<em>}=(\alpha_{1}^{</em>},\alpha_{2}^{<em>},\cdots,\alpha_{l}^</em>)$为上式的最优解，因此可以求得，分隔超平面参数$w,b$</p>
+<script type="math/tex; mode=display">w^*=\sum_{i=0}^{N}\alpha_i^* y_ix_i \\
+b^* = y_i - \sum_{i=1}^{N}\alpha_i^{*}y_i(x_i\cdot x_j)</script><h3 id="支撑向量"><a href="#支撑向量" class="headerlink" title="支撑向量"></a>支撑向量</h3><p>从$w,b$的求解公式中可以看到，他们至于$\alpha_i^* \gt 0$ 对应的$(x_i,y_i)$有关系，这些点被称作支撑向量。</p>
+<h2 id="线性支持向量机"><a href="#线性支持向量机" class="headerlink" title="线性支持向量机"></a>线性支持向量机</h2><h2 id="思考问题"><a href="#思考问题" class="headerlink" title="思考问题"></a>思考问题</h2><ul>
+<li><ol>
+<li>什么是核函数？</li>
+</ol>
+</li>
+<li><ol>
+<li>高斯核函数映射到无穷维是怎么回事？</li>
+</ol>
+</li>
+<li><ol>
+<li>如何理解SVM损失函数？</li>
+</ol>
+</li>
+<li><ol>
+<li>使用高斯核函数，参数$C$和$\delta$对分类器的影响？</li>
+</ol>
+</li>
+<li><ol>
+<li>SVM 和感知机有和区别联系？</li>
+</ol>
+</li>
+</ul>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#支持向量机"><span class="toc-text">支持向量机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#主要研究内容"><span class="toc-text">主要研究内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本概念"><span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线性可分支持向量机"><span class="toc-text">线性可分支持向量机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#函数间隔"><span class="toc-text">函数间隔</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#几何间隔"><span class="toc-text">几何间隔</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#硬间隔对大化"><span class="toc-text">硬间隔对大化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对偶问题"><span class="toc-text">对偶问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#支撑向量"><span class="toc-text">支撑向量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线性支持向量机"><span class="toc-text">线性支持向量机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#思考问题"><span class="toc-text">思考问题</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://helixn.com/passages/2019-08-21-svm/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/svm/"><i class="fa fa-tags"></i>svm</a>
+     
+      <a href="/tags/支持向量机/"><i class="fa fa-tags"></i>支持向量机</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://helixn.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第30<span id="site-count"></span>位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2016-2019
+      Created by <a href="https://www.helixn.com/" target="_blank">JerryShi</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2019-07-09-concept-minning/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>

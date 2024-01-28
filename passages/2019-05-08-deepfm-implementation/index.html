@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>DeepFM Implementation with Tensorflow | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Projects,DeepFM,DeeFM 代码剖析和实现,Feature Engineering," />
+  
+
+  
+  <meta name="description" content="基于Tensorflow和tf.data.dataset api实现DeepFM 模型，并在公开数据和自由数据集上测试其性能，并提高其实际使用性能，主要路线如下:[x] 论文解读，分析具体模型逻辑和主要特点[x] 准备测试数据集[x] 特征工程，进行中[x] 制作模型所需数据集[ ] 模型搭建[ ] 模型测试及参数调整[ ] 结果分析">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/categories/Projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/Projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-05-08
+    </span>
+    
+      <span>
+        | <a href="/categories/Projects/"><i class="fa fa-bookmark"></i>Projects</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    DeepFM Implementation with Tensorflow
+  </h1>
+  
+  <article class="passage-article">
+    <h2 id="论文解读"><a href="#论文解读" class="headerlink" title="论文解读"></a>论文解读</h2><p>论文提到的DeepFM网络结构图如下所示，<br><img src="https://img-blog.csdnimg.cn/20190621091626434.png" alt="DeeFM网络结构图"><br>该算法主要特点如下：</p>
+<ul>
+<li>网络结构分为FM部分和Deep部分</li>
+<li>FM主要做特征组合，包括一阶特征和二阶特征</li>
+<li>Deep部分用来对embedding后的表示提取高纬特征</li>
+<li>两部分直接共享特征embedding权重参数</li>
+<li>最后将FM和Deep部分的输出进行concat采用sigmod函数进行输出</li>
+<li>不需要人工设计特征组合，网络end to end学习组合特征</li>
+</ul>
+<h3 id="FM-Part"><a href="#FM-Part" class="headerlink" title="FM Part"></a>FM Part</h3><p>FM(Factorization Machine)模型主要是用来获取组合特征，模型如下:</p>
+<script type="math/tex; mode=display">y_{FM} = <W,X> + \sum_{i=1}^{d}\sum_{j=i+1}^{d}<V_i, V_j>x_ix_j</script><p>上面是采用向量形式进行表示，这里我们沿用FM原论文中的表示形式，</p>
+<script type="math/tex; mode=display">y_{FM}=w_0 + \sum_{i=1}^n w_ix_i + \sum_{i=1}^{n}\sum_{j=i+1}^n<V_i, V_j>x_i x_j</script><script type="math/tex; mode=display"><V_i, V_j>=\sum_{f=1}^{k}v_{i,f} \cdot v_{j,f}</script><p>其中，$n$表示特征个数，$V_i$表示$k$维特征隐向量。下面我们来对上面这个公式具体推到，获得最终计算形式，<br>上式中$\sum_{i=1}^{n}\sum_{j=i+1}^n<v_i, v_j="">x_i x_j$这个部分表示的是二级特征，这个表示形式是对称矩阵的上三角部分，分析如下<br>对称矩阵A如下：</v_i,></p>
+<script type="math/tex; mode=display">A_{nn} = \left[
+    \begin{matrix}
+        a_{11} & a_{12} & \cdots &  a_{1n} \\ 
+        a_{21} & a_{22} & \cdots &  a_{2n} \\      
+        \vdots & \vdots & \vdots & \vdots  \\
+        a_{n1} & a_{n2} & \cdots &  a_{nn} \\
+    \end{matrix}
+\right]</script><p>对称矩阵A的上三角表示形式为：</p>
+<script type="math/tex; mode=display">A_{1} = \sum_{i=1}^{n}\sum_{j=i+1}^na_{ij}</script><p>根据对称矩阵的性质，上三角矩阵的元素和等于矩阵所有元素和减去对角线之和的一半，所以FM公式二阶特征可以做如下转换<br><img src="https://img-blog.csdnimg.cn/20190621104101145.png" alt="FM公式推导"><br>因此最终的FM部分的公式变成如下形式</p>
+<script type="math/tex; mode=display">y_{FM}=w_0 + \sum_{i=1}^{n}w_ix_i + \frac{1}{2}\sum_{f=1}^{k}\lgroup{(\sum_{i=1}^{n}v_{i,f}x_i)^2 - \sum_{i=1}^{n}v_{i,f}^2x_{i}^2} \rgroup</script><p>对公式进行符号表示，便于后续实现时进行说明，</p>
+<script type="math/tex; mode=display">y_{FM}=A_1 + 0.5\sum_{f=1}^k(B+C)</script><p>上述形式也是在进行算法实现时所采用的的形式.</p>
+<h3 id="Deep-Part"><a href="#Deep-Part" class="headerlink" title="Deep Part"></a>Deep Part</h3><p>论文中deep部分是将embedding后的结果联合一阶特征$A_1$ 和二阶特征进行concat，送入DNN，计算公式如下</p>
+<script type="math/tex; mode=display">y_{DNN}=\sigma(W^{|H|+1}\cdot a^{l} + b^{|H|+1})</script><p>其中$|H|$表示DNN的网络层数，$a$表示上一层网络输出。</p>
+<h2 id="数据集准备及分析"><a href="#数据集准备及分析" class="headerlink" title="数据集准备及分析"></a>数据集准备及分析</h2><p>模型实现采用kaggle 比赛中公开<a href="https://www.kaggle.com/c/criteo-display-ad-challenge/data" target="_blank" rel="noopener">数据集</a>。数据情况如下</p>
+<ul>
+<li>数据总共有40个字段，字段间用tab键进行分开</li>
+<li>第一个字段，即Field0 表示$Label$ 值为1或0，表示该ad被点击与否</li>
+<li>I1-I13,共13个字段表示数值字段，通常一些计数值</li>
+<li>C14-I39,共26个字段为categoryical 字段，即离散类别型特征</li>
+<li>字段值不存在时，默认为空</li>
+<li>所以字段进行了脱敏，没有具体实际指代含义</li>
+</ul>
+<h2 id="实现逻辑和流程"><a href="#实现逻辑和流程" class="headerlink" title="实现逻辑和流程"></a>实现逻辑和流程</h2><p>整个系统实现逻辑流程如图所示。<br><img src="https://img-blog.csdnimg.cn/20190619165932136.png" alt="逻辑框架"></p>
+<h2 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h2><p>数据处理这里采用主要原则是，将所有数据集中的所有值都当成特征值进行处理，对于连续值，将整个字段作为一个特征，这样所有的特征值都存在于同一个字典中进行编码。(<em>原论文采用此种方式处理，至于初衷还在思考中</em>)，按照论文所说，需要对每个categoryical字段单独进行one-hot这样做下来，单条encode后的数据维度会很大，这取决于每个field的bucket切分，处理起来较麻烦，这也许是作者采用前述方法的主要原因。这里我在进行算法实现时对数据做如下处理：</p>
+<ul>
+<li><ol>
+<li>对continuous field， 即数据中的数值：</li>
+</ol>
+<ul>
+<li>normalize到(0,1),采用该区间内$norm=\frac{val-min}{max-min}$，首先寻找每个字段中的最大值和最小值，存放在字典中</li>
+<li>id编码，对于连续性或者数值型字段，将整个字段作为一个feature，编码为一个id，value就是归一化后的值</li>
+</ul>
+</li>
+<li><ol>
+<li>categorical field ，离散型字段</li>
+</ol>
+<ul>
+<li>在每个字段中统计每个value出现的频率，通过设定频率阈值进行过滤，生成字段对应字典，</li>
+<li>id编码，将所有字段中的值统一到同一个字典中进行编码，id是在连续字段编码基础上进行累加，</li>
+</ul>
+</li>
+<li><ol>
+<li><p>数据处理结果<br>采用以上方式对数据进行处理，最终形成的数据格式是，<strong><v1 v2="" v3="" \t="" id1="" id2="" id3="" label=""></v1></strong>, 数据以tab为分割符有三个字段，第一个字段为feature value是数据归一化后的值或者是one-hot后的1，第二个字段是前一个字段对应的feature id， 第三个字段为该条数据的label<br>生成字典格式如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">feat_dict = &#123;</span><br><span class="line">    <span class="string">"1"</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">"2"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"14"</span>: &#123;</span><br><span class="line">        <span class="string">"68fd1e64"</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="string">"287e684f"</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="string">"8cf07265"</span>: <span class="number">4</span>&#125;,</span><br><span class="line">    <span class="string">"feat_size"</span>: <span class="number">121641</span>,</span><br><span class="line">    <span class="string">"&lt;UNK&gt;"</span>: <span class="number">121640</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>按照以上方式对数据进行转换，遵照原始数据的顺序按照$8:1:1$拆分为train/dev/test数据集，用于做模型训练和测试。</p>
+</li>
+</ol>
+</li>
+</ul>
+<p>数据处理部分code可以在<a href="https://github.com/syw2014/DeepNLP-models/blob/master/codes/DeepFM/data_reader.py" target="_blank" rel="noopener">data_reader.py</a>中找到，代码采用multi-thread对数据进行处理，因为文件特别大，采用多进程来提高处理速度，对于categorical字段的过滤阈值，是通过统计每个字段中值的频率，进行设定，也可以将所有字段设置为同一个阈值，比如频次为10等。</p>
+<p>  <strong>思考</strong></p>
+<ol>
+<li>对于categoryical特征进行处理方式，按照原文的思路是对所有离散特征放在一起进行one-hot，和每个字段单独one-hot进行处理，这两种方式对最终模型效果是否有较大影响？用LR做排序的时候，处理对象也是有多大40多个字段包含连续和离散，处理方式是将所有字段都转换为类别型特征，单独进行one-hot encoding。我考虑到如果每个字段单独one-hot，也就需要后面单独创建embedding进行lookup，如果有20个字段那就需要20个tabel进行学习，在实现上不便利，而且每个table值都是需要进行学习的。</li>
+</ol>
+<h2 id="系统设计"><a href="#系统设计" class="headerlink" title="系统设计"></a>系统设计</h2><ul>
+<li><p><strong><em>input_fn</em></strong><br>该模块主要作用是对已经转换为value sequence, value id sequence, label数据，使用$tf.dataset.API$ 进行pipeline处理，最终输出内容为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">inputs = &#123;</span><br><span class="line">      <span class="string">"values"</span>: values,</span><br><span class="line">      <span class="string">"indices"</span>: indices,</span><br><span class="line">      <span class="string">"labels"</span>: tf.reshape(labels, shape=[<span class="number">-1</span>, <span class="number">1</span>]),</span><br><span class="line">      <span class="string">"iterator_init_op"</span>: init_op</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>主要的处理步骤：</p>
+<ul>
+<li>利用tf.dataset.api,这里采用的是tf.data.TextLineDataset从数据文件中读取数据，返回结果是tf.dataset 形式</li>
+<li>利用dataset.map()操作对读入的每行数据进行parse，这里parse的结果有三部分，values, indices, labels, 在进行parse的同时，需要对数据进行padding，这里根据字段个数，sequence length 是39，对于不足该长度的用0进行padding，indices用padding_index 代替，最终保证每个数据长度都是一致；还有一种是直接利用dataset.padding_batch，根据batch中最长的sequence长度对其他数据进行padding</li>
+<li><p>创建batches iterator, 根据是否处于”train” or “test”决定是否对数据进行随机打乱，代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dataset = dataset.shuffle(buffer_size=buffer_size)</span><br><span class="line">          .batch(batch_size)</span><br><span class="line">          .prefetch(<span class="number">1</span>)    <span class="comment"># always keep one batch ready to serve</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建迭代器，拆解batch tensor作为输入, 制作inputs字典</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iterator = dataset.make_initializable_iterator()</span><br><span class="line">init_op = iterator.initializer</span><br><span class="line">(values, indices, labels) = iterator.get_next()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>以上是数据处理pipeline，充分利用tf的数据处理能力，可以作为通用处理模式，对任意算法任务建立类似的处理逻辑，需要根据具体任务修改parse函数,这是<a href="https://github.com/syw2014/DeepNLP-models/blob/master/codes/DeepFM/input_fn.py" target="_blank" rel="noopener">input_fn</a>实现。</p>
+</li>
+<li><p><strong><em>build_model</em></strong><br>该模块主要用来构造DeepFM网络模型， 为了能够支持单条数据的inference，在构建的模型时，只采用三个函数，$inference$和$loss$，网络搭建在$inference$函数中实现，$loss$用来计算模型损失。<br>网络搭建的主要过程如下(这里尽量名字与code中一致)：</p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Input Shape</th>
+<th>output Shape</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>feature_embedding</td>
+<td>[feat_size, emb_size]</td>
+<td>None</td>
+<td>sparse feature to dense feature</td>
+</tr>
+<tr>
+<td>feature_bias</td>
+<td>[feat_size, 1]</td>
+<td>None</td>
+<td>weight of order-1</td>
+</tr>
+<tr>
+<td>DNN</td>
+<td>[field_size*emb_size, hidden_layer[0]]</td>
+<td></td>
+<td>Full Connect</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>这里只是简单列了主要的一些变量，详细的请参考<a href="https://github.com/syw2014/DeepNLP-models/blob/master/codes/DeepFM/model.py" target="_blank" rel="noopener">code</a></p>
+<ul>
+<li><p><strong><em>build_model_spec</em></strong><br>该模块主要是模型设定，model specification 会包括模型训练或预测过程中各种operator、loss、评估指标、输入输出tensor等，在本实现中分两种情况来创建model specification。</p>
+<ul>
+<li><p>train mode</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">model_spec[<span class="string">'loss'</span>] = loss</span><br><span class="line">model_spec[<span class="string">'accuracy'</span>] = acc</span><br><span class="line">model_spec[<span class="string">'metrics_init_op'</span>] = metrics_init_op</span><br><span class="line">model_spec[<span class="string">'metrics'</span>] = metrics</span><br><span class="line">model_spec[<span class="string">'update_metrics'</span>] = update_metrics_op</span><br><span class="line">model_spec[<span class="string">'summary_op'</span>] = tf.summary.merge_all()</span><br><span class="line">model_spec[<span class="string">'train_op'</span>] = train_op</span><br><span class="line">model_spec[<span class="string">'variable_init_op'</span>] = variable_init_op</span><br><span class="line">model_spec[<span class="string">'prediction'</span>] = prediction</span><br><span class="line">model_spec[<span class="string">'score'</span>] = score</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>eval mode</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">model_spec[<span class="string">'loss'</span>] = loss</span><br><span class="line">model_spec[<span class="string">'accuracy'</span>] = accuracy</span><br><span class="line">model_spec[<span class="string">'metrics_init_op'</span>] = metrics_init_op</span><br><span class="line">model_spec[<span class="string">'metrics'</span>] = metrics</span><br><span class="line">model_spec[<span class="string">'update_metrics'</span>] = update_metrics_op</span><br><span class="line">model_spec[<span class="string">'summary_op'</span>] = tf.summary.merge_all()</span><br><span class="line">model_spec[<span class="string">'variable_init_op'</span>] = variable_init_op</span><br><span class="line">model_spec[<span class="string">'prediction'</span>] = prediction</span><br><span class="line">model_spec[<span class="string">'score'</span>] = score</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>具体每个op代表的含义可以查看代码<a href="https://github.com/syw2014/DeepNLP-models/blob/master/codes/DeepFM/model_fn.py" target="_blank" rel="noopener">model_fn.py</a></p>
+</li>
+<li><p><strong><em>train_evaluate</em></strong><br>该模块主要是定义train session 和evaluate session，这些函数用来定义在一个epoch中如何进行模型训练和预测，train_session 如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">train_op = model_spec[<span class="string">'train_op'</span>]</span><br><span class="line">loss = model_spec[<span class="string">'loss'</span>]</span><br><span class="line">update_metrics = model_spec[<span class="string">'update_metrics'</span>]  <span class="comment"># loop over all dataset</span></span><br><span class="line">summary_op = model_spec[<span class="string">'summary_op'</span>]</span><br><span class="line">metrics = model_spec[<span class="string">'metrics'</span>]</span><br><span class="line">global_step = tf.train.get_or_create_global_step()  <span class="comment"># get global train step</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Step2, initialize variables</span></span><br><span class="line">sess.run(model_spec[<span class="string">'metrics_init_op'</span>])     <span class="comment"># metrics op</span></span><br><span class="line">sess.run(model_spec[<span class="string">'iterator_init_op'</span>])    <span class="comment"># iterator op</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Step3, loop train steps</span></span><br><span class="line"><span class="comment"># use tqdm trange as process bar</span></span><br><span class="line">t = trange(num_steps)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> t:</span><br><span class="line">    <span class="comment"># write summary after summary_steps</span></span><br><span class="line">    <span class="keyword">if</span> i % params.save_summary_steps == <span class="number">0</span>:</span><br><span class="line">        _, loss_val, _, summary_val, step_val = sess.run([train_op, loss, update_metrics,</span><br><span class="line">                                                                       summary_op, global_step])</span><br><span class="line">        writer.add_summary(summary_val, step_val)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        _, _, loss_val = sess.run([train_op, update_metrics, loss])</span><br><span class="line">        t.set_postfix(loss=<span class="string">'&#123;:05.3f&#125;'</span>.format(loss_val))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step4 print metrics</span></span><br><span class="line">metric_val_tensor = &#123;k: v[<span class="number">0</span>] <span class="keyword">for</span> k, v <span class="keyword">in</span> metrics.items()&#125;</span><br><span class="line">metric_vals = sess.run(metric_val_tensor)</span><br><span class="line">metric_vals_str = <span class="string">' ; '</span>.join(<span class="string">'&#123;&#125;: &#123;:05.3f&#125;'</span>.format(k,v) <span class="keyword">for</span> k, v <span class="keyword">in</span> metric_vals.items())</span><br><span class="line">logging.info(<span class="string">'- Train Metrics: '</span>+ metric_vals_str)</span><br></pre></td></tr></table></figure>
+<p>对于代码详细内容请查看文件<a href="https://github.com/syw2014/DeepNLP-models/blob/master/codes/DeepFM/train_evaluate.py" target="_blank" rel="noopener">train_evaluate.py</a></p>
+</li>
+<li><p><strong><em>inference</em></strong><br>inference 模块是根据eval_session 函数改写而成方便单独做预测</p>
+</li>
+<li><strong><em>train</em></strong><br><a href="https://github.com/syw2014/DeepNLP-models/blob/master/codes/DeepFM/train.py" target="_blank" rel="noopener">train.py</a>训练和预测主入口，训练流程，首先读取数据为datast,将dataset制作为模型所需要的iterator形式，再创建模型，创建model specification, 最后进行训练。<h2 id="模型参数"><a href="#模型参数" class="headerlink" title="模型参数"></a>模型参数</h2>模型参数汇总如下：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"test_size"</span>: <span class="number">4584061</span>,</span><br><span class="line">    <span class="string">"field_size"</span>: <span class="number">39</span>,</span><br><span class="line">    <span class="string">"train_size"</span>: <span class="number">3667249</span>,</span><br><span class="line">    <span class="string">"dev_size"</span>: <span class="number">4584062</span>,</span><br><span class="line">    <span class="string">"padding_value"</span>: <span class="number">121640</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">"feat_size"</span>: <span class="number">121641</span>,</span><br><span class="line">    <span class="string">"batch_size"</span>: <span class="number">2048</span>,</span><br><span class="line">    <span class="string">"epochs"</span>: <span class="number">10</span>,</span><br><span class="line">    <span class="string">"learning_rate"</span>: <span class="number">0.001</span>,</span><br><span class="line">    <span class="string">"buffer_size"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"fm_dropout_keep"</span>: <span class="number">1.0</span>,</span><br><span class="line">    <span class="string">"dropout_keep_prob"</span>: <span class="number">0.5</span>,</span><br><span class="line">    <span class="string">"l2_reg"</span>: <span class="number">0.1</span>,</span><br><span class="line">    <span class="string">"embedding_size"</span>: <span class="number">10</span>,</span><br><span class="line">    <span class="string">"hidden_layers"</span>:<span class="string">"32,32"</span>,</span><br><span class="line">    <span class="string">"save_summary_steps"</span>: <span class="number">10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="效果评估"><a href="#效果评估" class="headerlink" title="效果评估"></a>效果评估</h2><p>对算法进行测试，这里考察的指标是logloss和accuracy，目前训练阶段的logloss最低为0.4，acc为0.75，eval最好数据是logloss:1.5, acc:0.74. 测试结果来看，并未达到网上所说auc0.80的效果，logloss为0.4的结果。<br>另外一个问题整体模型GPU使用率特别低只有10%不到，需要提高并行性以提高性能。</p>
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><h2 id="结论分析"><a href="#结论分析" class="headerlink" title="结论分析"></a>结论分析</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li><a href="https://www.cnblogs.com/zhangchaoyang/articles/7897085.html" target="_blank" rel="noopener">FM</a></li>
+</ol>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#论文解读"><span class="toc-text">论文解读</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#FM-Part"><span class="toc-text">FM Part</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deep-Part"><span class="toc-text">Deep Part</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据集准备及分析"><span class="toc-text">数据集准备及分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现逻辑和流程"><span class="toc-text">实现逻辑和流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据处理"><span class="toc-text">数据处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统设计"><span class="toc-text">系统设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模型参数"><span class="toc-text">模型参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果评估"><span class="toc-text">效果评估</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#性能优化"><span class="toc-text">性能优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结论分析"><span class="toc-text">结论分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://helixn.com/passages/2019-05-08-deepfm-implementation/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/DeepFM/"><i class="fa fa-tags"></i>DeepFM</a>
+     
+      <a href="/tags/DeeFM-代码剖析和实现/"><i class="fa fa-tags"></i>DeeFM 代码剖析和实现</a>
+     
+      <a href="/tags/Feature-Engineering/"><i class="fa fa-tags"></i>Feature Engineering</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://helixn.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第30<span id="site-count"></span>位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2016-2019
+      Created by <a href="https://www.helixn.com/" target="_blank">JerryShi</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2019-05-13-notes-ml-start/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2018-11-06-paper-notes-se/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>Leetcode [268] --Missing Number | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Algorithm &amp; Data Structure,算法,leetcode,算法面试," />
+  
+
+  
+  <meta name="description" content="1. Problem DescriptionGiven an array containing n distinct numbers taken from 0, 1, 2, …, n, find the one that is missing from the array.For example,Given nums = [0, 1, 3] return 2">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/categories/Projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/Projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2016-07-24
+    </span>
+    
+      <span>
+        | <a href="/categories/Algorithm-Data-Structure/"><i class="fa fa-bookmark"></i>Algorithm & Data Structure</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Leetcode [268] --Missing Number
+  </h1>
+  
+  <article class="passage-article">
+    </p>
+</blockquote>
+<p><strong>Note</strong>:Your algorithm should run in linear runtime complexity. Could you implement it using only constant extra space complexity?<br><strong>Tags</strong> : Array ,Math , Bit Manipulation<br><strong>Difficulty</strong>: Medimum<br><strong>Classification</strong>: Bit Manipulation</p>
+<hr>
+<h2 id="2-问题翻译"><a href="#2-问题翻译" class="headerlink" title="2. 问题翻译"></a>2. 问题翻译</h2><p>从0~n之间取出<em>n</em>个不同的数字，找出其中丢失的那个数。例如，<em>nums</em> = [0，1，3] ，缺失的是 2。<br><strong>要求</strong> 算法时间复杂度是<em>O</em>(n)，且只占用很少的额外空间。</p>
+<h2 id="3-解题分析"><a href="#3-解题分析" class="headerlink" title="3. 解题分析"></a>3. 解题分析</h2><p>在解决算法题之前，对问题进行准确的分析是设计良好解决方案的基础，从题干中提取出有价值信息的能力是我们刷题锻炼的目的之一。</p>
+<blockquote>
+<p>0~n中取<em>n</em>个数，找出缺失的那个数</p>
+</blockquote>
+<p>这句话中透漏出一下几点，</p>
+<ul>
+<li>1 . 数组中元素个数为 <strong><em>n</em></strong></li>
+<li>2 . 0~n 总共有(n+1)个数，而实际只有n个，二者之间相差一个数</li>
+<li>3 . 题目未指明元素是否有序<br>以上是能够从题目得到关键信息。</li>
+</ul>
+<p>对于这种题目，我们脑海里面的第一解题思路是，<strong>排序-&gt;对比</strong>，但最快的排序算法时间复杂度也是<em>O</em>(nlogn)，不符合题目线性时间的要求。<br>上一个思路行不通，那么我们就要考虑别的方式，根据第二点信息，等价于告诉我们，有两个序列<strong>0~n</strong>和<strong>0~n</strong>序列的子集，二者相差一个数，怎么确定少了哪个数呢？到了这个地步，很明显我们可以对两个序列分别累加求和，将前者的总和减去后者总和即是丢失的那个数，再来看下是否满足要求，<strong>0~n</strong>求和属于连续自然数求和，我们可以直接套用<strong>数列公式</strong>，<br><img src="http://i.imgur.com/AdEUCNK.png" alt="1.自然数求和公式"></p>
+<p>时间复杂度为<em>O</em>(1),而第二个序列求和，只能通过循环来进行计算，时间复杂度为<em>O</em>(n),该算法总的时间复杂度为<em>O</em>(n)，符合题目要求，那么剩下的就是编码的问题了。<br><strong>思路二</strong><br>题目的tag中含有bit manipulation,即本题可以采用位操作来解决，根据情况可用的位运算，唯有XOR亦或运算，它的特点是，<em>相同为0，不同为1</em>；那么我们可以利用这个规律去解决问题，对两个序列<em>0~n</em> 和 <em>0~n</em> 的子集中的元素，依次进行亦或运算，之后将两个结果再次进行亦或，那么得到结果就时第二个序列中缺少的那个元素。原因是因为将亦或的原理进行推广，将一组数依次异或，若里面只有一个只出现一次的数，其他的数都出现两次，则最后的结果必然是那个只出现一次的数，因此就可以得到缺少的那个元素。对于这个算法，只需要进行两次循环，每次循环的时间复杂度是<em>O</em>(n)，空间复杂度为<em>O</em>(1)，符合题目要求。具体步骤分解如下：</p>
+<ul>
+<li>1 . <em>0~n</em> 所有元素(包括0和n) XOR，记做<strong><em>x</em></strong></li>
+<li>2 . <em>nums</em> 所有元素XOR，从nums[0] 开始， 结果记做<strong><em>y</em></strong></li>
+<li>3 . <strong><em>x</em></strong> 和 <strong><em>y</em></strong> 进行 XOR，最后结果返回</li>
+</ul>
+<h2 id="4-解题方案"><a href="#4-解题方案" class="headerlink" title="4. 解题方案"></a>4. 解题方案</h2><p><strong>Solution 1：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int missingNumber(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        unsigned int n = nums.size();</span><br><span class="line">        int total =  n*(n+1)/2;</span><br><span class="line">        for(int i = 0; i &lt; n;++i)</span><br><span class="line">            total -= nums[i];</span><br><span class="line">        return total;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p><strong>Solution 2 ：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int missingNumber(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        unsigned int n = nums.size();</span><br><span class="line">        int x = 0, y = nums[0];</span><br><span class="line">        for(int i = 0; i&lt;= n; ++i)</span><br><span class="line">            x ^= i;</span><br><span class="line">        for(int i = 1; i&lt; n; ++i)</span><br><span class="line">            y ^= nums[i];</span><br><span class="line">        return x^y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p><strong>转载请注明出处：</strong> <a href="http://www.jianshu.com/p/b14ca0d7ad86" target="_blank" rel="noopener">http://www.jianshu.com/p/b14ca0d7ad86</a></p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-问题翻译"><span class="toc-text">2. 问题翻译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-解题分析"><span class="toc-text">3. 解题分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-解题方案"><span class="toc-text">4. 解题方案</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://helixn.com/passages/2016-07-24-leetcode-268/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/算法/"><i class="fa fa-tags"></i>算法</a>
+     
+      <a href="/tags/leetcode/"><i class="fa fa-tags"></i>leetcode</a>
+     
+      <a href="/tags/算法面试/"><i class="fa fa-tags"></i>算法面试</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://helixn.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第30<span id="site-count"></span>位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2016-2019
+      Created by <a href="https://www.helixn.com/" target="_blank">JerryShi</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2017-11-10-kg-relation-extraction/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2016-07-24-spark-deployment/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>Paper Notes :Show and Tell A Neural Image Caption Generator | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Paper Notes,Image Caption,encoder-decoder," />
+  
+
+  
+  <meta name="description" content="Image Caption 介绍图像描述/看图说话，即是给定一幅图片利用模型自动生成一副图像内容相关的描述，如图1所示。它是图像和NLP领域的结合，是AI中具有挑战性的一个方向，近两年来也成为了研究热点。该任务有着巨大的挑战，首先模型既要能够理解图像中存在的事物，又能够发现事物中存在的联系，并且根据这些自动给出一段顺畅的句子。本文针对近两年的研究成果，选取了几篇具有代表性的论文进行解读。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/categories/Projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/Projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2017-12-05
+    </span>
+    
+      <span>
+        | <a href="/categories/Paper-Notes/"><i class="fa fa-bookmark"></i>Paper Notes</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Paper Notes :Show and Tell A Neural Image Caption Generator
+  </h1>
+  
+  <article class="passage-article">
+    <p><img src="https://i.imgur.com/j6vF9pP.png" alt="Fig1. 图像描述示例"></p>
+<h2 id="Paper-1：-Show-and-Tell-A-Neural-Image-Caption-Generator"><a href="#Paper-1：-Show-and-Tell-A-Neural-Image-Caption-Generator" class="headerlink" title="Paper 1： Show and Tell: A Neural Image Caption Generator"></a>Paper 1： Show and Tell: A Neural Image Caption Generator</h2><p>本文[1]是Google的工作，介绍了一种end-to-end的方式来完成image caption 任务。借助于语言翻译的经验，翻译是将Source 语言转换到Target语言，类比于此，Image Caption可以看成是从image 到caption的一个翻译过程，因此建立优化目标，</p>
+<p><img src="https://i.imgur.com/4zI761E.png" alt="优化目标"></p>
+<p>其中S={s1, s2, …, }，S代表生成的sentence，有特定vocabulary中的词生成，theta是待优化的参数，I 是输入图像。<br>因此模型优化目的就是在输入特定图像I的情况下，找到一系列词，使得这些词构成一个sentence的概率最大。P(S|I)是所有词的join probability ，根据chain rule得到下式，</p>
+<p><img src="https://i.imgur.com/wsJHwMf.png" alt="语言模型"></p>
+<p>模型总体架构如下图。</p>
+<p><img src="https://i.imgur.com/m89sdjg.png" alt="模型架构"></p>
+<p>在encoder 阶段，利用CNN网络学习出image的vector representation，之后送入decoder结合标注的sentence中的词序列来训练decoder。如下图所示：</p>
+<p><img src="https://i.imgur.com/ebyo64m.png" alt="网络"></p>
+<p>训练细节如下：</p>
+<ul>
+<li>对于标注的sentence，在首尾加上起止符号作为标记</li>
+<li>在encoder阶段，只用CNN network最后一层输出的vector representation作为image特征表示</li>
+<li>decoder采用LSTM，</li>
+<li>encoder阶段输出的image feature 只用来初始化LSTM hidden state，(文中提到，尝试将feature 与每个 time step 的输入St进行结合，发现效果并不好，反而会造成过拟合)</li>
+<li>每个time step 的词St 初始为one-hot表示，通过网络自主学习参数。(文中提到，尝试采用pre-trained word2vec进行初始化，实验结果并没有太大的提升，因此文中最后采用前面所说的方式)</li>
+<li>统计损失，如下图：</li>
+</ul>
+<p><img src="https://i.imgur.com/uFZr795.png" alt="Loss"></p>
+<ul>
+<li>采用SGD优化算法， 固定学习率， no momentum</li>
+<li>LSTM memory size 和word embedding size设为512，（因此image feature 也必须转为相同的shape才能用来初始化hidden state）</li>
+</ul>
+<p>Inference 阶段文中提到了两种方式：</p>
+<ul>
+<li>Sampling， 采样，首先根据输入图像I ，LSTM输出一个词的概率p1，(LSTM输入词S的embedding 是随机初始化的结果），然后再计算出下一个词p2,依次往复，直到采样到结束符或者达到指定长度。</li>
+<li>BeamSearch, 每个time step t都选择top k个最好的sentence，然后根据这些在t+1时间步生成k个概率最高的句子，最终选择概率最高的结果返回。</li>
+</ul>
+<p>以上就是整个paper的主要思路，想对还是比较清晰简单。</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Paper-1：-Show-and-Tell-A-Neural-Image-Caption-Generator"><span class="toc-text">Paper 1： Show and Tell: A Neural Image Caption Generator</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://helixn.com/passages/2017-12-05-show-and-tell/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Image-Caption/"><i class="fa fa-tags"></i>Image Caption</a>
+     
+      <a href="/tags/encoder-decoder/"><i class="fa fa-tags"></i>encoder-decoder</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://helixn.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第30<span id="site-count"></span>位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2016-2019
+      Created by <a href="https://www.helixn.com/" target="_blank">JerryShi</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2017-12-07-resnet/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2017-11-10-kg-relation-extraction/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>

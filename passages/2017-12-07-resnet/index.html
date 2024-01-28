@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>Understanding Residual Network | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="DL Model Analysis,ResNet,Skip/Shortcut Connection,Residual Network," />
+  
+
+  
+  <meta name="description" content="深层网络缺陷在ILSVRC比赛中，不断的有更深层次的网络提出，从AlexNet 到VGG，网络层数不断增加。依据DL 理论，随着网络深度的增加，模型效果至少会比浅层网络有提升，但事实确并非如此，">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/categories/Projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/Projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2017-12-07
+    </span>
+    
+      <span>
+        | <a href="/categories/DL-Model-Analysis/"><i class="fa fa-bookmark"></i>DL Model Analysis</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Understanding Residual Network
+  </h1>
+  
+  <article class="passage-article">
+    <br>网络training error 会有增加，造成这种现象的原因可能如下：</p>
+<ul>
+<li>梯度弥散（Vanishing Gradients）</li>
+<li>梯度爆炸（Gradients Explode）</li>
+</ul>
+<p>那么为什么会存在这些问题呢？首先我们知道随着网络加深，会使梯度信息很快下降到零，梯度为零，整体训练就会变慢。更具体点，我们采用backpropagation将梯度从最后一层向第一层进行传递，这个过程中梯度信息不断与weight matrix相乘，如果梯度是0-1之间，就造成gradient很快降为0，意味着模型参数更新很小。同样情况，梯度也可能会成倍增长，造成梯度爆炸。</p>
+<h2 id="Residual-Network-介绍"><a href="#Residual-Network-介绍" class="headerlink" title="Residual Network 介绍"></a>Residual Network 介绍</h2><p>Residual Network 最大的贡献是引入了残差，首先来解释一下残差的概念。引用论文中identity block结构如下：<br><img src="https://i.imgur.com/csfsV9H.png" alt="identity block"></p>
+<p>这个block中，强制将input x 与左侧<strong>main path</strong> 子网络的输出相连，这种叫做<strong>shortcut</strong>或者<strong>skip connection</strong>，这种结构类似于电路里面的差份放大器。</p>
+<h3 id="残差-Residual"><a href="#残差-Residual" class="headerlink" title="残差(Residual)"></a>残差(Residual)</h3><p>假设没有shortcu的网络输出为<strong><em>A</em></strong>，即<strong><em>F(x)=A</em></strong>，引入shortcut之后的网络输出<strong><em>H(x)</em></strong>，因为做的是identity即恒等变换，所以<strong><em>H(x)=A=x+F(x)</em></strong>, 将上式做个变换，<strong><em>F(x)=H(x) - x</em></strong>，那么从这个式子中可以看到子网络F(x)学习到的是identity block的输出H(x)与输入x的差值，即被称作<strong>残差</strong>(Residual)。</p>
+<h3 id="Skip-Connection-作用"><a href="#Skip-Connection-作用" class="headerlink" title="Skip Connection 作用"></a>Skip Connection 作用</h3><p><img src="https://i.imgur.com/sbdhqig.png" alt="Skip Connection"></p>
+<p>知道了什么是残差，下面来分析一下这种skip connection为什么能够使得网络可以达到更深、更易训练。<br>上图左侧的图是传统<strong><em>main path</em></strong> network，右侧是带有skip connection的residual block，利用这种block可以构建深层网络。传统网络和residual 网络主要区别是，传统网络直接学习网络输出H(x)，而residual网络学习的是输出H(x)和输入x的残差，因此我们可以选择让子网络F(x)输出为0，使得H(x)直接等于输入x，那么一个多层子网络的输出仅仅就是最后一层子网络输出。</p>
+<p>在反向传播过程中，利用残差网络可以很好的训练网络，因为可以忽略一些main path 子网络中的信息，不需要做特殊改变，通过shortcut直接从深层次网络传向低层次网络，这就使得梯度不必在所有层都进行计算，降低网络计算复杂度，同时也缓解了vanishing gradient。从另一个角度来考虑，输入x是一种低级特征，而网络中间输出可以理解成是高级或高纬特征，residual network将二者进行结合，从而能提供网络性能。</p>
+<h3 id="Skip-Connetion-种类"><a href="#Skip-Connetion-种类" class="headerlink" title="Skip Connetion 种类"></a>Skip Connetion 种类</h3><p>从前文分析中可知，skip connection对深层次网络有着重要的作用，如何实现这种skip connection呢？根据输入x和子网络F(x)输出维度的不同可分为两种实现。</p>
+<ul>
+<li><p><strong>The idenetity block</strong><br>当输入x和子网络F(x)输出维度相同时，可以直接将而二者进行相加，如下图所示，<br><img src="https://i.imgur.com/xKSRM4V.png" alt="identity block"><br>上面那条路径就是shortcut或者说skip connection，下面是普通<strong>main path</strong>。</p>
+</li>
+<li><p><strong>The convolutional block</strong><br>当输入x和子网络F(x)输出维度不同时，通过一个卷积将二者维度转换为相同，网络结构如图所示：<br><img src="https://i.imgur.com/QxyC0m5.png" alt="convolutional block"></p>
+</li>
+</ul>
+<h2 id="Residual-Network-实现"><a href="#Residual-Network-实现" class="headerlink" title="Residual Network 实现"></a>Residual Network 实现</h2><p>这部分实现主依据resnet 原论文。论文中提到identity block实现有两种结构，如下图所示。<br><img src="https://i.imgur.com/fWduS5M.png" alt="implement"></p>
+<p>左侧是一种简单的实现被称作<strong>building block</strong>，每个main path(原论文中称作plain network)，这里有两层网络构成，都是 3 x 3 的卷积网络，第一个卷积之后紧跟着是一个Relu。<br>右侧网络是另一种实现，称作<strong>bottleneck building block</strong>，为什么称作bottleneck呢，因为这个plain network，前后两层用的是1 x 1卷积网络，这种卷积是最小、最细的结构，因此被称作bottleneck(个人见解)。这里 1 x 1卷积网络是用来降低和增加feature map维度。plain network中卷积之后(除了最后一个卷积)会跟着一个BN层，用来加速训练。</p>
+<p>这就是skip connection实现，都是采用最基本单元构成，实现起来也相对简单。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是对Residual network的简单分析，清楚了内部的结构及其原理，也可以很方便的进行实现，另外也可以很便捷的在一些有涉及图片任务中进行使用，相信效果会有提升。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://arxiv.org/abs/1512.03385" target="_blank" rel="noopener">1. Deep Residual Learning for Image Recognition</a><br><a href="https://wiseodd.github.io/techblog/2016/10/13/residual-net/" target="_blank" rel="noopener">2. Residual Net</a><br><a href="www.coursera.org/">3. Deep Learning Coursera</a></p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Residual-Network-介绍"><span class="toc-text">Residual Network 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#残差-Residual"><span class="toc-text">残差(Residual)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Skip-Connection-作用"><span class="toc-text">Skip Connection 作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Skip-Connetion-种类"><span class="toc-text">Skip Connetion 种类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Residual-Network-实现"><span class="toc-text">Residual Network 实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://helixn.com/passages/2017-12-07-resnet/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/ResNet/"><i class="fa fa-tags"></i>ResNet</a>
+     
+      <a href="/tags/Skip-Shortcut-Connection/"><i class="fa fa-tags"></i>Skip/Shortcut Connection</a>
+     
+      <a href="/tags/Residual-Network/"><i class="fa fa-tags"></i>Residual Network</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://helixn.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第30<span id="site-count"></span>位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2016-2019
+      Created by <a href="https://www.helixn.com/" target="_blank">JerryShi</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2017-12-11-neo4j-intro/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2017-12-05-show-and-tell/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>

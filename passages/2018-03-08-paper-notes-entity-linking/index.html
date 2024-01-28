@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>Paper Notes:Domain Specific Entity Linking via Fake Named Entity Detection | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Paper Notes,Entity Linking,Entity Detection," />
+  
+
+  
+  <meta name="description" content="论文笔记： Domain-Specific Entity Linking via Fake Named Entity Detection最近在看知识图谱应用方面的报告，看到了清华大学做的图谱，然后就尝试了下。最让吸引我的是那么做的实体链接相关的工作(地址)，效果非常好，截图如下。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/categories/Projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/Projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2018-03-08
+    </span>
+    
+      <span>
+        | <a href="/categories/Paper-Notes/"><i class="fa fa-bookmark"></i>Paper Notes</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Paper Notes:Domain Specific Entity Linking via Fake Named Entity Detection
+  </h1>
+  
+  <article class="passage-article">
+    <br><img src="http://upload-images.jianshu.io/upload_images/2423131-9634bc558b6b2252.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>于是引起了我的好奇心，探究效果实现的原理，庆幸的是清华大学将他们的工作都发表了论文，那这篇笔记就是我看到的第一篇他们的文章<a href="https://link.springer.com/chapter/10.1007/978-3-319-32025-0_7" target="_blank" rel="noopener">Domain-Specific Entity Linking via Fake Named Entity Detection</a>,下面就来仔细分析他们实体链接的实现。</p>
+<h2 id="Named-Entity-Detection-and-Entity-Linking-Introduction"><a href="#Named-Entity-Detection-and-Entity-Linking-Introduction" class="headerlink" title="Named Entity Detection and Entity Linking Introduction"></a>Named Entity Detection and Entity Linking Introduction</h2><p>实体检测，是指从文本中检测出相关的实体；实体链接是将检测出的实体链接到已有知识库上，比如搜“王者荣耀怎么玩”，会检测出“王者荣耀”是一个实体，然后这个实体会被链接到知识库(一般自己构建或公开，这里用百度百科)“<a href="https://baike.baidu.com/item/%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80/18752941”" target="_blank" rel="noopener">https://baike.baidu.com/item/%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80/18752941”</a>.<br>传统的实体链接方式是先检测出实体，然后作为输入进行实体链接，忽略了实体检测(NED)和实体链接(EL)二者间的关联性，文章提出一种新的思路来在垂直领域进行EL，将NED和EL组成一个联合模型，实验结果表明这种方式可以满足使用场景。</p>
+<h2 id="Challenges-in-domain-specific-EL-problem"><a href="#Challenges-in-domain-specific-EL-problem" class="headerlink" title="Challenges in domain-specific EL problem"></a>Challenges in domain-specific EL problem</h2><ul>
+<li>Fake Named Entity<br>假命名实体，这个概念是这篇文章首次提出的。给定一个文档(这里指一条文本数据)和一个特定领域的知识库，文档中会存在很多<strong>常用短语</strong>(Common phrases)可能链接到知识库的某个实体上，但并不是所有的短语都有对应的实体链接，那些能够成功链接到知识库上的短语称作<strong>真实实体(True Named Entity, TNE)</strong>,不能够链接到知识库的短语称作<strong>假实体(False Named Entity, FNE)</strong>.传统方法并不会考虑FNE的问题，而且对于垂直领域进行EL效果并不好。</li>
+<li>Interdeependency<br>现在流行的做法是将NED和EL用pipline 或sequencial的方式来设计，并不会考虑NED和EL直接的依赖性。如果NED选择了FNE，那么肯定会影响EL最终效果。<br>检测FNE和将正确的短语文本(mention)是很重要的，在垂直领域中textual mention 会比较有歧义性，必须考虑同时考虑NED和EL。</li>
+</ul>
+<h2 id="Introduce-fundamental-concepts"><a href="#Introduce-fundamental-concepts" class="headerlink" title="Introduce fundamental concepts"></a>Introduce fundamental concepts</h2><ul>
+<li>Domain-Specific Knowledge Base<br>将知识库定义为$DSKB={C,E,P,R}$，其中C表示概念集合(concepts)比如这里是影视知识库，那么概念可以是演员、电影、制片人等；E是概念下面的实体；P是描述概念和实体的属性结合比如演员名字、电影上映时间等；R是一个三元组集合，每个元素都是一个三元组，描述的是两个实体间的关系或实体和概念间的关系。文章中提到的影视知识库数据来源于百度百科、豆瓣，包括23个concept，91个properties，多余70w个实体，1000w个三元组。</li>
+<li><p>Mentions and Linked Entites<br>这里的mention都是一些可能被链接到实体上的文本短语，这些短语都是有小于5个字的词组成。作如下内容定义，$M=\{m_1,m_2,..,m_{|M|}\}$ 表示mention的集合，$E(m)=\{e_1, e_2,…,e_{E{(m)}}\}$ 表示候选mention m可能链接的候选实体集合；$e_m \in E(m)$ 表示m真是链接的实体.</p>
+</li>
+<li><p>Fake Named Entity<br>定义<script type="math/tex">M_F = {m_{f1}, m_{f2},...,m_{|M_F|}} \subseteq M</script>，表示没有对应实体链接的mentions，<script type="math/tex">M_T = {m_{t1}, m_{t2},...,m_{|M_T|}} \subseteq M</script>，表示可以链接到实体的mention集合。</p>
+</li>
+<li><p>Context Mention and Entity<br>定义在同一篇文档或同一个词窗口内除m以为的mention记为<script type="math/tex">C_{M}(m)=\{m_{c1}, m_{c2},...,m_{|C_{M}(m)|}\} \subseteq M</script>,但这个集合中的mention并不一定有对应的实体链接，记可能被mention链接的实体集合为<script type="math/tex">C_{E}(m)=\{e_{c1}, e_{c2},...,e_{|C_{M}(m)|}\} \subseteq M</script><br>定义完所需要的符号之后，那么一起来看下文章具体的实现思路。</p>
+</li>
+<li>Preprocessing<br>首先根据构建一个dictionary D，它包含所有实体的各种形式【待添加】。词典是key value形式，key实体表面形式的一个列表，value是这些形式对应的实体集合，之后根据文档d生成一个mention集合(ngram, n &lt; 5)，然后再D中进行查询，如果在key中出现则加入到mention集合，这样就生成了一个mention集合M，在查询key的同时会把对应实体加入到E（m）.<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2>整个算法思路是这样的，首先根据标注的数据分别训练EL模型和NED模型，首先构造出两个特征向量（下文会详细介绍），利用分类模型训练出两个权重向量<script type="math/tex">W_{el}=\{w_{1}^{el},w_{2}^{el},w_{3}^{el},w_{4}^{el}\}</script>,和<script type="math/tex">W_{ned}=\{w_{1}^{ned},w_{2}^{ned},w_{3}^{ned},w_{4}^{ned}\}</script>,NED模型输出表示一个m是实体的confidence，EL模型输出表示的是一个m链接到一个实体e的confidence，之后可以通过模型相互迭代来不断提高confidence，增最终的链接准确率。整体架构图如下，<br><img src="http://upload-images.jianshu.io/upload_images/2423131-5ce2293e31cd8728.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+</ul>
+<h2 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h2><p>将NED 和EL模型当做一个二分类进行建模，文章中提到采用SVM算法。首先要做的就是整理训练集，如果m能真正链接到实体集$E(m)$中的实体$e_m$上，则$(m,e_m)$为positive sample，而m与其他实体实体组成的实体对则称为negative sample。EL和NED模型可以表示为，</p>
+<script type="math/tex; mode=display">El_m(e)=W_{el}\cdot F_m(e)\\
+Ned(m)=W_{ned} \cdot F(m)</script><p>对于EL模型，对候选实体集$E(m)$中所有实体进行计算，然后选择confidence最高作为最终m最终的链接实体；对于NED模型，对一个文档生成的所有mention进行计算，根据计算的score判断它是否是一个真实的实体。因此可以通过计算一个模型的输出来迭代另一个模型的特征，从而提高整体效果。</p>
+<h3 id="Features-in-EL-Model"><a href="#Features-in-EL-Model" class="headerlink" title="Features in EL Model"></a>Features in EL Model</h3><ul>
+<li><strong>Popularity</strong><br>这个指标主要是根据具体的场景进行设计，文章中所研究的是影视领域，主要数据为评论数据，因此人们更容易讨论流行和经典的影视作品，计算公式如下，<script type="math/tex; mode=display">Pri_m(e)=\frac{count_m(e)}{\Sigma_{e \in E(m)}count_m(e)}</script>其中，$count_m(e)$表示的是mention m链接到百度百科中实体的个数，比如“王者荣耀”一词，在百度百科中链接到实体“王者荣耀(2015年腾讯天美发行的MOBA手游)”的次数。(这里有点不理解的是，如果这个特征描述的是mention链接到百科实体e的次数，那这个次数不是1吗，会存在一个mention多次链接到同一实体的情况吗？)文章中同时提到这个特征可以离线进行计算。</li>
+<li>Context Relatedness<br>上下文关联性，同一篇文中的mention更倾向于讨论具有相同语义的一个或多个topic，基于这个原则出发，设计该特征，通过计算候选实体$e \in E(m)$（文档计算出的最大score的实体？）和其他context entites（其他mention对应的实体），具体计算公式如下：<br><img src="http://upload-images.jianshu.io/upload_images/2423131-b863b6bcaf488c99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>其中<script type="math/tex">e_c</script>是指前一次EL模型mention m得到最大score的实体，记作$e_{top}(m_c)$.在计算context relatedness时采用两种方式进行计算，一种是WML基于维基百科的超链接结构，计算公式为$WML(e_i, e_j)=\frac{log(max(|E_i|,|E_j|))-log(|E_i \bigcup E_j|)}{log(|W|)-loog(min(|E_i|,|E_j|))}$,$E_i$和$E_j$是指链接到知识库中实体$e_i$和$e_j$的实体集合，W是知识库中所含实体的总数。另外一种方式是通过将实体$e_i$和$e_j$用bag-of-words进行表示然后计算Jaccard distance。</li>
+<li>Content Similarity<br>这个特征定义的是mention和它对应的entity之间的相似度，通过计算Jaccrad distance得到。</li>
+</ul>
+<h3 id="Features-in-NED-Model"><a href="#Features-in-NED-Model" class="headerlink" title="Features in NED Model"></a>Features in NED Model</h3><ul>
+<li>Link Probability</li>
+<li>Link Certainty</li>
+<li>Coherence</li>
+</ul>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Named-Entity-Detection-and-Entity-Linking-Introduction"><span class="toc-text">Named Entity Detection and Entity Linking Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Challenges-in-domain-specific-EL-problem"><span class="toc-text">Challenges in domain-specific EL problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduce-fundamental-concepts"><span class="toc-text">Introduce fundamental concepts</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Algorithm"><span class="toc-text">Algorithm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Training"><span class="toc-text">Training</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Features-in-EL-Model"><span class="toc-text">Features in EL Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Features-in-NED-Model"><span class="toc-text">Features in NED Model</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://helixn.com/passages/2018-03-08-paper-notes-entity-linking/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Entity-Linking/"><i class="fa fa-tags"></i>Entity Linking</a>
+     
+      <a href="/tags/Entity-Detection/"><i class="fa fa-tags"></i>Entity Detection</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://helixn.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第30<span id="site-count"></span>位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2016-2019
+      Created by <a href="https://www.helixn.com/" target="_blank">JerryShi</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2018-03-29-faiss/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2018-03-03-text-semantics/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>

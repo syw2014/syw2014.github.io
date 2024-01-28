@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>读书笔记：k近邻 | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="统计学习方法笔记,k近邻,knn," />
+  
+
+  
+  <meta name="description" content="k近邻算法最基本的分类和回归算法，它是有监督学习算法，非参数模型，不涉及参数学习过程。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/categories/Projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/Projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-06-04
+    </span>
+    
+      <span>
+        | <a href="/categories/统计学习方法笔记/"><i class="fa fa-bookmark"></i>统计学习方法笔记</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    读书笔记：k近邻
+  </h1>
+  
+  <article class="passage-article">
+    <h2 id="宏观层面"><a href="#宏观层面" class="headerlink" title="宏观层面"></a>宏观层面</h2><p>k近邻(k nearest neighbor, knn)算是一种简单的分类和回归算法，利用元素最近的k个值来决定自身的类别或回归值。</p>
+<ul>
+<li>分类问题，对新的样本，通过寻找离样本最近的k个样本，基于少数服从多数的原则确定当前样本的label</li>
+<li>回归问题，对新样本，通过寻找离样本最近的k个样本，计算k个样本对应值的平均值作为预测值</li>
+</ul>
+<h3 id="算法基本思想和原理是什么？"><a href="#算法基本思想和原理是什么？" class="headerlink" title="算法基本思想和原理是什么？"></a>算法基本思想和原理是什么？</h3><p>knn算法主要用于解决分类问题，属于非参数模型，没有显示的学习过程，k只是超参数。该算法主要关注三个问题，</p>
+<ul>
+<li><p>k值的选择<br>在knn算法中k是一个超参数，需要根据期望来进行不断调整.一般k值越小，意味着只寻找较少的样本值作为参考，极端情况下$k=1$，为最近邻算法，k值越小，偏差越小(只跟最近的几个值有关系)，方差越大(受波动影响越大)，模型越复杂，容易造成过拟合。预测值只跟最近的几个点有关系，如果最近点是噪声，则预测值很容易受到影响。如果k值增大，则预测结果偏差增大(预测值参考范围扩大)(增大学习的偏差)，方差越小（波动变下），泛华能力提高。在实际使用中k值通常会选取一个很小的值，通过交叉验证法确定k值。</p>
+</li>
+<li><p>距离度量方式<br>度量方式是用来寻找k个最近邻的计算方式，常见的距离度量方式有公式为</p>
+<script type="math/tex; mode=display">L_p(x_{i}^{\rightarrow},x_j^{\rightarrow})=(\sum_{l}^n|x_{i,l} - x_{i,l}|^p)^{1/p}</script><p>$x$为输入样本特征向量，共有$n$个维度。</p>
+<ul>
+<li>$p=1$, 时为曼哈顿距离(Manhattan distance)，<script type="math/tex; mode=display">L_p=\sum_l^n|x_{i,l}-x_{j,l}|</script></li>
+<li>$p=2$, 欧几里得距离(Euclidean distance)<script type="math/tex; mode=display">L_p=\sum_l^n(x_{i,l}-x_{j,l})^{1/2}</script></li>
+<li>$p=\infty$,为各个坐标距离的最大值<script type="math/tex; mode=display">L_p=max|x_{i,l}-x_{j,l}|</script></li>
+</ul>
+</li>
+<li><p>分类决策规则<br>决策规则是指在寻找到最近k个样本之后，如何利用这些样本点的信息来预测当前样本的标签或值。</p>
+<ul>
+<li>少数服从多数，根据k个样本中出现类别数最都的类别作为预测类别，等价于经验风险最小化，$argmax\sum{I(y_i=c_i)}$</li>
+<li>少数服从多数，也可以根据距离远近对样本权重进行加权计算</li>
+</ul>
+</li>
+<li>回归决策规则<ul>
+<li>回归决策通常采用均值回归，也可以根据距离远近进行加权，距离近的权重高</li>
+<li>均值回归等价于经验风险最小化</li>
+</ul>
+</li>
+</ul>
+<h3 id="个人理解是什么？"><a href="#个人理解是什么？" class="headerlink" title="个人理解是什么？"></a>个人理解是什么？</h3><p>knn算法是最简单的分类和回归算法，没有显示的训练过程，只需要准备训练样本集，在预测时全部载入，根据预测样本进行搜索k个最近邻点，来觉得预测值。如果样本集特别大，这就存在搜索时间的问题，需要构建一个$M \times N$ 的矩阵，时间复杂度为$O(N^2)$, 当样本数据量为百万级别是，这个计算成本相当高，难易接受。因此需要对算法做一些优化。如下文所述kdtree。</p>
+<h2 id="微观层面："><a href="#微观层面：" class="headerlink" title="微观层面："></a>微观层面：</h2><h3 id="公式详细推导过程是否领会和记忆？"><a href="#公式详细推导过程是否领会和记忆？" class="headerlink" title="公式详细推导过程是否领会和记忆？"></a>公式详细推导过程是否领会和记忆？</h3><ul>
+<li><p>k近邻分类算法</p>
+<blockquote>
+<p>输入：训练集</p>
+<script type="math/tex; mode=display">T={(x_1, y_1),(x_2, y_2),\cdots,(x_N, y_N)}</script><p>其中，$x_i$为输入特征向量，维度为$d$, 类别$y = \{c_1, c_2,\cdots, c_M\}$，<br>输出：给定待预测样本$x$，输出其对应类别<br>步骤：<br>(1) 根据给定的度量方式，在训练集$T$中，寻找k个最近点集$N_k(x)$<br>(2) 在点集合中统计各个类别出现的次数，选择具有最多次数的类别$c$作为预测结果$y$返回，即</p>
+<script type="math/tex; mode=display">y=argmax\sum_{x_i\in N_k}I(y_i=c_j)</script></blockquote>
+</li>
+<li><p>k近邻回归算法</p>
+<blockquote>
+<p>输入：训练集</p>
+<script type="math/tex; mode=display">T={(x_1, y_1),(x_2, y_2),\cdots,(x_N, y_N)}</script><p>其中，$x_i$为输入特征向量，维度为$d$, 类别$y = \{c_1, c_2,\cdots, c_M\}$，<br>输出：给定待预测样本$x$，输出其对应类别<br>步骤：<br>(1) 根据给定的度量方式，在训练集$T$中，寻找k个最近点集$N_k(x)$<br>(2) 在点集合中计算样本y的均值，作为预测结果$y$返回，即</p>
+<script type="math/tex; mode=display">y=\frac{1}{k}\sum_{x_i\in N_k}y_i</script></blockquote>
+</li>
+</ul>
+<h2 id="KDTree-算法实现"><a href="#KDTree-算法实现" class="headerlink" title="KDTree 算法实现"></a>KDTree 算法实现</h2><p>k近邻算法关键点是如何对<strong>训练集进行快速k近邻搜索</strong>。为了提高搜索效率，对训练集采用特殊结构进行存储，即kdtree.</p>
+<ul>
+<li>kd tree 是一个二叉树，表示k维空间的一个划分</li>
+<li>kd tree的构造等价不断的用垂直于坐标轴的超平面将k维空间切分</li>
+</ul>
+<h3 id="kd-tree-构造"><a href="#kd-tree-构造" class="headerlink" title="kd tree 构造"></a>kd tree 构造</h3><blockquote>
+<p>输入：k维空间数据集$T=\{x_1, x_2, \cdots, x_N\}$,其中$x_i=(x_1^{(1)}, x_1^{(2)}, \cdots, x_1^{(k)})$<br>输出： kd tree<br>(1) 开始构造跟节点<br>  选择$x_1^{(1)}$所在坐标轴的中位数$x_1^{(1*)}$为切分点划分超平面，生成深度为1的左、右子节点</p>
+<pre><code>- 左子节点对应于$x_i^{(1)} &lt; x_1^{(1*)}$的区域
+- 右子节点对应于$x_i^{(1)} &gt; x_1^{(1*)}$的区域
+</code></pre><p>  (2) 重复，对于深度为j的节点，选择$x^{(l)}$为切分坐标轴， $l=j (mod k) + 1$,以该坐标中位数作为切分点，切分之后树的深度变为j+1。这里之所以不用$l=j+1$来选择坐标轴，是因为树的深度j可能超过空间维度k，这样就轮转坐标轴进行切分。<br>  (3) 递归直到左右两个子区域没有实例存在时停止。<br>  <strong>备注</strong>：这种按照中坐标位数为切分点，构造出来的树为平衡二叉树，但搜索时的效率未必是最优的。</p>
+</blockquote>
+<h3 id="kd-tree-搜索"><a href="#kd-tree-搜索" class="headerlink" title="kd tree 搜索"></a>kd tree 搜索</h3><blockquote>
+<p>输入：已构造的kd tree， 目标点$x$<br>输出：$x$的最近邻点(k近邻类似)<br>(1) 初始化，当前最近点$x_{nst}=null $, 最近点距离$d_{nst}= +\infty$<br>(2) 在kd树中找到包含目标点的叶子节点，<br>从根节点出发，递归向下访问kdtree，执行二叉树搜索</p>
+<pre><code>- 目标点x当前维度的坐标小于切分点坐标，则移动到左子节点
+- 目标点x当前维度的坐标大于切分点坐标，则移动到右子节点
+</code></pre><p>  (这里访问节点时是按照切分维度进行比较，因此需要记录下切分维度？)<br>  在访问过程中记录下访问各节点的顺序，存放在先进后出$Queue$中，便于后面的回退。<br>  (3) 递归向上回退，结束条件$Queue$为空<br>    (a) 从$Queue$中弹出一个节点，记作$x_q$,计算$x \rightarrow x_q$的距离，记作$d_q$<br>    (b) 如果$d_q &lt; d_{nst}$, 则更新最近点和最近距离</p>
+<pre><code>$$x_{nst}=x_q, d_{nst}=d_q$$
+(c) 如果$x_q$ 为节点(超平面上的点)，则考察以$x$为球心，$d_{nst}$为半径的超球体是否与$x_q$所在超平面相交，如果相交
+- 若$Queue$中已经访问过$x_q$的左子树，则继续二叉搜索$x_q$右子树
+- 若$Queue$中已经访问过$x_q$右子树，则继续二叉搜索其左子树
+将搜索记录依然存放在$Queue$,循环结束时，$x_{nst}$就是最近邻点
+</code></pre><p><strong>备注</strong>：1) 训练集中的点是随机分布是，搜索时间复杂度是$O(logN)$ 2) 当训练集大小和特征空间维度接近是，搜索效率下降，接近于线性扫描</p>
+</blockquote>
+<h2 id="优缺点是什么？"><a href="#优缺点是什么？" class="headerlink" title="优缺点是什么？"></a>优缺点是什么？</h2><p><strong>优点</strong>：</p>
+<ul>
+<li>模型简单，可以快速构建baseline</li>
+<li>不需要显示训练过程，操作简便</li>
+</ul>
+<p><strong>缺点</strong>:</p>
+<ul>
+<li>模型过于简单，准确率很难达到最优</li>
+<li>如果训练集大，则搜索效率下降</li>
+<li>k值选择，和样本特征选择很关键，需要不断的验证</li>
+</ul>
+<h2 id="应用层面"><a href="#应用层面" class="headerlink" title="应用层面"></a>应用层面</h2><h3 id="算法的使用场景或任务有哪些？"><a href="#算法的使用场景或任务有哪些？" class="headerlink" title="算法的使用场景或任务有哪些？"></a>算法的使用场景或任务有哪些？</h3><p>knn最早是在2015年实习时接触，对商品类目预测，采用的方式是，对商品title,descrption文本进行关键词提取，筛选为特征，将每个商品表示为一个固定长度的特征向量，通过余弦距离，对新商品通过knn算法确定商品类别。<br>knn算法效果很高，但准确率只能到85%+，最终效果依赖数据集、特征构造，度量方式选择。</p>
+<h2 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li>统计机器学习方法 第二版</li>
+<li><a href="http://www.huaxiaozhuan.com/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/chapters/5_knn.html" target="_blank" rel="noopener">AI算法工程师手册</a></li>
+</ol>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#宏观层面"><span class="toc-text">宏观层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法基本思想和原理是什么？"><span class="toc-text">算法基本思想和原理是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人理解是什么？"><span class="toc-text">个人理解是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微观层面："><span class="toc-text">微观层面：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#公式详细推导过程是否领会和记忆？"><span class="toc-text">公式详细推导过程是否领会和记忆？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#KDTree-算法实现"><span class="toc-text">KDTree 算法实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#kd-tree-构造"><span class="toc-text">kd tree 构造</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#kd-tree-搜索"><span class="toc-text">kd tree 搜索</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优缺点是什么？"><span class="toc-text">优缺点是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用层面"><span class="toc-text">应用层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法的使用场景或任务有哪些？"><span class="toc-text">算法的使用场景或任务有哪些？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题思考"><span class="toc-text">问题思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://helixn.com/passages/2019-06-04-knn/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/k近邻/"><i class="fa fa-tags"></i>k近邻</a>
+     
+      <a href="/tags/knn/"><i class="fa fa-tags"></i>knn</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://helixn.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第30<span id="site-count"></span>位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2016-2019
+      Created by <a href="https://www.helixn.com/" target="_blank">JerryShi</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2019-06-12-naive-bayes/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2019-05-24-financial/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>

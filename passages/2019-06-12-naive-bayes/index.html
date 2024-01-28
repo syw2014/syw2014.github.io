@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>读书笔记：朴素贝叶斯 | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="统计学习方法笔记,朴素贝叶斯,Naive Bayes," />
+  
+
+  
+  <meta name="description" content="朴素贝叶斯是最简单的生成模型，根据训练集学习输入输出的联合概率分布，对于给定输入，根据学习到的模型结合贝叶斯定理，找到后验概率最大的输出。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/categories/Projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/Projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-06-12
+    </span>
+    
+      <span>
+        | <a href="/categories/统计学习方法笔记/"><i class="fa fa-bookmark"></i>统计学习方法笔记</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    读书笔记：朴素贝叶斯
+  </h1>
+  
+  <article class="passage-article">
+    <h2 id="宏观层面"><a href="#宏观层面" class="headerlink" title="宏观层面"></a>宏观层面</h2><p>从宏观层面看，朴素贝叶斯（Naive Bayes）是<em>生成模型</em>、<em>参数模型</em>，是基于贝叶斯学习的分类模型，它根据训练集学习输入输出的联合概率分布即$P(X,Y)$, 结合贝叶斯定理，找到后验概率最大的输出。首先明确几个概念。</p>
+<ul>
+<li>全概率公式<br>全概率表示达到某种结果或现象，有多种方式或原因，问达到的概率是多少或是造成这种结果的概率是多少。抽象化描述为，对一个完备事件组$A_1,A_2,\cdots, A_n$, 对于任意一个事件B发生，若如下公式成立，<script type="math/tex; mode=display">P(B) = P(B|A_1)P(A_1)\cdots P(B|A_n)P(A_n)=\sum_{i=1}^{n}P(B|A_i)P(A_i)</script>则成为全概率公式。</li>
+<li><p>贝叶斯定理<br>首先解释下贝叶斯定理，然后通过例子来进行说明。用事件A和事件B来进行表示，贝叶斯定理公式为：</p>
+<script type="math/tex; mode=display">P(A|B)=P(A)\frac{P(B|A)}{P(B)}</script><blockquote>
+<p>新信息B出现后A的概率=A本身的概率*新信息带来的调整</p>
+</blockquote>
+<p>知乎上有篇贴字很好的解释了贝叶斯定理，见参考文献2.<br>下面用数学形式来解释一下几个概念，结合当前的分类任务进行，令$X$表示输入特征向量，$Y$小时类别，则根据贝叶斯定理如下：</p>
+<script type="math/tex; mode=display">P(Y|X) = P(Y)\frac{P(X|Y)}{P(X)}</script><p>在特征$X$情况下样本属于类别$Y$的概率，等于类别$Y$本身的概率与考虑特征$X$后新信息带来的调整</p>
+</li>
+<li>后验概率<br>从上面的式子可以看到，后验分布是在先知道结果$Y$的情况下由结果估计原因$X$的分布，即$P(Y|X)$为后验概率</li>
+<li>先验概率<br>先验概率是根据已知知识、经验而的概率这里指$P(Y)$</li>
+<li>条件概率<br>当给定条件发生变化后，会导致事件发生的可能性改变。比如，你背后站着一个人，让你猜是女人的概率是多大，你肯定猜50%，但如果告诉你这个人有长头发，那你猜这个人是女人的概率是90%，这种$P(女人|长头发)$表示的是在条件“长头发”下是女人的概率，即是条件概率.在当前分类场景下条件概率指$P(X|Y)$，在样本属于类别$Y$的情况下含有特征$X$的概率.</li>
+</ul>
+<h2 id="微观层面"><a href="#微观层面" class="headerlink" title="微观层面"></a>微观层面</h2><h3 id="公式详细推导过程"><a href="#公式详细推导过程" class="headerlink" title="公式详细推导过程"></a>公式详细推导过程</h3><p>算法过程。</p>
+<blockquote>
+<p>输入： 具有独立同分布的训练集$T=\{(x_1, y_1), (x_2, y_2), \cdots, (x_n, y_n)\}$，其中样本个数为$N$, 类别个数为$K$.给定样本$X$<br>输出：样本$X$对应的类别$Y$<br>(1) 根据训练集$T$学习类别$Y$的先验概率分布$P(Y=c_k), k=1,2,\cdots,K$,实现时为统计各个类别的个数，即</p>
+<script type="math/tex; mode=display">P(Y=c_k)=\frac{1}{N}\sum_i^nI(y_i=c_k), k=1,2,\cdots,k</script><p>其中$I$表示指示函数，若里面的内容相当则为1，不相等则为0<br>(2) 计算类别$Y$的条件概率分布$P(X=x|Y=c_k), k=1,2, \cdots, K$, 其中$x$代表的是样本中出现的特征，根据概率分布知识可以得到特征和类别的联合概率分布$P(X,Y)=P(X|Y)P(Y)$；根据朴素贝叶斯的假设，在类别确定的条件下，用于分类的特征都是相互独立的(朴素一词的来源)，因此条件概率分布可以做如下转换，</p>
+<script type="math/tex; mode=display">P(X=x|Y=c_k)=P(X^{(1)}=x_1,\cdots ,X^{(n)}=x_n|Y=c_k)\\
+=\prod_{j=1}^{n}P(X^{(i)}=x_j|Y=c_k)</script><p>在实际实现时，只需要统计每个类别下特征出现次数即可，如下：</p>
+<script type="math/tex; mode=display">P(X=x_j|Y=c_k)=\frac{\sum_i^nI(X^{(i)}=x_j,y=c_k)}{\sum_i^nI(y_i=c_k)}</script><p>(3) 根据学习到的模型即先验分布和条件分布，计算在输入特征向量$X$下的后验概率$P(Y=c_k|X=x)$,根据贝叶斯定理，</p>
+<script type="math/tex; mode=display">P(Y=c_k|X=x)=P(Y=c_k)\frac{P(X=x|Y=c_k)}{P(X=x)} \\
+= P(Y=c_k)\frac{P(X=x|Y=c_k)}{\sum_kP(X=x|Y=c_k)P(Y=c_k)} \\
+=P(Y=c_k)\frac{\prod_{j=1}^{n}P(X=x_j|Y=c_k)}{\sum_{k}{P(Y=c_k)}\prod_{j=1}P(X=x_j|Y=c_k)}</script><p>以上是朴素贝叶斯的基本公式，对于NB分类器，我们选择使得概率值最大的那一个<br>(4) 朴素贝叶斯分类器</p>
+<script type="math/tex; mode=display">y=f(x)={argmax}_{c_k}P(Y=c_k)\frac{\prod_{j=1}^{n}P(X=x_j|Y=c_k)}{\sum_{k}{P(Y=c_k)}\prod_{j=1}P(X=x_j|Y=c_k)}</script><p>上式中，对于所有的类别$c_k$分母值都是固定的，因此可以将上式进行简化，</p>
+<script type="math/tex; mode=display">y={argmax}_{ck}P(Y=c_k)\prod_{j=1}^nP(X=x_j|Y=c_k)</script><p>(5) 上式中的条件概率$P(X=x_j|Y=c_k)$在训练过程都可以进行统计得到，因此可以得到样本$x$的类别$\hat{y}$</p>
+</blockquote>
+<h3 id="贝叶斯估计"><a href="#贝叶斯估计" class="headerlink" title="贝叶斯估计"></a>贝叶斯估计</h3><ol>
+<li><p>在估计条件概率分布$P(x_i|y=c_k)$的过程中，可能会出现$y=c_k$次数为零的情况，这是因为数据集里数据太少的原因，而真实情况$c_k$的样本个数并不为0，因此需要采用其他方法进行处理。</p>
+</li>
+<li><p>假第$j$个特征$x_j$可能的取值为$\{a_{j,1},a_{j,2}, \cdots, a_{j,s_j} \}$,贝叶斯估计是假设特征在取每个特征值的时候都有一个先验计数$\lambda$，如下，</p>
+<script type="math/tex; mode=display">P_{\lambda}(X=x_j|Y=c_k)=\frac{\sum_i^nI(X^{(i)}=x_j,y=c_k) + \lambda}{\sum_i^nI(y_i=c_k) + s_j\lambda}</script></li>
+</ol>
+<p>等价于特征$x_j$在各个可能的取值上增加了一个正数$\lambda$,如果$c_k$的样本数为0，则先验概率分布的值为$\frac{1}{s_j}$，为等可能的。</p>
+<ol>
+<li>采用贝叶斯估计后，类别的先验概率分布调整为<script type="math/tex; mode=display">P_{\lambda}(Y=c_k)=\frac{\sum_i^nI(y_i=c_k)+\lambda}{N+K\lambda}</script>其中，当$\lambda=0$为极大似然估计；当$\lambda=1$时为拉普拉斯平滑；当$c_k$样本个数为0时，该类别先验为$\frac{\lambda}{N+K\lambda}$.</li>
+</ol>
+<h3 id="期望最小化"><a href="#期望最小化" class="headerlink" title="期望最小化"></a>期望最小化</h3><p>由以上的算法的原理过程可知，NB算法其实在做的是后验概率最大化，即$y={argmax}_{ck}P(Y=c_k)\prod_{j=1}^nP(X=x_j|Y=c_k)$<br>后验概率最大化等价于期望风险最小化。朴素贝叶斯算法对先验概率和条件概率的学习即使估计的过程，算法中采用极大似然估计。分析过程如下，假设选择的是0-1损失函数，</p>
+<script type="math/tex; mode=display">L(Y, f(X))=1,Y\neq{f(X)} or  0,Y=f(X)</script><p>其中$f(X)$为分类决策函数，此时的期望风险为$R_{exp}(f)=E[L(Y,f(X))]$,该期望风险是对联合分布$P(X,Y)$取的，因此,</p>
+<script type="math/tex; mode=display">R_{exp}(f)=Ex\sum_{k=1}^K[L(c_k, f(X))]P(c_k|X=x)</script><p>想要对上式求最小化，只需要对累积和中的每个元素求最小化，即在$X=x$求最小值</p>
+<script type="math/tex; mode=display">f(x)={argmin}_{y\in Y}\sum_{k=1}^{K}L(c_k,y)P(c_k|X=x) \\
+= {argmin}_{y \in Y}\sum_{k=1}^{K}P(y\neq c_k) \\
+={argmin}_{y \in Y}(1-P(y=c_k|X=x)) \\
+={argmax}_{y \in Y}P(y=c_k|X=x)</script><p>因此后验概率最大化就等价于期望风险最小化。</p>
+<h3 id="优缺点是什么？"><a href="#优缺点是什么？" class="headerlink" title="优缺点是什么？"></a>优缺点是什么？</h3><p>优点：</p>
+<ol>
+<li>算法简单、直观、可以快速获得baseline效果</li>
+<li>可以进行增量学习</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>特征间相互独立，对于非独立特征效果不好</li>
+<li>需要做特征筛选</li>
+<li>相对其他模型，准确率一般</li>
+</ol>
+<h2 id="应用层面"><a href="#应用层面" class="headerlink" title="应用层面"></a>应用层面</h2><h3 id="算法的使用场景或任务有哪些？"><a href="#算法的使用场景或任务有哪些？" class="headerlink" title="算法的使用场景或任务有哪些？"></a>算法的使用场景或任务有哪些？</h3><p>在做网页分类时采用这种贝叶斯算法，baseline准确率在75-80%之间，很难再网上提升，原因是类目体系间特征重合度很高，而且朴素贝叶斯假设太强，但实际往往特征间是有一定相关性的。所以采用朴素贝叶斯算法需要在特征工程层面做很大的功夫。</p>
+<h2 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h2><ol>
+<li>朴素贝叶斯和贝叶斯估计有什么联系？</li>
+<li>贝叶斯定理是什么？</li>
+</ol>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li><a href="https://blog.csdn.net/Hearthougan/article/details/75174210" target="_blank" rel="noopener">全概率公式和贝叶斯</a></li>
+<li><a href="https://www.zhihu.com/question/19725590" target="_blank" rel="noopener">贝叶斯定理</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/41069540" target="_blank" rel="noopener">贝叶斯相关知识</a></li>
+</ol>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#宏观层面"><span class="toc-text">宏观层面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微观层面"><span class="toc-text">微观层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#公式详细推导过程"><span class="toc-text">公式详细推导过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#贝叶斯估计"><span class="toc-text">贝叶斯估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#期望最小化"><span class="toc-text">期望最小化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点是什么？"><span class="toc-text">优缺点是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用层面"><span class="toc-text">应用层面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#算法的使用场景或任务有哪些？"><span class="toc-text">算法的使用场景或任务有哪些？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题思考"><span class="toc-text">问题思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://helixn.com/passages/2019-06-12-naive-bayes/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/朴素贝叶斯/"><i class="fa fa-tags"></i>朴素贝叶斯</a>
+     
+      <a href="/tags/Naive-Bayes/"><i class="fa fa-tags"></i>Naive Bayes</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://helixn.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第30<span id="site-count"></span>位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2016-2019
+      Created by <a href="https://www.helixn.com/" target="_blank">JerryShi</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2019-07-01-decision-tree/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2019-06-04-knn/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>

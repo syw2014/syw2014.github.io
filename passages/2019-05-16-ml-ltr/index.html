@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>排序学习(Learning To Rank) | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="算法笔记,PairWise,PointWise,ListWise," />
+  
+
+  
+  <meta name="description" content="排序学习是实际任务中比较典型且重要的一种学习任务，广泛存在于信息检索、推荐系统、计算广告、问答系统等场景，本文主要记录从宏观角度去看什么是排序学习，包含哪些方面和内容，评价指标等。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/categories/Projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/Projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-05-16
+    </span>
+    
+      <span>
+        | <a href="/categories/算法笔记/"><i class="fa fa-bookmark"></i>算法笔记</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    排序学习(Learning To Rank)
+  </h1>
+  
+  <article class="passage-article">
+    </p>
+<h2 id="排序学习思维导图和系统框架"><a href="#排序学习思维导图和系统框架" class="headerlink" title="排序学习思维导图和系统框架"></a>排序学习思维导图和系统框架</h2><p>排序学习系统通用学习框架(摘自参考文献)<br><img src="https://upload-images.jianshu.io/upload_images/2423131-46b7b14399c06a83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>排序学习和其他机器学习任务一样，分为训练环节和预测环节，唯一的不同点就是输入数据格式和普通数据不同。排序学习思维导图如下。<br><img src="https://upload-images.jianshu.io/upload_images/2423131-3757463d95de2422.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="问题定义"><a href="#问题定义" class="headerlink" title="问题定义"></a>问题定义</h2><p>问题类型<br><img src="https://upload-images.jianshu.io/upload_images/2423131-acd0eb34a17e349a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<ul>
+<li>Pointwise算法<br>是指给定$<query, doc="">$对，如果最终预测目标是一个实数值，就是一个回归问题。如果目标是概率预测，这就是一个分类问题，例如CTR预估.</query,></li>
+<li>Pairwise<br>是指给定$<query, (d1,="" d2)="">$， 即给定两个文档的排序。Pairwise算法的目标是减少逆序的数量，所以是个二分类问题</query,></li>
+<li>Listwise<br>是指给定一个排序列表$<query, list(d)="">$,目标往往是直接优化nDCG、ERR等评价指标.</query,></li>
+</ul>
+<h2 id="学习方法"><a href="#学习方法" class="headerlink" title="学习方法"></a>学习方法</h2><p><img src="https://upload-images.jianshu.io/upload_images/2423131-52e8bea7dbb353cb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="评价指标"><a href="#评价指标" class="headerlink" title="评价指标"></a>评价指标</h2><ul>
+<li><p>MAP(Mean Aaverage Precision)平均准确率均值，体现的是取不同个数排序结果下的平均准确率，所谓<em>准确率</em>是指前面$k$个中，相关文档的占比.MAP计算公式如下：</p>
+<script type="math/tex; mode=display">AP@K=\frac{\sum_{i=1}^{K}P(i)rel(i)}{K} \\
+P(i) = \frac{前i个文档中相关文档个数}{i} \\
+rel(i) = 1(第i个文档是相关文档) or 0 (第i个文档不相关)</script><p>以上公式计算了一个query时，针对$TopK$的准确率，$K$表示在结果中选取多少个文档。<br>针对于整个数据集的$MAP$,即平均准确率</p>
+<script type="math/tex; mode=display">AMP@Q=\frac{\sum_{q=1}^Q AP_q@K}{Q}</script><p>MAP指标只考虑文档相关与否0和1，不考虑具体相关程度。</p>
+</li>
+<li>CG(Cumulative Gain)累积增益<br>可用于评价基于打分或者评分的排序系统，计算公式如下<script type="math/tex; mode=display">CG = \sum_{i=1}^K rel(i)</script>其中，$K$表示排序内容的个数，$rel(i)$表示第$i$个物品的相关性或者评分。举例来说，给一个用户推荐了五个商品，$I_1, I_2, I_3, I_4, I_5$, 对应的得分分别为$5, 3, 2, 1, 0.5$,累积增益为：<script type="math/tex; mode=display">CG=5+3+2+1+0.5 = 11.5</script>累积增益并没有考虑每个物品具体的位置，只考虑了得分大小</li>
+<li><p>DCG(Discount Cumulative Gain) 折扣累积增益<br>计算公式如下</p>
+<script type="math/tex; mode=display">DCG_K=\sum_{i=1}^K\frac{2^{rel(i)}-1}{log_2{(i+1)}}</script><p>其中，$K$表示列表中元素个数，分子表示相关性的大小，分母表示当前物品位置的惩罚。举例来说，给一个用户推荐了五个商品，$I_1, I_2, I_3, I_4, I_5$, 对应的得分分别为$5, 3, 2, 1, 2$,则折扣累积增益为(列表位置索引从1开始)，</p>
+<script type="math/tex; mode=display">DCG_5=\frac{2^5-1}{log_22} + \frac{2^3-1}{log_23} +\frac{2^2-1}{log_24} + \frac{2^1-1}{log_25} + \frac{2^2-1}{log_26} = 38.5</script></li>
+<li><p>NDCG(Normalized Discount Cumulative Gain)归一化折扣累积增益<br>因为DCG并没有考虑列表中和查询query真正有效的个数，其计算公式如下，给一个用户推荐了五个商品，$I_1, I_2, I_3, I_4, I_5$, 对应的得分分别为$5, 3, 2, 1, 2$(但是这里有疑惑点，推荐列表为什么不是按照实际的得分排序呢?)</p>
+<script type="math/tex; mode=display">NDCG_k = \frac{DCG_K}{IDCG_k}</script><p>$IDCG$是指列表按照真实分数排序状况下的$DCG$，依然用上面的例子，则五个商品的按分数排序是$5, 3, 2, 2, 1$,则对应的$IDCG$为</p>
+<script type="math/tex; mode=display">IDCG_5=\frac{2^5-1}{log_22} + \frac{2^3-1}{log_23} +\frac{2^2-1}{log_24} + \frac{2^2-1}{log_25} + \frac{2^1-1}{log_26} = 38.5</script><p>对应的$NDCG$如下</p>
+<script type="math/tex; mode=display">NDCG_5=\frac{DCG_5}{IDCG_5}</script><p>$NDCG$是0-1的数，越接近于1说明推荐越准确.</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对于排序问题，主要弄情况$pointwise, pairwise, listwize$和相应的评价指标既可，对于算法的选择可根据业务论文进行对比。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li><a href="http://www.aas.net.cn/CN/abstract/abstract19321.shtml" target="_blank" rel="noopener">排序学习研究进展和展望</a></li>
+<li><a href="http://sofasofa.io/forum_main_post.php?postid=1002561" target="_blank" rel="noopener">排序指标</a></li>
+<li><a href="https://tech.meituan.com/2018/12/20/head-in-l2r.html" target="_blank" rel="noopener">深入浅出排序学习</a></li>
+</ol>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#排序学习思维导图和系统框架"><span class="toc-text">排序学习思维导图和系统框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题定义"><span class="toc-text">问题定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#学习方法"><span class="toc-text">学习方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#评价指标"><span class="toc-text">评价指标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://helixn.com/passages/2019-05-16-ml-ltr/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/PairWise/"><i class="fa fa-tags"></i>PairWise</a>
+     
+      <a href="/tags/PointWise/"><i class="fa fa-tags"></i>PointWise</a>
+     
+      <a href="/tags/ListWise/"><i class="fa fa-tags"></i>ListWise</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://helixn.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第30<span id="site-count"></span>位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2016-2019
+      Created by <a href="https://www.helixn.com/" target="_blank">JerryShi</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2019-05-20-sl-chapter1-p2/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2019-05-14-sl-chapter1-p1/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>

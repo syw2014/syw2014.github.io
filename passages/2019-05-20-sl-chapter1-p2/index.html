@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  <meta name="author" content="悯生" />
+  
+  
+  <title>读书笔记：Chapter1 三要素相关概念 | 踏路</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="统计学习方法笔记,期望风险,经验风险,损失函数," />
+  
+
+  
+  <meta name="description" content="前一节记录了从不同角度对机器学习算法进行分类，本节记录方法中相关的概念，比如损失函数、经验损失、模型评估等问题。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"6sEpjxpdQ0zFbHII2mSfaKib-gzGzoHsz","appkey":"qdahfkeMY3jcS1ebdMnOQr7I","comment":true,"count":true},
+    welcome: {"enable":true,"interval":10},
+    start_time: "2016-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "悯生",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">踏路</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 静心思考认真生活</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/categories/Projects/" target="_self">项目</a>
+      
+        <a href="/tags/" target="_self">标签云</a>
+      
+        <a href="/categories/" target="_self">分类云</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/syw2014" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/Projects/" target="_self">
+            项目
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类云
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-05-20
+    </span>
+    
+      <span>
+        | <a href="/categories/统计学习方法笔记/"><i class="fa fa-bookmark"></i>统计学习方法笔记</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    读书笔记：Chapter1 三要素相关概念
+  </h1>
+  
+  <article class="passage-article">
+    <br>书中将方法分为三个部分即模型、策略和算法，所谓模型即使要考虑对问题的定性建模，是有监督、无监督，是学习出条件概率还是决策函数；策略所要表达的是如何对建立的模型进行定量分析，如何去评价、选择最优的模型；最后算法就是学习模型的具体计算方法，是通过数据学习，还是直接求解解析解。<br>下面介绍几个重要的概念</p>
+<h2 id="损失函数和风险函数"><a href="#损失函数和风险函数" class="headerlink" title="损失函数和风险函数"></a>损失函数和风险函数</h2><p>损失函数是用来度量预测值和真实值之间差别大小的函数。常见的损失函数有</p>
+<ul>
+<li>0-1损失函数(0-1 loss function)<script type="math/tex; mode=display">L(Y,f(X))= \left\{
+    \begin{aligned}
+      1, Y \neq f(X) \\
+      0, Y = f(X)
+    \end{aligned}
+\right.</script></li>
+<li>平方损失函数(quadratic loss function)<script type="math/tex; mode=display">L(Y,f(X)) = (Y- f(X))^2</script></li>
+<li>绝对损失函数(absolute loss function)<script type="math/tex; mode=display">L(Y,f(X)) = |Y- f(X)|</script></li>
+<li>对数损失函数(logarithmic loss function)<script type="math/tex; mode=display">L(Y,P(Y|X)) = -log(Y|X)</script></li>
+</ul>
+<p>损失函数越小说明模型越好，对loss的设计需要根据具体要解决的问题为依据，而loss值也是在模型跳槽过程中需要参考的维度之一。</p>
+<p>风险函数(risk function)是理论上模型$f(x)$关于联合概率分布$P(X,Y)$(因为模型输入，输出都是随机变量所以遵从联合分布)的平均意义下的损失。</p>
+<h2 id="经验风险最小化和结构化风险最小化"><a href="#经验风险最小化和结构化风险最小化" class="headerlink" title="经验风险最小化和结构化风险最小化"></a>经验风险最小化和结构化风险最小化</h2><ul>
+<li>经验风险(empirical risk)或经验损失(empirical loss)，<br>模型关于训练集的平均损失<script type="math/tex; mode=display">R_{emp}(f)=\frac{1}{N}\sum_{i=1}^{N}L(y_i, f(x_i))</script>其中，$N$是训练集样本个数，$f(x)$是所选择的模型</li>
+<li>期望风险(expected risk)或期望损失(expected loss)<br>期望风险是模型关于联合分布的期望损失，根据大数定律，当样本$N$趋于无穷大时，经验风险近似于期望风险，因此采用经验风险估计期望风险。</li>
+<li><p>经验风险最小化<br>由于经验风险是模型在数据集上的平均损失，换个思路，经验风险最小也表示模型最优，</p>
+<script type="math/tex; mode=display">min_{f \in \mathit{F}}\frac{1}{N}\sum_{i=1}^{N}L(y_i, f(x_i))</script><p>这个有个问题需要深层理解</p>
+<blockquote>
+<p>极大似然估计(maximum likelihood estimation) 就是经验风险最小化的一个例子。当模型是条件概率分布、损失函数是对数损失函数时，经验风险最小化就等价于极大似然估计.(具体推导)</p>
+</blockquote>
+</li>
+<li><p>结构风险最小化(structural risk minimization)<br>结构风险最小化等价于正则化，结构风险是在经验风险上添加控制模型复杂度的正则化项或惩罚项。结构风险如下,</p>
+<script type="math/tex; mode=display">R_{srm}(f) = \frac{1}{N}\sum_{i=1}^{N}L(y_i, f(x_i)) +\lambda J(f)</script><p>因此结构风险最小化下的最优模型等价于，</p>
+<script type="math/tex; mode=display">min_{f \in \mathit{F}}\frac{1}{N}\sum_{i=1}^{N}L(y_i, f(x_i)) +\lambda J(f)</script><blockquote>
+<p>贝叶斯估计中的最大后验概率(maximum posterior probability estimation, MAP)就是结构化风险的一个例子。当模型是条件概率、损失函数是对数损失函数、模型复杂度有模型先验概率表示，结构风险最小等价于最大后验概率。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="训练误差和测试误差"><a href="#训练误差和测试误差" class="headerlink" title="训练误差和测试误差"></a>训练误差和测试误差</h2><ul>
+<li>训练误差<br>训练误差是模型关于训练样本的平均损失<script type="math/tex; mode=display">R_{emp}(\hat{f})=\frac{1}{N}\sum_{i=1}^{N}L(y_i, \hat{f}(x_i))</script></li>
+<li>测试误差<br>模型关于测试集的平均损失，注意训练时采用的损失函数和测试时采用的损失函数不一定完全相同。<script type="math/tex; mode=display">R_{emp}(\hat{f})=\frac{1}{N^\prime}\sum_{i=1}^{N^\prime}L(y_i, \hat{f}(x_i))</script></li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本节主要记录了损失函数，期望风险，结构风险最小化，期望风险最小化等概念。</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#损失函数和风险函数"><span class="toc-text">损失函数和风险函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#经验风险最小化和结构化风险最小化"><span class="toc-text">经验风险最小化和结构化风险最小化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#训练误差和测试误差"><span class="toc-text">训练误差和测试误差</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 悯生</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://helixn.com/passages/2019-05-20-sl-chapter1-p2/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/期望风险/"><i class="fa fa-tags"></i>期望风险</a>
+     
+      <a href="/tags/经验风险/"><i class="fa fa-tags"></i>经验风险</a>
+     
+      <a href="/tags/损失函数/"><i class="fa fa-tags"></i>损失函数</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://helixn.com/" target="_blank">踏路</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.jianshu.com/u/c44c1c14b248" target="_blank">简书</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第30<span id="site-count"></span>位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: jerryshi0110@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2016-2019
+      Created by <a href="https://www.helixn.com/" target="_blank">JerryShi</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2019-05-21-chapter2-perceptron/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2019-05-16-ml-ltr/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+    
+  </body>
+</html>
